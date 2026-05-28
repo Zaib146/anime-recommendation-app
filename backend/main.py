@@ -96,3 +96,15 @@ def recommendations_endpoint(anime_name):
 # AVOID THIS FOR NOW - git reset --hard <commit-id>: truly moves the branch backwards. changes vs code files and removes later commits from the branch. 
 # git revert <commit_id>: common practice to undo a previous commit is not to move the branch backwards. Instead, create a new commit that undoes a previous one.
 
+# when starting a new project:
+# 1. Initialize git: git init - start tracking this project with git
+# 2. Connect to GitHub Repo: git remote add origin {enter url of empty respository here} - connect local project to GitHub repository
+# 3. Add files: git add . - track everything in this project
+# 4. Commit Snapshot: git commit -m "Initial FastAPI backend setup" - Save project snapshot locally
+# 5. Push to GitHub: git push -u origin main -  upload local project to GitHub
+# 6. If we selected to already create a README and a git.ignore, Git may complain during. then type: "git pull origin main --allow-unrelated-histories". Then save/close the merge message
+# 7. then push again with "git push -u origin main"
+# 8. if __pycache__ is included in github repo, then remove it from Git tracking, keep it locally on PC, commit the removal
+# 8. continued - git rm -r --cached backend/__pycache__  This removes from Git tracking ONLY (do not delete local folder). The --cached part makes sure we keep the local folder, only Git stops tracking it.
+# 9. Commit again. git commit -m "Remove pycache from tracking"
+# 10. push with git push
