@@ -1,8 +1,4 @@
-import requests # needed to fetch json data from Jikan API
-from fastapi import FastAPI     # needed for backend setup
-
-# this creates my backend server, we're creating an application object here. This "app" becomes my server, my API, my backend. Everything attaches to this object
-app = FastAPI()
+import requests # needed to fetch json data from Jikan API   
 
 #  enter anime name. from requests library, use get method to get json data from Jikan API. Returns raw JSON data into variable "response"
 #  use the .json() method on response to parse the json data and return it as python dictionaries and lists. Store that into variable data.
@@ -60,19 +56,7 @@ def get_recommendation(anime_name):
     # results is a list that contains dictionaries
     return results
 
-# this says to associate this url with this function called recommendations_endpoint
-# we created a separate function called recommendations_endpoint so we can use the get_recommendations function for other urls in the future
-# recommendations_endpoint handles the web / API side
 
-# static route: /recommendations/
-# dynamic variable: anime_name
-# this url is completely of my own making. I wrote it this way to make the most sense
-# FastAPI will automatically convert the python list returned into JSON. good for frontend later
-# @app.get attaches a route to the app object
-# the full @app.get line is a decorator
-@app.get("/recommendations/{anime_name}")
-def recommendations_endpoint(anime_name):
-    return get_recommendation(anime_name)
 
 
 

@@ -1,9 +1,27 @@
-from fastapi import FastAPI
+from fastapi import FastAPI     # needed for backend setup
 from phase1_script import get_recommendation
 
 # create app object
+# this creates my backend server, we're creating an application object here. This "app" becomes my server, my API, my backend. Everything attaches to this object
 app = FastAPI()
 
+# if this url is called, run the get_recommendation function
+# this says to associate this url with this function called recommendations_endpoint
+# we created a separate function called recommendations_endpoint so we can use the get_recommendations function for other urls in the future
+# recommendations_endpoint handles the web / API side
+
+# static route: /recommendations/
+# dynamic variable: anime_name
+# this url is completely of my own making. I wrote it this way to make the most sense
+# FastAPI will automatically convert the python list returned into JSON. good for frontend later
+# @app.get attaches a route to the app object
+# the full @app.get line is a decorator
 @app.get("/recommendations/{anime_name}")
 def recommendations_endpoint(anime_name):
     return get_recommendation(anime_name)
+
+
+# to start / host the backend server (make it alive), type this in "Terminal" -> "New Terminal". should be in location C:\anime-recommendation-app\backend>
+# uvicorn main:app --reload.    This follows structure of "uvicorn filename:app_object --reload".  here, --reload automatically restarts the server when I make code changes
+# to visit, type this url "localhost:8000/recommendations/{anime_name}", but actually insert a real anime name into the variable.
+# or this: "http://127.0.0.1:8000/recommendations/naruto". Can copy the link showed at beginning of terminal, then add the search endpoint and query myself. endpoint is recommendation, query is naruto
