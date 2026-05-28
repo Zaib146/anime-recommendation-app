@@ -58,6 +58,8 @@ def get_recommendation(anime_name):
         for genre in genres:        # loop through list of genres for this specific anime
             genre_ids.append(genre["mal_id"])       # for each specific genre (example is Action), add its id (here 1) to the list of genre_ids. This list is dynamic based on the anime in anime_list.
         #example, for Naruto, now genre_ids = [1, 2, 10]
+        
+        recommendations = get_genre_recommendations(genre_ids)
             
         results.append(item)
         
@@ -68,8 +70,9 @@ def get_recommendation(anime_name):
     return results
 
 
-
-
+def get_genre_recommendations(genre_ids):
+    genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10". str(id) converts each id number to a string while looping through them. ",".join puts a comma between each id value
+    
 
 
 
