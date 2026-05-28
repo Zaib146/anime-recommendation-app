@@ -25,3 +25,49 @@ def recommendations_endpoint(anime_name):
 # uvicorn main:app --reload.    This follows structure of "uvicorn filename:app_object --reload".  here, --reload automatically restarts the server when I make code changes
 # to visit, type this url "localhost:8000/recommendations/{anime_name}", but actually insert a real anime name into the variable.
 # or this: "http://127.0.0.1:8000/recommendations/naruto". Can copy the link showed at beginning of terminal, then add the search endpoint and query myself. endpoint is recommendation, query is naruto
+
+# notes for git commands
+# 1. git status - see status if files, if they're modified, staged, see if changes are staged for commmit 
+# 2. git add . - take all modified files in this folder and prepare them for the next commit. This is called "staging". Nothing is saved yet. We've only selected the files that will be included in the save point 
+
+# before "git add ."
+# Working Directory
+# ├── main.py (modified)
+# └── phase1_script.py (modified)
+
+# Staging Area
+# (empty)
+
+#after "git add ."
+# Working Directory
+# ├── main.py
+# └── phase1_script.py
+
+# Staging Area
+# ├── main.py
+# └── phase1_script.py
+
+# 3. git commit -m "message" - Git takes everything in the staging area and creates a permanent snapshot. This is the actual "save" or "checkpoint". 
+# "message" is the note attached to this save point. Can view these notes in my commit history
+# after git commit -m "message", Git now remembers:  
+# Commit A
+# ├── main.py
+# └── phase1_script.py
+# these changes are saved in my local Git repository (on PC, NOT on Github yet) - commit exists only on PC
+
+# 4. git push - uploads your local commits to Github
+
+# before git push:
+# Your PC
+# └── Commit A
+
+# GitHub
+# └── Older version
+
+# after git push: 
+# Your PC
+# └── Commit A
+
+# GitHub
+# └── Commit A
+
