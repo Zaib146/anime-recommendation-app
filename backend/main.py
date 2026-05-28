@@ -1,3 +1,5 @@
+# this file handles the backend setup
+
 from fastapi import FastAPI     # needed for backend setup
 from phase1_script import get_recommendation
 

@@ -51,8 +51,19 @@ def get_recommendation(anime_name):
     # index increments through how many items are in anime list
     
     for anime in anime_list:
-        item = {"title ": anime['title'], "synopsis ": anime['synopsis'], "images: ": anime['images']['jpg']['image_url']}
+        item = {"title ": anime['title'], "genres": anime['genres'], "synopsis ": anime['synopsis'], "images: ": anime['images']['jpg']['image_url']}
+        
+        genres = anime['genres']  # list of genres for this specific anime in this loop iteration
+        genre_ids = []             # empty list to hold the id numbers of the genres of this specific anime
+        for genre in genres:        # loop through list of genres for this specific anime
+            genre_ids.append(genre["mal_id"])       # for each specific genre (example is Action), add its id (here 1) to the list of genre_ids. This list is dynamic based on the anime in anime_list.
+        #example, for Naruto, now genre_ids = [1, 2, 10]
+            
         results.append(item)
+        
+        
+    genres = anime['genres']    
+        
     # results is a list that contains dictionaries
     return results
 
