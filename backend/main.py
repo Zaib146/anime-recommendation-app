@@ -71,3 +71,28 @@ def recommendations_endpoint(anime_name):
 # GitHub
 # └── Commit A
 
+# git log --oneline: shows commit history (newest at top)
+# this is older, probably don't use: git checkout <commit-id> example is git checkout 45d9e03: temporarily inspect old code
+# git switch main - return to latest version, branch switching
+# git switch --detach <commit_id>: detached commit viewing. Move you to that commit in a detached HEAD state. git checkout <commit-id> does the same thing
+# both actually change the VS code files to become the versions at the entered <commit_id>. can change them back though
+# git restore <filename> - example is git restore main.py: this is file restoring. same as git checkout <filename>
+# git switch -c feature-watchlist: creates a new branch attached at main (main stays where it is). now the experimental work happens at the branch feature-watchlist. same as git checkout -b feature-watchlist
+# so workflow could be this: git switch -c feature-react-frontend, then git commit -m "Added anime card component", then git switch main. Now that we are in main (in the branch that will receive changes if we merge), if happy with the experiment, we can merge.
+# merge by git merge feature-watchlist
+
+# example:
+# git switch -c feature-watchlist
+
+# # make changes
+
+# git add .
+# git commit -m "Added SQLite watchlist"
+
+# git switch main
+# git merge feature-watchlist
+# git push
+
+# AVOID THIS FOR NOW - git reset --hard <commit-id>: truly moves the branch backwards. changes vs code files and removes later commits from the branch. 
+# git revert <commit_id>: common practice to undo a previous commit is not to move the branch backwards. Instead, create a new commit that undoes a previous one.
+
