@@ -45,6 +45,22 @@ def get_recommendation(anime_name):
     # will store our selected information
     results = []
     
+    main_anime = anime_list[0]      # main_anime is the first anime in anime_list (probably the main series)
+    genres = main_anime['genres']   # list of genres for the first anime in anime list
+    genre_ids = []             # empty list to hold the id numbers of the genres of this specific anime
+    
+    for genre in genres:        # loop through list of genres for this specific anime
+        genre_ids.append(genre["mal_id"])       # for each specific genre (example is Action), add its id (here 1) to the list of genre_ids. This list is dynamic based on the anime in anime_list.
+    
+    #example, for Naruto, now genre_ids = [1, 2, 10]
+        
+    recommendations = get_genre_recommendations(genre_ids)
+    results.append({"similar anime": recommendations})  # will show the similar anime at the very top. other option was to put it at the very bottom, but that doesn't seem user-friendly
+    # also now have similar anime only in relation to first anime. it keeps it similar, don't need similar anime for all anime
+    
+    
+    # print(recommendations) to see what recommendations holds
+    
     # what's happening for each list in the loop
     # item (1st loop iteration) = {"title ": data["data"][0]['title'], "synopsis ": data["data"][0]['synopsis'], "images: ": data["data"][0]['images']['jpg']['image_url']}
     # item (2nd loop iteration)= {"title ": data["data"][1]['title'], "synopsis ": data["data"][1]['synopsis'], "images: ": data["data"][1]['images']['jpg']['image_url']}
@@ -54,16 +70,9 @@ def get_recommendation(anime_name):
         item = {"title ": anime['title'], "genres": anime['genres'], "synopsis ": anime['synopsis'], "images: ": anime['images']['jpg']['image_url']}
         
         genres = anime['genres']  # list of genres for this specific anime in this loop iteration
-        genre_ids = []             # empty list to hold the id numbers of the genres of this specific anime
-        for genre in genres:        # loop through list of genres for this specific anime
-            genre_ids.append(genre["mal_id"])       # for each specific genre (example is Action), add its id (here 1) to the list of genre_ids. This list is dynamic based on the anime in anime_list.
-        #example, for Naruto, now genre_ids = [1, 2, 10]
         
-        recommendations = get_genre_recommendations(genre_ids)
-        print(recommendations)
-            
         results.append(item)
-        results.append({"similar anime": recommendations})   
+          
         
     # results is a list that contains dictionaries
     return results
@@ -75,7 +84,7 @@ def get_genre_recommendations(genre_ids):
     response = requests.get(genre_search_url)       # gets json data of the genres
     data = response.json()      # parse through the json data and return it as a list of genres
     
-    # print(data)
+    # print(data)       # to see what data holds
     
     if "data" not in data:
         return []
@@ -86,7 +95,7 @@ def get_genre_recommendations(genre_ids):
     for anime in genre_list:        # loop through each anime that has the same genres
         anime_list.append(anime['title'])       #add the title of each of those animes to anime_list
     
-    print(anime_list[:5])
+    # print(anime_list[:5])     # to see what's being returned
     return anime_list       # this returns a list of other animes that have the same genre as the original anime
 
 
