@@ -69,8 +69,6 @@ def get_recommendation(anime_name):
     for anime in anime_list:
         item = {"title ": anime['title'], "genres": anime['genres'], "synopsis ": anime['synopsis'], "images: ": anime['images']['jpg']['image_url']}
         
-        genres = anime['genres']  # list of genres for this specific anime in this loop iteration
-        
         results.append(item)
           
         
