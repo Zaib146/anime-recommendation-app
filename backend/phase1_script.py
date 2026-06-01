@@ -62,8 +62,8 @@ def get_recommendation(anime_name):
     # print(recommendations) to see what recommendations holds
     
     # what's happening for each list in the loop
-    # item (1st loop iteration) = {"title ": data["data"][0]['title'], "synopsis ": data["data"][0]['synopsis'], "images: ": data["data"][0]['images']['jpg']['image_url']}
-    # item (2nd loop iteration)= {"title ": data["data"][1]['title'], "synopsis ": data["data"][1]['synopsis'], "images: ": data["data"][1]['images']['jpg']['image_url']}
+    # item (1st loop iteration) = {"title ": data["data"][0]['title'], "genres ": data["data"][0]['genres'], synopsis ": data["data"][0]['synopsis'], "images: ": data["data"][0]['images']['jpg']['image_url']}
+    # item (2nd loop iteration)= {"title ": data["data"][1]['title'], "genres ": data["data"][1]['genres'], "synopsis ": data["data"][1]['synopsis'], "images: ": data["data"][1]['images']['jpg']['image_url']}
     # index increments through how many items are in anime list
     
     for anime in anime_list:
@@ -93,10 +93,10 @@ def get_genre_recommendations(genre_ids):
     anime_list = []             # empty list to hold titles of other anime with same genres
     
     for anime in genre_list:        # loop through each anime that has the same genres
-        anime_list.append(anime['title'])       #add the title of each of those animes to anime_list
+        anime_list.append(anime['title'])       # add the title of each of those animes to anime_list
     
     # print(anime_list[:5])     # to see what's being returned
-    return anime_list       # this returns a list of other animes that have the same genre as the original anime
+    return anime_list       # this returns a list of other animes that have the same genres as the original anime
 
 
 
