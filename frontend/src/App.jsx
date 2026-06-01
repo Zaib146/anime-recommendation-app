@@ -4,6 +4,17 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 
+//this file is the main React component. this file controls what you actually see on the page, the actual app UI
+/* Browser opens index.html
+        ↓
+index.html loads /src/main.jsx
+        ↓
+main.jsx imports App.jsx
+        ↓
+main.jsx places <App /> inside <div id="root">
+        ↓
+App.jsx decides what appears on screen */
+
 function App() {
   const [count, setCount] = useState(0)
 
