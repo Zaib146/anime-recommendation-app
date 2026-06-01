@@ -15,6 +15,8 @@ main.jsx places <App /> inside <div id="root">
         ↓
 App.jsx decides what appears on screen */
 
+// will edit this file constantly
+
 function App() {
   const [count, setCount] = useState(0)
 

@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.jsx'   // bring in the app component from App.jsx
 
 // this file finds the div in index.html and turns React on
+// rarely touch this file
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -11,5 +12,5 @@ createRoot(document.getElementById('root')).render(
   </StrictMode>,
 
   {/*document.getElementById('root')) - this finds the <div id="root"></div> from index.html*/}
-  {/*render(<App />) - this puts the App component onto the page*/}
+  {/*render(<App />) - this puts the App component onto the page, after React is now running*/}
 )
