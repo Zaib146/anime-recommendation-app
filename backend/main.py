@@ -4,6 +4,7 @@ from fastapi import FastAPI     # needed for backend setup
 from phase1_script import get_recommendation
 from fastapi.middleware.cors import CORSMiddleware  # Go into FastAPI's CORS module and import the tool that handles cross-origin requests. importing a security guard
 # the middleware decides allow or block
+
 # create app object
 # this creates my backend server, we're creating an application object here. This "app" becomes my server, my API, my backend. Everything attaches to this object
 app = FastAPI()

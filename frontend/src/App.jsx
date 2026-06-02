@@ -84,9 +84,9 @@ User sees webpage*/
     const response = await fetch(url)   // await means pause this function until results come back, literally wait for results. 
     // here FastAPI is listening on port 8000, so it receives the request. App.jsx does not access backend files directly. 
     // App.jsx sends an HTTP request to the backend server. When React uses fetch, React is asking FastAPI for data automatically.
-    const data = await response.json()
-    setRecommendations(data)
-    console.log(data)
+    const data = await response.json()    //parse json data into python data, store that in "data"
+    setRecommendations(data)      // change recommendations to value in data variable
+    console.log(data)   // this is to print in console tab in F12 to test. will remove later
 
   }
 
@@ -108,10 +108,11 @@ User sees webpage*/
         <input 
           value = {anime}
           onChange = {(event) => setAnime(event.target.value)}
-          /*onChange changes the value of anime for each keystroke as it's entered, not when the button Get Recommendations is clicked. Anime is already change to new value by then*/
+          /*onChange changes the value of anime for each keystroke as it's entered, not when the button Get Recommendations is clicked. 
+          Anime variable is already change to new value by then*/
         />
 
-        {/*Anime is {anime} this shows the state update if needed*/}
+        {/*Anime is {anime} - this shows the state update if needed*/}
 
         </div>
         <button
