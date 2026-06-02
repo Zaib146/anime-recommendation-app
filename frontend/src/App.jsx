@@ -74,10 +74,20 @@ User sees webpage*/
   const [anime, setAnime] = useState("")   
   //this creates state. Original - count = current value, setCount = function used to change the value, 0 = starting value
   //now, anime is current value for anime. setAnime is the value anime will be updated to. "" is the starting value for anime
+  const [recommendations, setRecommendations] = useState([])
 
-  function handleGetRecommendations()
+  async function handleGetRecommendations() 
+  //async means this function will wait for something that takes time. This is because fetch with the url takes time.
   {
-    console.log(anime)
+    const animeName = encodeURIComponent(anime) //Changes "One Piece" to "One%20Piece" in actual url, since url does not like spaces
+    const url = "http://localhost:8000/recommendations/" + animeName
+    const response = await fetch(url)   // await means pause this function until results come back, literally wait for results. 
+    // here FastAPI is listening on port 8000, so it receives the request. App.jsx does not access backend files directly. 
+    // App.jsx sends an HTTP request to the backend server. When React uses fetch, React is asking FastAPI for data automatically.
+    const data = await response.json()
+    setRecommendations(data)
+    console.log(data)
+
   }
 
   return (    // return sends the JSX back to the browser
@@ -98,6 +108,7 @@ User sees webpage*/
         <input 
           value = {anime}
           onChange = {(event) => setAnime(event.target.value)}
+          /*onChange changes the value of anime for each keystroke as it's entered, not when the button Get Recommendations is clicked. Anime is already change to new value by then*/
         />
 
         {/*Anime is {anime} this shows the state update if needed*/}
@@ -106,7 +117,7 @@ User sees webpage*/
         <button
         /*this should get recommendations*/
           type="button"
-          onClick = {handleGetRecommendations}
+          onClick = {handleGetRecommendations}  //when the user clicks Get Recommendations, it calls this function
         >
           Get Recommendations
         </button>

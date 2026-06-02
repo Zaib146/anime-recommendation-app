@@ -2,10 +2,20 @@
 
 from fastapi import FastAPI     # needed for backend setup
 from phase1_script import get_recommendation
-
+from fastapi.middleware.cors import CORSMiddleware  # Go into FastAPI's CORS module and import the tool that handles cross-origin requests. importing a security guard
+# the middleware decides allow or block
 # create app object
 # this creates my backend server, we're creating an application object here. This "app" becomes my server, my API, my backend. Everything attaches to this object
 app = FastAPI()
+
+app.add_middleware( # Hey FastAPI, before any requests reach my routes, run them through the CORS security guard.
+
+    CORSMiddleware,
+    allow_origins = ["http://localhost:5173"],  # only allow requests from here
+    allow_credentials = True,   # allows credentials (login information) if I ever need it
+    allow_methods = ["*"],      # allows all request types - get, post, put, delete - this is needed since I use @app.get
+    allow_headers = ["*"]       # allows all headers - header is extra information attached to a request
+)
 
 # if this url is called, run the get_recommendation function
 # this says to associate this url with this function called recommendations_endpoint
