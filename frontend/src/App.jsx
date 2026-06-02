@@ -41,7 +41,35 @@ return (...)
 onClick={() => setCount(...)}
 export default App */
 
-function App() {    // this line creates a React component named App
+function App() {    // this line creates a React component named App. 
+  /*The App() function is basically saying:
+
+When React asks what should appear on the page,
+return this JSX.
+
+Right now it returns:
+
+Get Started
+Count is 0
+Documentation
+
+Later it will return:
+
+Anime Recommendation App
+Input box
+Button
+Recommendations
+
+The important mental model is:
+
+App.jsx
+     ↓
+returns JSX
+     ↓
+React renders JSX
+     ↓
+User sees webpage*/
+
   //Component is a reuasable UI function. It returns what should appear on the page
   const [count, setCount] = useState(0)   //this creates state. count = current value, setCount = function used to change the value, 0 = starting value
 
@@ -70,7 +98,7 @@ function App() {    // this line creates a React component named App
           {/* this creates a button. which clicked, setCount((count) => count + 1), then React increases count by 1. 
           Then Count is {count} updates automatically*/}
         </button>
-      </section>
+      </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
       {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
       <div className="ticks"></div>
 
