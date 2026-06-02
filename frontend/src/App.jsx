@@ -71,7 +71,9 @@ React renders JSX
 User sees webpage*/
 
   //Component is a reuasable UI function. It returns what should appear on the page
-  const [count, setCount] = useState(0)   //this creates state. count = current value, setCount = function used to change the value, 0 = starting value
+  const [anime, setAnime] = useState("")   
+  //this creates state. Original - count = current value, setCount = function used to change the value, 0 = starting value
+  //now, anime is current value for anime. setAnime is the value anime will be updated to. "" is the starting value for anime
 
   return (    // return sends the JSX back to the browser
     <>    {/*This is a React Fragment. It lets you return multiple elements without wrapping everything in an extra <div></div>*/}
@@ -83,20 +85,24 @@ User sees webpage*/
           <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
         <div>
-          <h1>Get started</h1>  {/* this displays the big title*/}
+          <h1>Anime Recommendation App</h1>  {/* this displays the big title*/}
           <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>   {/*This displays the starter instruction text. 
+            What is your favorite anime?   {/*This displays the starter instruction text. 
             <code> just styles text like code.*/}
           </p>
+        <input 
+          value = {anime}
+          onChange = {(event) => setAnime(event.target.value)}
+        />
+
+        Anime is {anime}
+
         </div>
         <button
+        /*this should get recommendations*/
           type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
         >
-          Count is {count}
-          {/* this creates a button. which clicked, setCount((count) => count + 1), then React increases count by 1. 
-          Then Count is {count} updates automatically*/}
+          Get Recommendations
         </button>
       </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
       {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
