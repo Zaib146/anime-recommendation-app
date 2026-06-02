@@ -4,7 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 //this imports the CSS styling for this component
-import './App.css'
+import './App.css' 
 
 //to start frontend in terminal, get to frontend folder if need (cd frontend). Then type "npm run dev"
 
@@ -41,7 +41,7 @@ return (...)
 onClick={() => setCount(...)}
 export default App */
 
-function App() {    // this line creats a React component named App
+function App() {    // this line creates a React component named App
   //Component is a reuasable UI function. It returns what should appear on the page
   const [count, setCount] = useState(0)   //this creates state. count = current value, setCount = function used to change the value, 0 = starting value
 
