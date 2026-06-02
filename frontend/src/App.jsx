@@ -75,6 +75,11 @@ User sees webpage*/
   //this creates state. Original - count = current value, setCount = function used to change the value, 0 = starting value
   //now, anime is current value for anime. setAnime is the value anime will be updated to. "" is the starting value for anime
 
+  function handleGetRecommendations()
+  {
+    console.log(anime)
+  }
+
   return (    // return sends the JSX back to the browser
     <>    {/*This is a React Fragment. It lets you return multiple elements without wrapping everything in an extra <div></div>*/}
       <section id="center">   {/* This creates a page section. The id="center" connects to CSS styling */}
@@ -95,12 +100,13 @@ User sees webpage*/
           onChange = {(event) => setAnime(event.target.value)}
         />
 
-        Anime is {anime}
+        {/*Anime is {anime} this shows the state update if needed*/}
 
         </div>
         <button
         /*this should get recommendations*/
           type="button"
+          onClick = {handleGetRecommendations}
         >
           Get Recommendations
         </button>
