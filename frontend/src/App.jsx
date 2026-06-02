@@ -121,6 +121,10 @@ User sees webpage*/
         >
           Get Recommendations
         </button>
+
+        <p>Title: {recommendations[1]?.title}</p>   {/*experimenting with this line to see if React can render the information onto the page.
+        Right now, information shows in console tab of F12, which is good.*/}
+
       </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
       {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
       <div className="ticks"></div>
