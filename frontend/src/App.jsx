@@ -6,6 +6,8 @@ import heroImg from './assets/hero.png'
 //this imports the CSS styling for this component
 import './App.css'
 
+//to start frontend in terminal, get to frontend folder if need (cd frontend). Then type "npm run dev"
+
 //this file is the main React component. this file controls what you actually see on the page, the actual app UI
 /* Browser opens index.html
         ↓
