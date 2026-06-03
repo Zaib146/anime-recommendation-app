@@ -67,7 +67,7 @@ def get_recommendation(anime_name):
     # index increments through how many items are in anime list
     
     for anime in anime_list:
-        item = {"title ": anime['title'], "genres": anime['genres'], "synopsis ": anime['synopsis'], "images: ": anime['images']['jpg']['image_url']}
+        item = {"title": anime['title'], "genres": anime['genres'], "synopsis": anime['synopsis'], "images:": anime['images']['jpg']['image_url']}
         
         results.append(item)
           

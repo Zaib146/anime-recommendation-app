@@ -128,6 +128,8 @@ User sees webpage*/
           {recommendations[0]?.["similar anime"].map((animeTitle) => (<li>{animeTitle}</li>))}
         </ul>
 
+        <p>Title: {recommendations[1].title}</p> 
+
       </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
       {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
       <div className="ticks"></div>
