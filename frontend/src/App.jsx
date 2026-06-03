@@ -6,7 +6,7 @@ import heroImg from './assets/hero.png'
 //this imports the CSS styling for this component
 import './App.css' 
 
-//to start frontend in terminal, get to frontend folder if need (cd frontend). Then type "npm run dev"
+//to start frontend in terminal, get to frontend folder if needed (cd frontend). Then type "npm run dev"
 
 //this file is the main React component. this file controls what you actually see on the page, the actual app UI
 /* Browser opens index.html
@@ -73,7 +73,7 @@ User sees webpage*/
   //Component is a reuasable UI function. It returns what should appear on the page
   const [anime, setAnime] = useState("")   
   //this creates state. Original - count = current value, setCount = function used to change the value, 0 = starting value
-  //now, anime is current value for anime. setAnime is the value anime will be updated to. "" is the starting value for anime
+  //now, anime is current value for anime. setAnime is the value anime will be updated to. "" is the starting value for anime. same logic for line below
   const [recommendations, setRecommendations] = useState([])
 
   async function handleGetRecommendations() 
@@ -93,7 +93,7 @@ User sees webpage*/
   return (    // return sends the JSX back to the browser
     <>    {/*This is a React Fragment. It lets you return multiple elements without wrapping everything in an extra <div></div>*/}
       <section id="center">   {/* This creates a page section. The id="center" connects to CSS styling */}
-        <div className="hero">  {/* n React, we use className instead of HTML’s class. This connects the div to CSS styles named .hero*/}
+        <div className="hero">  {/* in React, we use className instead of HTML’s class. This connects the div to CSS styles named .hero*/}
           {/* these 3 lines display the imported images. The {heroImg} syntax means: “use the JavaScript variable named heroImg*/}
           <img src={heroImg} className="base" width="170" height="179" alt="" />
           <img src={reactLogo} className="framework" alt="React logo" />
@@ -102,8 +102,7 @@ User sees webpage*/
         <div>
           <h1>Anime Recommendation App</h1>  {/* this displays the big title*/}
           <p>
-            What is your favorite anime?   {/*This displays the starter instruction text. 
-            <code> just styles text like code.*/}
+            What is your favorite anime?   {/*This displays the starter instruction text. <code> just styles text like code.*/}
           </p>
         <input 
           value = {anime}
