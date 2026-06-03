@@ -123,12 +123,19 @@ User sees webpage*/
         </button>
 
         <p>Similar Anime: </p>   
-
+        {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
+        so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
+        undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF it exists, get .title. Else, return undefined*/}
         <ul>
-          {recommendations[0]?.["similar anime"].map((animeTitle) => (<li>{animeTitle}</li>))}
+          {recommendations[0]?.["similar anime"]?.map((animeTitle) => (<li>{animeTitle}</li>))}
         </ul>
 
-        <p>Title: {recommendations[1].title}</p> 
+        <p>Title: {recommendations[1]?.title}</p> 
+
+        <p>Genres: </p>
+        <ul>
+          {recommendations[1]?.genres?.map((genre) => (<li>{genre.name}</li>))}
+        </ul>
 
       </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
       {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
