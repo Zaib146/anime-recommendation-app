@@ -137,6 +137,11 @@ User sees webpage*/
           {recommendations[1]?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
         </ul>
 
+        <p>Synopsis: </p>
+        <p>
+          {recommendations[1]?.synopsis}
+        </p>
+
       </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
           {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
           <div className="ticks"></div>
