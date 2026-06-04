@@ -86,7 +86,7 @@ User sees webpage*/
     // App.jsx sends an HTTP request to the backend server. When React uses fetch, React is asking FastAPI for data automatically.
     const data = await response.json()    //parse json data into python data, store that in "data"
     setRecommendations(data)      // change recommendations to value in data variable
-    console.log(data)   // this is to print in console tab in F12 to test. will remove later
+    console.log(recommendations)   // this is to print in console tab in F12 to test. will remove later
 
   }
 
@@ -141,6 +141,16 @@ User sees webpage*/
         <p>
           {recommendations[1]?.synopsis}
         </p>
+
+        <p>Images: </p>
+        
+        <img
+          src = {recommendations[1]?.images}
+          alt = {recommendations[1]?.title}
+        />
+          
+          
+      
 
       </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
           {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
