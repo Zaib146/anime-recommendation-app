@@ -104,7 +104,7 @@ User sees webpage*/
           <p>
             What is your favorite anime?   {/*This displays the starter instruction text. <code> just styles text like code.*/}
           </p>
-        <input 
+        <input    // <input> lets the user type or enter data
           value = {anime}
           onChange = {(event) => setAnime(event.target.value)}
           /*onChange changes the value of anime for each keystroke as it's entered, not when the button Get Recommendations is clicked. 
@@ -114,7 +114,7 @@ User sees webpage*/
         {/*Anime is {anime} - this shows the state update if needed*/}
 
         </div>
-        <button
+        <button   // <button> lets the user click something
         /*this should get recommendations*/
           type="button"
           onClick = {handleGetRecommendations}  //when the user clicks Get Recommendations, it calls this function
