@@ -4,7 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 //this imports the CSS styling for this component
-import './App.css' 
+import './App.css'
 
 //to start frontend in terminal, get to frontend folder if needed (cd frontend). Then type "npm run dev"
 
@@ -71,12 +71,12 @@ React renders JSX
 User sees webpage*/
 
   //Component is a reuasable UI function. It returns what should appear on the page
-  const [anime, setAnime] = useState("")   
+  const [anime, setAnime] = useState("")
   //this creates state. Original - count = current value, setCount = function used to change the value, 0 = starting value
   //now, anime is current value for anime. setAnime is the value anime will be updated to. "" is the starting value for anime. same logic for line below
   const [recommendations, setRecommendations] = useState([])
 
-  async function handleGetRecommendations() 
+  async function handleGetRecommendations()
   //async means this function will wait for something that takes time. This is because fetch with the url takes time.
   {
     const animeName = encodeURIComponent(anime) //Changes "One Piece" to "One%20Piece" in actual url, since url does not like spaces
@@ -90,7 +90,7 @@ User sees webpage*/
 
   }
 
-  return (    // return sends the JSX back to the browser
+  return (   // return sends the JSX back to the browser
     <>    {/*This is a React Fragment. It lets you return multiple elements without wrapping everything in an extra <div></div>*/}
       <section id="center">   {/* This creates a page section. The id="center" connects to CSS styling */}
         <div className="hero">  {/* in React, we use className instead of HTML’s class. This connects the div to CSS styles named .hero*/}
@@ -104,25 +104,25 @@ User sees webpage*/
           <p>
             What is your favorite anime?   {/*This displays the starter instruction text. <code> just styles text like code.*/}
           </p>
-        <input    // <input> lets the user type or enter data
-          value = {anime}
-          onChange = {(event) => setAnime(event.target.value)}
+          <input    // <input> lets the user type or enter data
+            value={anime}
+            onChange={(event) => setAnime(event.target.value)}
           /*onChange changes the value of anime for each keystroke as it's entered, not when the button Get Recommendations is clicked. 
           Anime variable is already change to new value by then*/
-        />
+          />
 
-        {/*Anime is {anime} - this shows the state update if needed*/}
+          {/*Anime is {anime} - this shows the state update if needed*/}
 
         </div>
         <button   // <button> lets the user click something
-        /*this should get recommendations*/
+          /*this should get recommendations*/
           type="button"
-          onClick = {handleGetRecommendations}  //when the user clicks Get Recommendations, it calls this function
+          onClick={handleGetRecommendations}  //when the user clicks Get Recommendations, it calls this function
         >
           Get Recommendations
         </button>
 
-        <p>Similar Anime: </p>   
+        <p>Similar Anime: </p>
         {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
         so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
         undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF it exists, get .title. Else, return undefined*/}
@@ -130,103 +130,103 @@ User sees webpage*/
           {recommendations[0]?.["similar anime"]?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */}
         </ul>
 
-        <p>Title: {recommendations[1]?.title}</p> 
+        <p>Title: {recommendations[1]?.title}</p>
 
         <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
         <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-          {recommendations[1]?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul>}
+          {recommendations[1]?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
         </ul>
 
       </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
-      {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
-      <div className="ticks"></div>
+          {/*everything below is just Vite starter content: links, icons, and layout. most of it will be deleted later*/}
+          <div className="ticks"></div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+          <section id="next-steps">
+            <div id="docs">
+              <svg className="icon" role="presentation" aria-hidden="true">
+                <use href="/icons.svg#documentation-icon"></use>
+              </svg>
+              <h2>Documentation</h2>
+              <p>Your questions, answered</p>
+              <ul>
+                <li>
+                  <a href="https://vite.dev/" target="_blank">
+                    <img className="logo" src={viteLogo} alt="" />
+                    Explore Vite
+                  </a>
+                </li>
+                <li>
+                  <a href="https://react.dev/" target="_blank">
+                    <img className="button-icon" src={reactLogo} alt="" />
+                    Learn more
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div id="social">
+              <svg className="icon" role="presentation" aria-hidden="true">
+                <use href="/icons.svg#social-icon"></use>
+              </svg>
+              <h2>Connect with us</h2>
+              <p>Join the Vite community</p>
+              <ul>
+                <li>
+                  <a href="https://github.com/vitejs/vite" target="_blank">
+                    <svg
+                      className="button-icon"
+                      role="presentation"
+                      aria-hidden="true"
+                    >
+                      <use href="/icons.svg#github-icon"></use>
+                    </svg>
+                    GitHub
+                  </a>
+                </li>
+                <li>
+                  <a href="https://chat.vite.dev/" target="_blank">
+                    <svg
+                      className="button-icon"
+                      role="presentation"
+                      aria-hidden="true"
+                    >
+                      <use href="/icons.svg#discord-icon"></use>
+                    </svg>
+                    Discord
+                  </a>
+                </li>
+                <li>
+                  <a href="https://x.com/vite_js" target="_blank">
+                    <svg
+                      className="button-icon"
+                      role="presentation"
+                      aria-hidden="true"
+                    >
+                      <use href="/icons.svg#x-icon"></use>
+                    </svg>
+                    X.com
+                  </a>
+                </li>
+                <li>
+                  <a href="https://bsky.app/profile/vite.dev" target="_blank">
+                    <svg
+                      className="button-icon"
+                      role="presentation"
+                      aria-hidden="true"
+                    >
+                      <use href="/icons.svg#bluesky-icon"></use>
+                    </svg>
+                    Bluesky
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+          <div className="ticks"></div>
+          <section id="spacer"></section>
+        </>
+        );
 }
 
-// this line allows main.jsx to import this component when it does import App from './App.jsx' in main.jsx
-export default App
+        // this line allows main.jsx to import this component when it does import App from './App.jsx' in main.jsx
+        export default App
