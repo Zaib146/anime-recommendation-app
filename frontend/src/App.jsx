@@ -130,24 +130,41 @@ User sees webpage*/
           {recommendations[0]?.["similar anime"]?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */}
         </ul>
 
-        <p>Title: {recommendations[1]?.title}</p>
+        {/*this recommendations.slice(1).map((anime) => is saying at index of 1 of recommendations onwards, loop through it (using map). (anime) represents the anime at that specific index each loop iteration}
+        recommendations.slice(1).map((anime) => {
+          console.log(anime.title)
+          
+        is the same as:
 
-        <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
-        <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-          {recommendations[1]?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
-        </ul>
+        for anime in recommendations[1:]:
+          print(anime["title"])
 
-        <p>Synopsis: </p>
-        <p>
-          {recommendations[1]?.synopsis}
-        </p>
-
-        <p>Images: </p>
+        in Python*/}
         
-        <img
-          src = {recommendations[1]?.images}
-          alt = {recommendations[1]?.title}
-        />
+        {recommendations.slice(1).map((anime) => (  
+          <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
+            <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
+
+            <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
+            <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+              {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
+            </ul>
+
+            <p>Synopsis: </p>
+            <p>
+              {anime?.synopsis}
+            </p>
+
+            <p>Images: </p>
+        
+            <img
+              src = {anime?.images}
+              alt = {anime?.title}
+            />
+          </div>
+        ))}
+
+        
           
           
       
