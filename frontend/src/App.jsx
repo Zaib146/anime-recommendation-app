@@ -127,14 +127,14 @@ User sees webpage*/
         so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
         undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF it exists, get .title. Else, return undefined*/}
         <ul>
-          {recommendations[0]?.["similar anime"]?.map((animeTitle) => (<li>{animeTitle}</li>))}
+          {recommendations[0]?.["similar anime"]?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */}
         </ul>
 
         <p>Title: {recommendations[1]?.title}</p> 
 
-        <p>Genres: </p>
-        <ul>
-          {recommendations[1]?.genres?.map((genre) => (<li>{genre.name}</li>))}
+        <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
+        <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+          {recommendations[1]?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul>}
         </ul>
 
       </section>  {/* this marks the end of the section that starts with section id="center". This is the section that will be edited.*/}
