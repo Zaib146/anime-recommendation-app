@@ -7,15 +7,47 @@ conn = sqlite3.connect("anime_app.db")      # conn is now the open connection to
 cursor = conn.cursor()      # .cursor() is asking the conn connection to "Give me a cursor so I can send commands to the database". 
                             # that cursor is then stored in the variable cursor, since we'll use it repeatedly
                             
-cursor.execute("""
-                CREATE TABLE IF NOT EXISTS watchlist (
-                    id INTEGER PRIMARY KEY,
+# .execute says to run the SQL command inside the (). Code inside the () is SQL, NOT Python. SQLite can only understand SQL code, not Python                            
+cursor.execute("""     
+                CREATE TABLE IF NOT EXISTS watchlist ( 
+                    -- id is column name, INTEGER is data type, PRIMARY KEY uniquely identifies each row (actual values stored in this column). SQLite uses this as the rows identity. Row ids do not repeat 
+                    id INTEGER PRIMARY KEY, 
+                    
+                    -- anime_id = Jikan mal_id, UNIQUE mean no duplicate values allowed. Prevents user from saving Naruto (example) multiple times
                     anime_id INTEGER UNIQUE,
+                    
+                    -- column name, saved as text
                     title TEXT,
+                    
                     image_url TEXT,
+                    
                     synopsis TEXT,
+                    
+                    -- actual data for genres is a Python list, but later we'll convert it to text and store it as text. Since SQLite does not understand Python lists
                     genres TEXT,
+                    
+                    -- same idea with genres, it's actually a Python list originally
                     similar_anime TEXT
                 )
                """
                )
+
+# watchlist table
+
+# ┌───────────────────────────────────────┐
+# │ id            INTEGER PRIMARY KEY     │
+# │ anime_id      INTEGER UNIQUE          │
+# │ title         TEXT                    │
+# │ image_url     TEXT                    │
+# │ synopsis      TEXT                    │
+# │ genres        TEXT                    │
+# │ similar_anime TEXT                    │
+# └───────────────────────────────────────┘
+
+# This shows what is a column and what's a row. id, anime_id, title, image_url, synopsis, genres, similar_anime are all columns in the watchlist table. Rows are the actual records stored in the table
+# Each row shows all the information for that specific anime
+# | id | anime_id | title           |
+# | -- | -------- | --------------- |
+# | 1  | 20       | Naruto          |
+# | 2  | 21       | One Piece       |
+# | 3  | 16498    | Attack on Titan |
