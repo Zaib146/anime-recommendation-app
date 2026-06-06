@@ -100,17 +100,21 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         similar_anime
     )
     
-    -- these are the values that will be filled in the columns. We use "?" as placeholder values, since Naruto values will be different Bleach, etc
-    VALUES (
-        ?,
-        ?,
-        ?,
-        ?,
-        ?,
-        ?
+    -- We use "?" as placeholder values, since Naruto values will be different Bleach, etc
+    VALUES (?, ?, ?, ?, ?, ?)
+    """,
+    
+    # these are the actual values that will fill in the placeholder ?. This is a tuple. Python provides these values, SQLite combines them with the placeholder values
+    (
+        anime.anime_id,
+        anime.title,
+        anime.image_url,
+        anime.synopsis,
+        anime.genres,
+        anime.similar_anime
     )
-""")
+
     
     conn.commit()
     conn.close()
-    
+)
