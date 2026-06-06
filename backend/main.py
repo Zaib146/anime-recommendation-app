@@ -70,3 +70,6 @@ def recommendations_endpoint(anime_name):
 # or this: "http://127.0.0.1:8000/recommendations/naruto". Can copy the link showed at beginning of terminal, then add the search endpoint and query myself. endpoint is recommendation, query is naruto
 
 
+@app.post("/watchlist")
+def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the parameter anime is of type Anime
+    
