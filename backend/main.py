@@ -76,3 +76,24 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     # this endpoint receives an anime object
     genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
     similar_anime_text = json.dumps(anime.similar_anime)    # same idea as genres_text
+    
+    # SQL code, not Python here
+    # this INSERT INTO statement means these are the 6 columns I'll be filling with values
+    INSERT INTO watchlist (
+        anime_id,
+        title,
+        image_url,
+        synopsis,
+        genres,
+        similar_anime
+    )
+    
+    # these are the values that will be filled in the columns. We use "?" as placeholder values, since Naruto values will be different Bleach, etc
+    VALUES (
+        ?,
+        ?,
+        ?,
+        ?,
+        ?,
+        ?
+    )

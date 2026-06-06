@@ -7,7 +7,8 @@ conn = sqlite3.connect("backend/anime_app.db")      # conn is now the open conne
 cursor = conn.cursor()      # .cursor() is asking the conn connection to "Give me a cursor so I can send commands to the database". 
                             # that cursor is then stored in the variable cursor, since we'll use it repeatedly
                             
-# .execute says to run the SQL command inside the (). Code inside the () is SQL, NOT Python. SQLite can only understand SQL code, not Python                            
+# .execute says to run the SQL command inside the (). The code in () is a SQL command, but it's inside """, so that makes the command a Python string, since it's a python file. SQLite can only understand SQL commands, not Python code.
+# cursor.execute() then sends the SQL command (inside a Python string), to SQLite                            
 cursor.execute("""     
                 CREATE TABLE IF NOT EXISTS watchlist ( 
                     -- IF NOT EXISTS avoid create duplicate tables
