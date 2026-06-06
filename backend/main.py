@@ -24,6 +24,7 @@ from pydantic import BaseModel
 #     anime_id=20,
 #     title="Naruto"
 # )
+import json     # gives us access to JSON functions
 
 class Anime(BaseModel):     # class Anime inherits from Base Model. Like how class Cat extends Animal in Java
     # this does not save anything yet. this tells FastAPI that when someone send anime data to my backend, this is the shape I expect, the object.
@@ -73,5 +74,5 @@ def recommendations_endpoint(anime_name):
 @app.post("/watchlist")
 def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the parameter anime is of type Anime, which is an object
     # this endpoint receives an anime object
-    print(anime.title)
-    return "received"
+    genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
+    similar_anime_text = json.dumps(anime.similar_anime)    # same idea as genres_text
