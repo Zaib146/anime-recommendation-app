@@ -77,8 +77,12 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
     similar_anime_text = json.dumps(anime.similar_anime)    # same idea as genres_text
     
-    # SQL code, not Python here
-    # this INSERT INTO statement means these are the 6 columns I'll be filling with values
+    # .execute says to run the SQL command inside the (). The code in () is a SQL command, but it's inside """, so that makes the command a Python string, since it's a python file. SQLite can only understand SQL commands, not Python code.
+    # cursor.execute() then sends the SQL command (inside a Python string), to SQLite  
+    
+    cursor.execute("""
+    -- SQL command inside a Python string here.
+    -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
     INSERT INTO watchlist (
         anime_id,
         title,
@@ -88,7 +92,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         similar_anime
     )
     
-    # these are the values that will be filled in the columns. We use "?" as placeholder values, since Naruto values will be different Bleach, etc
+    -- these are the values that will be filled in the columns. We use "?" as placeholder values, since Naruto values will be different Bleach, etc
     VALUES (
         ?,
         ?,
@@ -97,3 +101,5 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         ?,
         ?
     )
+""")
+    
