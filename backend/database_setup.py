@@ -58,4 +58,4 @@ cursor.execute("""
 # commit() tells SQLite to save those changes permanently
 
 conn.commit()  
-conn.close()        # done using the database, close the connection. Like closing a file after savin git
+conn.close()        # done using the database, close the connection. Like closing a file after saving it

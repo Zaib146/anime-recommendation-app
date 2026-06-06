@@ -25,6 +25,7 @@ from pydantic import BaseModel
 #     title="Naruto"
 # )
 import json     # gives us access to JSON functions
+import sqlite3  # Python can now talk to SQLite
 
 class Anime(BaseModel):     # class Anime inherits from Base Model. Like how class Cat extends Animal in Java
     # this does not save anything yet. this tells FastAPI that when someone send anime data to my backend, this is the shape I expect, the object.
@@ -74,8 +75,15 @@ def recommendations_endpoint(anime_name):
 @app.post("/watchlist")
 def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the parameter anime is of type Anime, which is an object
     # this endpoint receives an anime object
+    
     genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
     similar_anime_text = json.dumps(anime.similar_anime)    # same idea as genres_text
+    
+    conn = sqlite3.connect("backend/anime_app.db")      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
+                                                        # conn is now the open connection to my database. we use conn later to refer to that same database connection. conn is an open database file
+                                                        
+    cursor = conn.cursor()  # .cursor() is asking the conn connection to "Give me a cursor so I can send commands to the database". 
+                            # that cursor is then stored in the variable cursor, since we'll use it repeatedly
     
     # .execute says to run the SQL command inside the (). The code in () is a SQL command, but it's inside """, so that makes the command a Python string, since it's a python file. SQLite can only understand SQL commands, not Python code.
     # cursor.execute() then sends the SQL command (inside a Python string), to SQLite  
@@ -102,4 +110,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         ?
     )
 """)
+    
+    conn.commit()
+    conn.close()
     
