@@ -110,11 +110,12 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         anime.title,
         anime.image_url,
         anime.synopsis,
-        anime.genres,
-        anime.similar_anime
+        anime.genres_text,
+        anime.similar_anime_text
     )
-
+    )
     
     conn.commit()
     conn.close()
-)
+    
+    return {"message": "Anime saved to watchlist"}
