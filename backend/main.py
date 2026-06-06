@@ -4,6 +4,36 @@ from fastapi import FastAPI     # needed for backend setup
 from phase1_script import get_recommendation
 from fastapi.middleware.cors import CORSMiddleware  # Go into FastAPI's CORS module and import the tool that handles cross-origin requests. importing a security guard
 # the middleware decides allow or block
+from pydantic import BaseModel
+#   BaseModel = a class that knows how to:
+# - validate data
+# - convert JSON into Python objects
+# - generate API documentation
+# - enforce data types
+
+# Suppose React sends:
+
+# {
+#   "anime_id": 20,
+#   "title": "Naruto"
+# }
+
+# FastAPI can automatically create:
+
+# anime = Anime(
+#     anime_id=20,
+#     title="Naruto"
+# )
+
+class Anime(BaseModel):     # class Anime inherits from Base Model. Like how class Cat extends Animal in Java
+    # this does not save anything yet. this tells FastAPI that when someone send anime data to my backend, this is the shape I expect, the object.
+    # this gives me a clean anime object that i can then INSERT INTO watchlist table (inside my post function)
+    anime_id: int       # must be a number
+    title: str          # must be a text
+    image_url: str
+    synopsis: str
+    genres: list        # must be a list
+    similar_anime: list
 
 # create app object
 # this creates my backend server, we're creating an application object here. This "app" becomes my server, my API, my backend. Everything attaches to this object

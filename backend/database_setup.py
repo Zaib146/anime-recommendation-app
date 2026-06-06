@@ -1,6 +1,6 @@
 import sqlite3  # Python can now talk to SQLite
 
-conn = sqlite3.connect("anime_app.db")      # conn is now the open connection to my database. we use conn later to refer to that same database connection. 
+conn = sqlite3.connect("backend/anime_app.db")      # conn is now the open connection to my database. we use conn later to refer to that same database connection. 
                                             # conn is an open database file. sqlite3.connect("anime_app.db") checks if the file "anime_app.db" exists.
                                             # if it does not, it then creates it (so I do not need to manually create it)
 
@@ -10,6 +10,7 @@ cursor = conn.cursor()      # .cursor() is asking the conn connection to "Give m
 # .execute says to run the SQL command inside the (). Code inside the () is SQL, NOT Python. SQLite can only understand SQL code, not Python                            
 cursor.execute("""     
                 CREATE TABLE IF NOT EXISTS watchlist ( 
+                    -- IF NOT EXISTS avoid create duplicate tables
                     -- id is column name, INTEGER is data type, PRIMARY KEY uniquely identifies each row (actual values stored in this column). SQLite uses this as the rows identity. Row ids do not repeat 
                     id INTEGER PRIMARY KEY, 
                     
@@ -51,3 +52,9 @@ cursor.execute("""
 # | 1  | 20       | Naruto          |
 # | 2  | 21       | One Piece       |
 # | 3  | 16498    | Attack on Titan |
+
+# execute() tells SQLite what changes you want
+# commit() tells SQLite to save those changes permanently
+
+conn.commit()  
+conn.close()        # done using the database, close the connection. Like closing a file after savin git
