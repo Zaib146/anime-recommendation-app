@@ -55,7 +55,7 @@ cursor.execute("""
 # | 3  | 16498    | Attack on Titan |
 
 # execute() tells SQLite what changes you want
-# commit() tells SQLite to save those changes permanently
 
-conn.commit()  
+
+conn.commit()       # commit() tells SQLite to save those changes permanently
 conn.close()        # done using the database, close the connection. Like closing a file after saving it

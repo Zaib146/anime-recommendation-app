@@ -116,12 +116,14 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         )
         )
     
-        conn.commit()
+        conn.commit()       # commit() tells SQLite to save those changes permanently
         
         return {"message": "Anime saved to watchlist"}
     
-    except sqlite3.IntegrityError:
+    except sqlite3.IntegrityError:      # Prevents saving duplicate anime. prevents multiple anime with the same title (therefore have the same anime_id) to be entered in the table. 
+        # sqlite3.IntegrityError - "The database refused the operation because it would violate one of the table's rules (constraints)." Here SQLite raises this error because the UNIQUE constraint in anime_id INTEGER UNIQUE 
+        # would be violated
         return {"message": "Anime already in watchlist"}
     
     finally:
-        conn.close()    # this will run no matter what
+        conn.close()    # this will run no matter what. done using the database, close the connection. Like closing a file after saving it
