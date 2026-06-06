@@ -71,5 +71,7 @@ def recommendations_endpoint(anime_name):
 
 
 @app.post("/watchlist")
-def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the parameter anime is of type Anime
-    
+def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the parameter anime is of type Anime, which is an object
+    # this endpoint receives an anime object
+    print(anime.title)
+    return "received"
