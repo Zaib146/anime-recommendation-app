@@ -84,13 +84,35 @@ User sees webpage*/
 
   }
 
+  // this request is a POST request. Without this line, fetch() defaults to method: "GET", which would not match my FastAPI endpoint of @app.post("/watchlist") 
   async function handleSaveToWatchlist(anime)   // the parameter is the specific anime from the .map() loop. Here we are saving that specific anime to the watchlist
   {
+    console.log("Saving anime:", anime)
     const url = "http://localhost:8000/watchlist"   // we do not add parameter anime to url since this is a POST request. The anime data travels in the request body
-    const response = await fetch(url)
+    const response = await fetch(url, 
+      {
+        method: "POST",     
+        headers:
+        {
+          "Content-Type": "application/json"  // this means that the data I'm sending is JSON. This helps FastAPI know how to interpret the request body
+        },
+        body: JSON.stringify(anime)       //take the JavaScript object called anime and convert it into JSON text so it can travel across the network
+        //  for example, if
+        //    anime = {
+        //       anime_id: 20,
+        //       title: "Naruto"}
+            
+        //     then it becomes
+        //     {
+        //       "anime_id": 20,
+        //       "title": "Naruto"} 
+      })
+    const data = await response.json()
+    console.log(data)
   }
 
   return (   // return sends the JSX back to the browser
+            // inside the return use, {/* */} for comments, it's safer. outside of return, use //
     <>    {/*This is a React Fragment. It lets you return multiple elements without wrapping everything in an extra <div></div>*/}
       <section id="center">   {/* This creates a page section. The id="center" connects to CSS styling */}
         <div className="hero">  {/* in React, we use className instead of HTML’s class. This connects the div to CSS styles named .hero*/}
@@ -116,12 +138,14 @@ User sees webpage*/
 
         </div>
         {/* <button> lets the user click something*/}
+
+        {/*when the user clicks Get Recommendations, it calls this function. Since there's no argument, it can 
+          safely be called only when clicked, since we're giving React the function itself. If it was instead onClick={handleGetRecommendations()},
+          it would run without being click on*/}
         <button   
           /*this should get recommendations*/
           type="button"
-          onClick={handleGetRecommendations}  {/*when the user clicks Get Recommendations, it calls this function. Since there's no argument, it can 
-          safely be called only when clicked, since we're giving React the function itself. If it was instead onClick={handleGetRecommendations()},
-          it would run without being click on*/}
+          onClick={handleGetRecommendations}  
         >
           Get Recommendations
         </button>
@@ -149,14 +173,15 @@ User sees webpage*/
           <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
             <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
 
-            <button
-              type = "button"
-              onClick = {() => handleSaveToWatchlist(anime)}  {/*since we are passing an argument, we need the () =>, otherwise the function would run
+            {/*since we are passing an argument, we need the () =>, otherwise the function would run
                 automatically. We only want the function to run when clicked. So () => creates a function that has the function handleSaveToWatchlist(anime)
                 , which is only called when button is click. "Create a function, but do not run it yet".
                 function() {
                 handleSaveToWatchlist(anime)
-                }}
+                }*/}
+            <button
+              type = "button"
+              onClick = {() => handleSaveToWatchlist(anime)}  
             >
               Save to Watchlist
             </button>  
