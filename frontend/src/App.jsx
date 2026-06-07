@@ -84,7 +84,7 @@ User sees webpage*/
 
   }
 
-  async function handleSaveToWatchlist(anime)   // the parameter is the specific anime from the .map() loop
+  async function handleSaveToWatchlist(anime)   // the parameter is the specific anime from the .map() loop. Here we are saving that specific anime to the watchlist
   {
     const url = "http://localhost:8000/watchlist"   // we do not add parameter anime to url since this is a POST request. The anime data travels in the request body
     const response = await fetch(url)
@@ -119,7 +119,9 @@ User sees webpage*/
         <button   
           /*this should get recommendations*/
           type="button"
-          onClick={handleGetRecommendations}  //when the user clicks Get Recommendations, it calls this function
+          onClick={handleGetRecommendations}  {/*when the user clicks Get Recommendations, it calls this function. Since there's no argument, it can 
+          safely be called only when clicked, since we're giving React the function itself. If it was instead onClick={handleGetRecommendations()},
+          it would run without being click on*/}
         >
           Get Recommendations
         </button>
@@ -149,7 +151,12 @@ User sees webpage*/
 
             <button
               type = "button"
-              onClick = 
+              onClick = {() => handleSaveToWatchlist(anime)}  {/*since we are passing an argument, we need the () =>, otherwise the function would run
+                automatically. We only want the function to run when clicked. So () => creates a function that has the function handleSaveToWatchlist(anime)
+                , which is only called when button is click. "Create a function, but do not run it yet".
+                function() {
+                handleSaveToWatchlist(anime)
+                }}
             >
               Save to Watchlist
             </button>  
