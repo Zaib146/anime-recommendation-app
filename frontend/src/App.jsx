@@ -91,7 +91,7 @@ User sees webpage*/
                             // matches what FastAPI expects. this is a Pydantic model for the specific anime passed. Each loop iteration, we'll have a new one 
       anime_id: anime.anime_id,
       title: anime.title,
-      image_url: anime.image_url,
+      image_url: anime.images,
       synopsis: anime.synopsis,
       genres: anime.genres,
       similar_anime: recommendations[0]?.["similar anime"]
