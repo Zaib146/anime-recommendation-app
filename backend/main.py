@@ -27,7 +27,8 @@ from pydantic import BaseModel
 import json     # gives us access to JSON functions
 import sqlite3  # Python can now talk to SQLite
 
-class Anime(BaseModel):     # class Anime inherits from Base Model. Like how class Cat extends Animal in Java
+# BaseModel = Pydantic's class, Anime = my custom Pydantic model
+class Anime(BaseModel):     # class Anime inherits all the functionality from Pydantic's Base Model. Like how class Cat extends Animal in Java
     # this does not save anything yet. this tells FastAPI that when someone send anime data to my backend, this is the shape I expect, the object.
     # this gives me a clean anime object that i can then INSERT INTO watchlist table (inside my post function)
     anime_id: int       # must be a number
@@ -71,9 +72,9 @@ def recommendations_endpoint(anime_name):
 # to visit, type this url "localhost:8000/recommendations/{anime_name}", but actually insert a real anime name into the variable.
 # or this: "http://127.0.0.1:8000/recommendations/naruto". Can copy the link showed at beginning of terminal, then add the search endpoint and query myself. endpoint is recommendation, query is naruto
 
-
+# this function saves anime to a watchlist
 @app.post("/watchlist")
-def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the parameter anime is of type Anime, which is an object
+def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the parameter anime is of type Anime, which is an object - it's an instance of Anime Pydantic model
     # this endpoint receives an anime object
     
     genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
