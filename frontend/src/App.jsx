@@ -84,6 +84,12 @@ User sees webpage*/
 
   }
 
+  async function handleSaveToWatchlist(anime)   // the parameter is the specific anime from the .map() loop
+  {
+    const url = "http://localhost:8000/watchlist"   // we do not add parameter anime to url since this is a POST request. The anime data travels in the request body
+    const response = await fetch(url)
+  }
+
   return (   // return sends the JSX back to the browser
     <>    {/*This is a React Fragment. It lets you return multiple elements without wrapping everything in an extra <div></div>*/}
       <section id="center">   {/* This creates a page section. The id="center" connects to CSS styling */}
@@ -140,6 +146,13 @@ User sees webpage*/
         {recommendations.slice(1).map((anime) => (  
           <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
             <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
+
+            <button
+              type = "button"
+              onClick = 
+            >
+              Save to Watchlist
+            </button>  
 
             <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
             <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}

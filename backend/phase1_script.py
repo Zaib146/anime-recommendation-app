@@ -77,7 +77,7 @@ def get_recommendation(anime_name):
 
 
 def get_genre_recommendations(genre_ids):
-    genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10". str(id) converts each id number to a string while looping through them. ",".join puts a comma between each id value
+    genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10". str(id) converts each id number to a string while looping through ids in the original list. ",".join puts a comma between each id value
     genre_search_url = f"https://api.jikan.moe/v4/anime?genres={genre_string}"      # build url using string of genre_string
     response = requests.get(genre_search_url)       # gets json data of the genres
     data = response.json()      # parse through the json data and return it as a list of genres
