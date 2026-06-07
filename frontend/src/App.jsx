@@ -87,7 +87,17 @@ User sees webpage*/
   // this request is a POST request. Without this line, fetch() defaults to method: "GET", which would not match my FastAPI endpoint of @app.post("/watchlist") 
   async function handleSaveToWatchlist(anime)   // the parameter is the specific anime from the .map() loop. Here we are saving that specific anime to the watchlist
   {
-    console.log("Saving anime:", anime)
+    const animeToSave = {   // before, anime would only have the fields title, genres, synopsis, images. But we need to have an object that's shaped like our Pydantic model to send to backend. So we create it. Now shape of the button 
+                            // matches what FastAPI expects. this is a Pydantic model for the specific anime passed. Each loop iteration, we'll have a new one 
+      anime_id: anime.anime_id,
+      title: anime.title,
+      image_url: anime.image_url,
+      synopsis: anime.synopsis,
+      genres: anime.genres,
+      similar_anime: recommendations[0]?.["similar anime"]
+    }
+
+    console.log("Saving anime:", animeToSave)
     const url = "http://localhost:8000/watchlist"   // we do not add parameter anime to url since this is a POST request. The anime data travels in the request body
     const response = await fetch(url, 
       {
@@ -96,9 +106,9 @@ User sees webpage*/
         {
           "Content-Type": "application/json"  // this means that the data I'm sending is JSON. This helps FastAPI know how to interpret the request body
         },
-        body: JSON.stringify(anime)       //take the JavaScript object called anime and convert it into JSON text so it can travel across the network
+        body: JSON.stringify(animeToSave)       //take the JavaScript object called animeToSave and convert it into JSON text so it can travel across the network
         //  for example, if
-        //    anime = {
+        //    animeToSave = {
         //       anime_id: 20,
         //       title: "Naruto"}
             
