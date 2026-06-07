@@ -47,13 +47,7 @@ function App() {    // this line creates a React component named App.
 When React asks what should appear on the page,
 return this JSX.
 
-Right now it returns:
-
-Get Started
-Count is 0
-Documentation
-
-Later it will return:
+Returns this:
 
 Anime Recommendation App
 Input box
@@ -86,7 +80,7 @@ User sees webpage*/
     // App.jsx sends an HTTP request to the backend server. When React uses fetch, React is asking FastAPI for data automatically.
     const data = await response.json()    //parse json data into python data, store that in "data"
     setRecommendations(data)      // change recommendations to value in data variable
-    console.log(recommendations)   // this is to print in console tab in F12 to test. will remove later
+    // console.log(recommendations)   // this is to print in console tab in F12 to test. will comment out / remove later
 
   }
 
@@ -100,21 +94,23 @@ User sees webpage*/
           <img src={viteLogo} className="vite" alt="Vite logo" />
         </div>
         <div>
-          <h1>Anime Recommendation App</h1>  {/* this displays the big title*/}
+          <h1>Anime Recommendation App</h1>  {/*this displays the big title; <h1> = used for largest most important heading on the page*/}
           <p>
             What is your favorite anime?   {/*This displays the starter instruction text. <code> just styles text like code.*/}
           </p>
-          <input    // <input> lets the user type or enter data
+          {/*<input> lets the user type or enter data*/}
+          <input    
             value={anime}
             onChange={(event) => setAnime(event.target.value)}
           /*onChange changes the value of anime for each keystroke as it's entered, not when the button Get Recommendations is clicked. 
-          Anime variable is already change to new value by then*/
+          Anime variable is already changed to new value by then*/
           />
 
           {/*Anime is {anime} - this shows the state update if needed*/}
 
         </div>
-        <button   // <button> lets the user click something
+        {/* <button> lets the user click something*/}
+        <button   
           /*this should get recommendations*/
           type="button"
           onClick={handleGetRecommendations}  //when the user clicks Get Recommendations, it calls this function
@@ -122,12 +118,12 @@ User sees webpage*/
           Get Recommendations
         </button>
 
-        <p>Similar Anime: </p>
+        <p>Similar Anime: </p>  {/* <p> = Paragraph, used for normal text*/}
         {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
         so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
-        undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF it exists, get .title. Else, return undefined*/}
-        <ul>
-          {recommendations[0]?.["similar anime"]?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */}
+        undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}
+        <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+          {recommendations[0]?.["similar anime"]?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
         </ul>
 
         {/*this recommendations.slice(1).map((anime) => is saying at index of 1 of recommendations onwards, loop through it (using map). (anime) represents the anime at that specific index each loop iteration}
@@ -156,10 +152,11 @@ User sees webpage*/
             </p>
 
             <p>Images: </p>
-        
+
+            {/* alt is what shows if the src does not work */}
             <img
               src = {anime?.images}
-              alt = {anime?.title}
+              alt = {anime?.title}  
             />
           </div>
         ))}
