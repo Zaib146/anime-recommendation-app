@@ -81,9 +81,9 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     similar_anime_text = json.dumps(anime.similar_anime)    # same idea as genres_text
     
     conn = sqlite3.connect("anime_app.db")      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
-                                                        # conn is now the open connection to my database. we use conn later to refer to that same database connection. conn is an open database file
+                                                        # conn is now the open connection to my database. we use conn later to refer to that same database connection. conn is an open database file, a connection object
                                                         
-    cursor = conn.cursor()  # .cursor() is asking the conn connection to "Give me a cursor so I can send commands to the database". 
+    cursor = conn.cursor()  # .cursor() is asking the conn connection to "Give me a cursor so I can send commands to the database". .cursor() is a method from sqlite3, called on conn
                             # that cursor is then stored in the variable cursor, since we'll use it repeatedly
     
     # .execute says to run the SQL command inside the (). The code in () is a SQL command, but it's inside """, so that makes the command a Python string, since it's a python file. SQLite can only understand SQL commands, not Python code.
@@ -93,6 +93,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         cursor.execute("""
         -- SQL command inside a Python string here.
         -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
+        -- will insert the values in the tuple into the table "watchlist"
         INSERT INTO watchlist (
             anime_id,
             title,
@@ -102,7 +103,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
             similar_anime
         )
         
-        -- We use "?" as placeholder values, since Naruto values will be different Bleach, etc
+        -- We use "?" as placeholder values, since Naruto values will be different than Bleach, etc
         VALUES (?, ?, ?, ?, ?, ?)
         """,
         
@@ -122,7 +123,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         return {"message": "Anime saved to watchlist"}
     
     except sqlite3.IntegrityError:      # Prevents saving duplicate anime. prevents multiple anime with the same title (therefore have the same anime_id) to be entered in the table. 
-        # sqlite3.IntegrityError - "The database refused the operation because it would violate one of the table's rules (constraints)." Here SQLite raises this error because the UNIQUE constraint in anime_id INTEGER UNIQUE 
+        # sqlite3.IntegrityError - "The database refused the operation because it would violate one of the table's rules (constraints)." Here SQLite raises this error because of the UNIQUE constraint in anime_id INTEGER UNIQUE 
         # would be violated
         return {"message": "Anime already in watchlist"}
     

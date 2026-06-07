@@ -8,10 +8,11 @@ cursor = conn.cursor()      # .cursor() is asking the conn connection to "Give m
                             # that cursor is then stored in the variable cursor, since we'll use it repeatedly
                             
 # .execute says to run the SQL command inside the (). The code in () is a SQL command, but it's inside """, so that makes the command a Python string, since it's a python file. SQLite can only understand SQL commands, not Python code.
-# cursor.execute() then sends the SQL command (inside a Python string), to SQLite                            
+# cursor.execute() then sends the SQL command (inside a Python string), to SQLite   
+# execute() tells SQLite what changes you want                         
 cursor.execute("""     
                 CREATE TABLE IF NOT EXISTS watchlist ( 
-                    -- IF NOT EXISTS avoid create duplicate tables
+                    -- IF NOT EXISTS avoid create duplicate tables. Create a table named "watchlist" if it does not yet exist
                     -- id is column name, INTEGER is data type, PRIMARY KEY uniquely identifies each row (actual values stored in this column). SQLite uses this as the rows identity. Row ids do not repeat 
                     id INTEGER PRIMARY KEY, 
                     
@@ -53,9 +54,6 @@ cursor.execute("""
 # | 1  | 20       | Naruto          |
 # | 2  | 21       | One Piece       |
 # | 3  | 16498    | Attack on Titan |
-
-# execute() tells SQLite what changes you want
-
 
 conn.commit()       # commit() tells SQLite to save those changes permanently
 conn.close()        # done using the database, close the connection. Like closing a file after saving it
