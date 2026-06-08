@@ -88,7 +88,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     
     # .execute says to run the SQL command inside the (). The code in () is a SQL command, but it's inside """, so that makes the command a Python string, since it's a python file. SQLite can only understand SQL commands, not Python code.
     # cursor.execute() then sends the SQL command (inside a Python string), to SQLite  
-    
+    # database works
     try:  
         cursor.execute("""
         -- SQL command inside a Python string here.
