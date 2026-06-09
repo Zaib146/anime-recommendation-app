@@ -137,6 +137,7 @@ def watchlist2_endpoint():
     cursor = conn.cursor()
     
     cursor.execute("""
+    -- selecting which columns from the table to read, must type each individually
     SELECT anime_id, title, image_url, synopsis, genres, similar_anime
     FROM watchlist 
                    """)
@@ -158,7 +159,7 @@ def watchlist2_endpoint():
         # use indexes since tuples require indeces, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
-        saved_anime.append(item)
+        saved_anime.append(item)    # create a new dictionary from each row, save to saved_anime list
     
     conn.close()    # close the database connection, must do before returning
     
