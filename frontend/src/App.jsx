@@ -250,7 +250,58 @@ User sees webpage*/
             ))}
           </>
         )
-      } 
+        }
+
+        {currentView === "watchlist" && 
+        (
+          <>
+            {watchlist.map((anime) => 
+              (  
+                <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
+                  <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
+
+                  {/*since we are passing an argument, we need the () =>, otherwise the function would run
+                      automatically. We only want the function to run when clicked. So () => creates a function that has the function removeFromWatchlist(anime)
+                      , which is only called when button is click. "Create a function, but do not run it yet".
+                      function() {
+                      removeFromWatchlist(anime)
+                      }*/}
+                  {/* add a "Remove from Watchlist" button later
+                    <button   
+                    type = "button"
+                    onClick = {() => removeFromWatchlist(anime)}  
+                  >
+                    Remove from Watchlist
+                  </button> */} 
+
+                  <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
+                  <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                    {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
+                  </ul>
+
+                  <p>Synopsis: </p>
+                  <p>
+                    {anime?.synopsis}
+                  </p>
+
+                  <p>Images: </p>
+
+                  {/* alt is what shows if the src does not work */}
+                  <img
+                    src = {anime?.images}
+                    alt = {anime?.title}  
+                  />
+
+                  <p>Similar Anime: </p>
+                  <p>
+                    {anime?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
+                  </p>
+                </div>
+              ))
+            }
+          </>
+        )
+        } 
         
 
         
