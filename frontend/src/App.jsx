@@ -69,6 +69,10 @@ User sees webpage*/
   //this creates state. Original - count = current value, setCount = function used to change the value, 0 = starting value
   //now, anime is current value for anime. setAnime is the value anime will be updated to. "" is the starting value for anime. same logic for line below
   const [recommendations, setRecommendations] = useState([])
+  const [currentView, setCurrentView] = useState("")    // this decides what will be shown on the page. current view is "recommendations", it'll show what's click when you click Get Recommendations.
+  // if current view is "watchlist", it'll show what's clicked when you click View Saved Watchlist. It will only show EITHER recommendations or watchlist, not both. That is the point of currentView, to differentiate
+  // what we say on the page
+  const [watchlist, setWatchlist] = useState([])  // need a watchlist component, like we have one for recommendations
 
   async function handleGetRecommendations()
   //async means this function will wait for something that takes time. This is because fetch with the url takes time.
