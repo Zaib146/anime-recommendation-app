@@ -94,7 +94,7 @@ User sees webpage*/
       image_url: anime.images,
       synopsis: anime.synopsis,
       genres: anime.genres,
-      similar_anime: recommendations[0]?.["similar anime"]
+      similar_anime: recommendations[0]?.similar_anime
     }
 
     console.log("Saving anime:", animeToSave)
@@ -165,7 +165,7 @@ User sees webpage*/
         so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
         undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}
         <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-          {recommendations[0]?.["similar anime"]?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
+          {recommendations[0]?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
         </ul>
 
         {/*this recommendations.slice(1).map((anime) => is saying at index of 1 of recommendations onwards, loop through it (using map). (anime) represents the anime at that specific index each loop iteration}

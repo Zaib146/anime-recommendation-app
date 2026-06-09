@@ -55,7 +55,7 @@ def get_recommendation(anime_name):
     #example, for Naruto, now genre_ids = [1, 2, 10]
         
     recommendations = get_genre_recommendations(genre_ids)
-    results.append({"similar anime": recommendations})  # will show the similar anime at the very top. other option was to put it at the very bottom, but that doesn't seem user-friendly
+    results.append({"similar_anime": recommendations})  # will show the similar anime at the very top. other option was to put it at the very bottom, but that doesn't seem user-friendly
     # also now have similar anime only in relation to first anime. it keeps it similar, don't need similar anime for all anime
     
     

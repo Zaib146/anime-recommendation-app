@@ -155,7 +155,7 @@ def watchlist2_endpoint():
     
     saved_anime = []
     for row in rows:
-        item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "images": row[2], "similar anime": json.loads(row[5])}
+        item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "images": row[2], "similar_anime": json.loads(row[5])}
         # use indices since tuples require indices, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
