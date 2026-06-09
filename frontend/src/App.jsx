@@ -64,6 +64,8 @@ React renders JSX
      ↓
 User sees webpage*/
 
+// JavaScript section: fetch data, save data, change state
+
   //Component is a reuasable UI function. It returns what should appear on the page
   const [anime, setAnime] = useState("")
   //this creates state. Original - count = current value, setCount = function used to change the value, 0 = starting value
@@ -84,7 +86,7 @@ User sees webpage*/
     // App.jsx sends an HTTP request to the backend server. When React uses fetch, React is asking FastAPI for data automatically.
     const data = await response.json()    //parse json data into python data, store that in "data"
     setRecommendations(data)      // change recommendations to value in data variable
-    setCurrentView("recommendations")
+    setCurrentView("recommendations") // change currentView to "recommendations"
     // console.log(recommendations)   // this is to print in console tab in F12 to test. will comment out / remove later
 
   }
@@ -126,6 +128,8 @@ User sees webpage*/
     console.log(data)
   }
 
+//   JSX section: display data, hide data, show buttons, show images
+
   return (   // return sends the JSX back to the browser
             // inside the return use, {/* */} for comments, it's safer. outside of return, use //
     <>    {/*This is a React Fragment. It lets you return multiple elements without wrapping everything in an extra <div></div>*/}
@@ -165,61 +169,70 @@ User sees webpage*/
           Get Recommendations
         </button>
 
-        <p>Similar Anime: </p>  {/* <p> = Paragraph, used for normal text*/}
-        {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
-        so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
-        undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}
-        <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-          {recommendations[0]?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
-        </ul>
-
-        {/*this recommendations.slice(1).map((anime) => is saying at index of 1 of recommendations onwards, loop through it (using map). (anime) represents the anime at that specific index each loop iteration}
-        recommendations.slice(1).map((anime) => {
-          console.log(anime.title)
-          
-        is the same as:
-
-        for anime in recommendations[1:]:
-          print(anime["title"])
-
-        in Python*/}
-        
-        {recommendations.slice(1).map((anime) => (  
-          <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
-            <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
-
-            {/*since we are passing an argument, we need the () =>, otherwise the function would run
-                automatically. We only want the function to run when clicked. So () => creates a function that has the function handleSaveToWatchlist(anime)
-                , which is only called when button is click. "Create a function, but do not run it yet".
-                function() {
-                handleSaveToWatchlist(anime)
-                }*/}
-            <button
-              type = "button"
-              onClick = {() => handleSaveToWatchlist(anime)}  
-            >
-              Save to Watchlist
-            </button>  
-
-            <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
+          {/* now this block of code will only run if currentView === "recommendations". The 3 = signs is a conditional equals. The && means if the statement on the left is correct,
+          execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
+        {currentView === "recommendations" && 
+        (
+          <>
+              <p>Similar Anime: </p>  {/* <p> = Paragraph, used for normal text*/}
+            {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
+            so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
+            undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}
             <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-              {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
+              {recommendations[0]?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
             </ul>
 
-            <p>Synopsis: </p>
-            <p>
-              {anime?.synopsis}
-            </p>
+            {/*this recommendations.slice(1).map((anime) => is saying at index of 1 of recommendations onwards, loop through it (using map). (anime) represents the anime at that specific index each loop iteration}
+            recommendations.slice(1).map((anime) => {
+              console.log(anime.title)
+              
+            is the same as:
 
-            <p>Images: </p>
+            for anime in recommendations[1:]:
+              print(anime["title"])
 
-            {/* alt is what shows if the src does not work */}
-            <img
-              src = {anime?.images}
-              alt = {anime?.title}  
-            />
-          </div>
-        ))}
+            in Python*/}
+            
+            {recommendations.slice(1).map((anime) => (  
+              <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
+                <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
+
+                {/*since we are passing an argument, we need the () =>, otherwise the function would run
+                    automatically. We only want the function to run when clicked. So () => creates a function that has the function handleSaveToWatchlist(anime)
+                    , which is only called when button is click. "Create a function, but do not run it yet".
+                    function() {
+                    handleSaveToWatchlist(anime)
+                    }*/}
+                <button
+                  type = "button"
+                  onClick = {() => handleSaveToWatchlist(anime)}  
+                >
+                  Save to Watchlist
+                </button>  
+
+                <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
+                <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                  {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
+                </ul>
+
+                <p>Synopsis: </p>
+                <p>
+                  {anime?.synopsis}
+                </p>
+
+                <p>Images: </p>
+
+                {/* alt is what shows if the src does not work */}
+                <img
+                  src = {anime?.images}
+                  alt = {anime?.title}  
+                />
+              </div>
+            ))}
+          </>
+        )
+      } 
+        
 
         
           
