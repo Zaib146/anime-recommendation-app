@@ -142,7 +142,7 @@ def watchlist2_endpoint():
     FROM watchlist 
                    """)
     # conn.commit() not needed here - no changes to database made. still want conn.close() later
-    rows = cursor.fetchall()    # put all the rows returned by the select query into the python variable "rows" as a list
+    rows = cursor.fetchall()    # put all the rows returned by the select query into the python variable "rows" as a list - list with rows as tuples
     # with a small watchlist, this is fine. With large watchlists with tons of users, set limits (top 20 first), then they can click "Show More", see next 20, etc. For later.
     
     # print(type(rows[0])) - each row is a tuple. need to convert each row into a dictionary, since react works better with dictionaries.
@@ -156,7 +156,7 @@ def watchlist2_endpoint():
     saved_anime = []
     for row in rows:
         item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "images": row[2], "similar anime": json.loads(row[5])}
-        # use indexes since tuples require indeces, they don't use key and value
+        # use indices since tuples require indices, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
         saved_anime.append(item)    # create a new dictionary from each row, save to saved_anime list
