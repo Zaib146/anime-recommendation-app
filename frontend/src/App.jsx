@@ -84,6 +84,7 @@ User sees webpage*/
     // App.jsx sends an HTTP request to the backend server. When React uses fetch, React is asking FastAPI for data automatically.
     const data = await response.json()    //parse json data into python data, store that in "data"
     setRecommendations(data)      // change recommendations to value in data variable
+    setCurrentView("recommendations")
     // console.log(recommendations)   // this is to print in console tab in F12 to test. will comment out / remove later
 
   }
