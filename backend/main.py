@@ -129,3 +129,21 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     
     finally:
         conn.close()    # this will run no matter what. done using the database, close the connection. Like closing a file after saving it
+
+# this function is to read from the watchlist      
+@app.get("/watchlist")
+def watchlist2_endpoint():
+    conn = sqlite3.connect("anime_app.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+    SELECT anime_id, title, image_url, synopsis, genres, similar_anime
+    FROM watchlist 
+                   """)
+    # conn.commit() not needed here - no changes to database made. still want conn.close() later
+    rows = cursor.fetchall()    # put all the rows returned by the select query into the python variable "rows" as a list
+    # with a small watchlist, this is fine. With large watchlists with tons of users, set limits (top 20 first), then they can click "Show More", see next 20, etc. For later.
+    
+    print(type(rows[0]))
+    
+    return rows
