@@ -91,7 +91,7 @@ User sees webpage*/
 
   }
 
-  // this request is a POST request. Without this line, fetch() defaults to method: "GET", which would not match my FastAPI endpoint of @app.post("/watchlist") 
+  // this request is a POST request. 
   async function handleSaveToWatchlist(anime)   // the parameter is the specific anime from the .map() loop. Here we are saving that specific anime to the watchlist
   {
     const animeToSave = {   // before, anime would only have the fields title, genres, synopsis, images. But we need to have an object that's shaped like our Pydantic model to send to backend. So we create it. Now shape of the button 
@@ -105,7 +105,9 @@ User sees webpage*/
     }
 
     console.log("Saving anime:", animeToSave)
-    const url = "http://localhost:8000/watchlist"   // we do not add parameter anime to url since this is a POST request. The anime data travels in the request body
+    const url = "http://localhost:8000/watchlist"   // we do not add parameter anime to url since this is a POST request. The anime data travels in the request body. because of the method: POST, it knows to do
+    // the POST HTTP method, not the GET one
+    // Without this line of (url, method: "POST"), fetch() defaults to method: "GET", which would not match my FastAPI endpoint of @app.post("/watchlist") 
     const response = await fetch(url, 
       {
         method: "POST",     
@@ -124,8 +126,17 @@ User sees webpage*/
         //       "anime_id": 20,
         //       "title": "Naruto"} 
       })
-    const data = await response.json()
+    const data = await response.json()  // extract the JSON from the python information in response, store in data variable
     console.log(data)
+  }
+
+  async function handleViewWatchlist()
+  {
+    const url = "http://localhost:8000/watchlist" // same url is fine
+    const response = await fetch(url)   // default HTTP method is a get method, so it'll do that. 
+    const data = await response.json()    // extract the JSON from the python information in response, store in data variable
+    setWatchlist(data)  // store watchlist (which is in the data variable) as the new "watchlist" state value
+    setCurrentView("watchlist")
   }
 
 //   JSX section: display data, hide data, show buttons, show images
@@ -167,6 +178,14 @@ User sees webpage*/
           onClick={handleGetRecommendations}  
         >
           Get Recommendations
+        </button>
+
+        <button   
+          /*this should get recommendations*/
+          type="button"
+          onClick={handleViewWatchlist}  
+        >
+          View Saved Watchlist
         </button>
 
           {/* now this block of code will only run if currentView === "recommendations". The 3 = signs is a conditional equals. The && means if the statement on the left is correct,
