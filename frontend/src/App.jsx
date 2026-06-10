@@ -141,6 +141,7 @@ User sees webpage*/
     )
     const data = await response.json() // extract the JSON from the python information in response, store in data variable which is in python
     console.log(data)   // to check in console
+    handleViewWatchlist() // "refreshes" my page (refetches the view saved watchlist function, now after the delete is done)
   }
 
   // this is for a GET request
@@ -291,7 +292,7 @@ User sees webpage*/
                   <button   
                   /*this should get recommendations*/
                   type="button"
-                  onClick={() => handleRemoveFromWatchlist(anime?.anime_id)}  
+                  onClick={() => handleRemoveFromWatchlist(anime?.anime_id)}  // passing a parameter, so we need to do () => first
                   >
                   Remove From Saved Watchlist
                   </button>
