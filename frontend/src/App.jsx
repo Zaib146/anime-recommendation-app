@@ -75,6 +75,12 @@ User sees webpage*/
   // if current view is "watchlist", it'll show what's clicked when you click View Saved Watchlist. It will only show EITHER recommendations or watchlist, not both. That is the point of currentView, to differentiate
   // what we say on the page
   const [watchlist, setWatchlist] = useState([])  // need a watchlist component, like we have one for recommendations
+  const [similarAnimeById, setsimilarAnimeById] = useState({})    // when this is empty, that means no anime has loaded similar anime yet. Each anime we click it add, it adds to the list (keeps what was in it before)
+  // for example, this is what's inside similarAnimeById after we click View Similar Anime for both Bleach and Naruto
+  // {
+  // 20: ["Bleach", "One Piece", "Black Clover"],
+  // 269: ["Naruto", "Yu Yu Hakusho", "D.Gray-man"]
+  // } 
 
   async function handleGetRecommendations()
   //async means this function will wait for something that takes time. This is because fetch with the url takes time.
@@ -156,7 +162,7 @@ User sees webpage*/
 
   async function handleViewSimilarAnime()
   {
-    
+
   }
 
 //   JSX section: display data, hide data, show buttons, show images
@@ -261,13 +267,15 @@ User sees webpage*/
                   alt = {anime?.title}  
                 />
 
-                <p>Similar Anime: </p>  {/* <p> = Paragraph, used for normal text*/}
+                {/*<p>Similar Anime: </p>  {/* <p> = Paragraph, used for normal text*/}
                 {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
                 so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
                 undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}
-                <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-                  {anime?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
-                </ul>
+                {/*<ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                  {anime?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> 
+                </ul> 
+                */}
+                
               </div>
             ))}
           </>
