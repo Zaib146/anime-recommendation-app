@@ -101,7 +101,7 @@ User sees webpage*/
       image_url: anime.images,
       synopsis: anime.synopsis,
       genres: anime.genres,
-      similar_anime: recommendations[0]?.similar_anime
+      similar_anime: anime.similar_anime
     }
 
     console.log("Saving anime:", animeToSave)
@@ -208,13 +208,7 @@ User sees webpage*/
         {currentView === "recommendations" && 
         (
           <>
-              <p>Similar Anime: </p>  {/* <p> = Paragraph, used for normal text*/}
-            {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
-            so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
-            undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}
-            <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-              {recommendations[0]?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
-            </ul>
+              
 
             {/*this recommendations.slice(1).map((anime) => is saying at index of 1 of recommendations onwards, loop through it (using map). (anime) represents the anime at that specific index each loop iteration}
             recommendations.slice(1).map((anime) => {
@@ -227,7 +221,7 @@ User sees webpage*/
 
             in Python*/}
             
-            {recommendations.slice(1).map((anime) => (  
+            {recommendations.map((anime) => (  
               <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
                 <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
 
@@ -261,6 +255,14 @@ User sees webpage*/
                   src = {anime?.images}
                   alt = {anime?.title}  
                 />
+
+                <p>Similar Anime: </p>  {/* <p> = Paragraph, used for normal text*/}
+                {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
+                so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
+                undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}
+                <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                  {anime?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
+                </ul>
               </div>
             ))}
           </>
