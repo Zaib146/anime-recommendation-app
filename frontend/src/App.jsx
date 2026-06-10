@@ -115,7 +115,7 @@ User sees webpage*/
         {
           "Content-Type": "application/json"  // this means that the data I'm sending is JSON. This helps FastAPI know how to interpret the request body
         },
-        body: JSON.stringify(animeToSave)       //take the JavaScript object called animeToSave and convert it into JSON text so it can travel across the network
+        body: JSON.stringify(animeToSave)       //take the JavaScript object called animeToSave and convert it into JSON text so it can travel across the network. the body is the Naruto object
         //  for example, if
         //    animeToSave = {
         //       anime_id: 20,
@@ -126,10 +126,24 @@ User sees webpage*/
         //       "anime_id": 20,
         //       "title": "Naruto"} 
       })
-    const data = await response.json()  // extract the JSON from the python information in response, store in data variable
-    console.log(data)
+    const data = await response.json()  // extract the JSON from the python information in response, store in data variable which is in python
+    console.log(data)   // to check in console
   }
 
+  // this is a DELETE request
+  async function handleRemoveFromWatchlist(anime_id)
+  {
+    const url = "http://localhost:8000/watchlist/" + anime_id
+    const response = await fetch(url,
+      {
+        method: "DELETE"  // here we only need anime_id, so no headers or body like in handleSaveToWatchlist function
+      }
+    )
+    const data = await response.json() // extract the JSON from the python information in response, store in data variable which is in python
+    console.log(data)   // to check in console
+  }
+
+  // this is for a GET request
   async function handleViewWatchlist()
   {
     const url = "http://localhost:8000/watchlist" // same url is fine
