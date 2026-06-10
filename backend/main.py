@@ -164,3 +164,18 @@ def watchlist2_endpoint():
     conn.close()    # close the database connection, must do before returning
     
     return saved_anime      # list with rows as dictionaries, so FastAPI converts the Python dictionaries into JSON
+
+@app.delete("/watchlist/{anime_id}")
+def watchlist3_endpoint(anime_id):
+    conn = sqlite3.connect("anime_app.db")
+    cursor = conn.cursor()
+    
+    cursor.execute (""" 
+    DELETE FROM watchlist WHERE anime_id = ? """, (anime_id,))      # this specifies which row (which anime_id) we'll be deleting from the watchtable. allows us to delete specific anime for watchlist
+    # we do (anime_id,) as a parameter, like we did with the INSERT INTO. Except here, since we have one value of anime_id, we write it as "anime_id,". The comma at the end tells SQLite this is a tuple, NOT an integer.
+    # the parameter must be a tuple. in INSERT INTO, we had 6 values inside (), so that was clearly a tuple, so no comma needed at the end
+    
+    conn.commit()
+    conn.close()
+    
+    return {"message": "Anime removed from watchlist"}
