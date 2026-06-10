@@ -154,6 +154,11 @@ User sees webpage*/
     setCurrentView("watchlist")
   }
 
+  async function handleViewSimilarAnime()
+  {
+    
+  }
+
 //   JSX section: display data, hide data, show buttons, show images
 
   return (   // return sends the JSX back to the browser

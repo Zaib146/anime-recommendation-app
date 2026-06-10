@@ -1,7 +1,7 @@
 # this file handles the backend setup
 
 from fastapi import FastAPI     # needed for backend setup
-from phase1_script import get_recommendation
+from phase1_script import get_recommendation, get_genre_recommendations
 from fastapi.middleware.cors import CORSMiddleware  # Go into FastAPI's CORS module and import the tool that handles cross-origin requests. importing a security guard
 # the middleware decides allow or block
 from pydantic import BaseModel
@@ -65,6 +65,11 @@ app.add_middleware( # Hey FastAPI, before any requests reach my routes, run them
 @app.get("/recommendations/{anime_name}")
 def recommendations_endpoint(anime_name):
     return get_recommendation(anime_name)
+
+@app.get("/similar-anime/{genre_ids}")      # for example, receives a string like "1,2,10"
+def similarAnime_endpoint(genre_ids):
+    genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
+    return get_genre_recommendations(genre_ids)
 
 
 # to start / host the backend server (make it alive), type this in "Terminal" -> "New Terminal". should be in location C:\anime-recommendation-app\backend>

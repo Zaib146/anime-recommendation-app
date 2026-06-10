@@ -53,27 +53,22 @@ def get_recommendation(anime_name):
     # index increments through how many items are in anime list
     
     for anime in anime_list:
-        genres = anime['genres']   # list of genres for the anime in anime list
-        genre_ids = []             # empty list to hold the id numbers of the genres of this specific anime
-    
-        for genre in genres:        # loop through list of genres for this specific anime
-            genre_ids.append(genre["mal_id"])       # for each specific genre (example is Action), add its id (here 1) to the list of genre_ids. This list is dynamic based on the anime in anime_list.
-    
-        # example, for Naruto, now genre_ids = [1, 2, 10]
-        
-        recommendations = get_genre_recommendations(genre_ids)  # recommendations has a list of other animes that have the same genres as the original anime
 
-        item = {"anime_id": anime["mal_id"], "title": anime['title'], "genres": anime['genres'], "synopsis": anime['synopsis'], "images": anime['images']['jpg']['image_url'], "similar_anime": recommendations}
+        item = {"anime_id": anime["mal_id"], "title": anime['title'], "genres": anime['genres'], "synopsis": anime['synopsis'], "images": anime['images']['jpg']['image_url']}
         
         results.append(item)
           
-        
+    # removed calling similar anime list for each anime in the list. Load time for the page was too long. Now will only be called with a button. Therefore, deleted the logic that extracted the genre ids from anime in anime list.
+    # since the genre-id extraction will happen in React when the user clicks the button, because React already has access to anime.genres as a part of Anime pydantic model. Don't need that here, since not calling similar anime 
+    # each time automatically now    
     # results is a list that contains dictionaries
     return results
 
 
+
 def get_genre_recommendations(genre_ids):
-    genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10". str(id) converts each id number to a string while looping through ids in the original list. ",".join puts a comma between each id value
+    genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10" (parameter was ["1", "2", "10"]). 
+    # str(id) converts each id number to a string while looping through ids in the original list. ",".join puts a comma between each id value
     genre_search_url = f"https://api.jikan.moe/v4/anime?genres={genre_string}"      # build url using string of genre_string
     response = requests.get(genre_search_url)       # gets json data of the genres
     data = response.json()      # parse through the json data and return it as a list of genres
