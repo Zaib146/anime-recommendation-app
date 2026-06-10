@@ -288,6 +288,14 @@ User sees webpage*/
                     Remove from Watchlist
                   </button> */} 
 
+                  <button   
+                  /*this should get recommendations*/
+                  type="button"
+                  onClick={() => handleRemoveFromWatchlist(anime?.anime_id)}  
+                  >
+                  Remove From Saved Watchlist
+                  </button>
+
                   <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
                   <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
                     {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
