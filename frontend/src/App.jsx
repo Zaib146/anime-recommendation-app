@@ -245,8 +245,7 @@ User sees webpage*/
         {currentView === "recommendations" && 
         (
           <>
-              
-
+          
             {/*this recommendations.slice(1).map((anime) => is saying at index of 1 of recommendations onwards, loop through it (using map). (anime) represents the anime at that specific index each loop iteration}
             recommendations.slice(1).map((anime) => {
               console.log(anime.title)
@@ -372,12 +371,29 @@ User sees webpage*/
                   Remove From Saved Watchlist
                   </button>
 
-                  <button
-                  type = "button"
-                  onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
-                  >
-                  View Similar Anime
-                  </button> 
+                  {similarAnimeById[anime.anime_id] 
+                    ? (
+                        <>
+                          <button
+                            type = "button"
+                            onClick = {() => handleRemoveSimilarAnime(anime.anime_id)}  
+                          >
+                            View Less
+                          </button> 
+                        </>
+                      )
+
+                    : (
+                        <>
+                          <button
+                            type = "button"
+                            onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
+                          >
+                          View Similar Anime
+                          </button> 
+                        </>
+                      )
+                  }
 
                   {/* now this block of code will only run if similarAnimeById[anime.anime_id] exists (does the key exist in there, checks by seeing if the value stored at that key exists). The && means if the statement on the left is correct,
                   execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
