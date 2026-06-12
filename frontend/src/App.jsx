@@ -85,7 +85,7 @@ User sees webpage*/
   async function handleGetRecommendations()
   //async means this function will wait for something that takes time. This is because fetch with the url takes time.
   {
-    setSimilarAnimeById({})
+    setSimilarAnimeById({})     // clears the state. Basically a refresh in that you have to click View Similar Anime for that specific anime again
     const animeName = encodeURIComponent(anime) //Changes "One Piece" to "One%20Piece" in actual url, since url does not like spaces
     const url = "http://localhost:8000/recommendations/" + animeName
     const response = await fetch(url)   // await means pause this function until results come back, literally wait for results. 
@@ -153,7 +153,7 @@ User sees webpage*/
   // this is for a GET request
   async function handleViewWatchlist()
   {
-    setSimilarAnimeById({})
+    setSimilarAnimeById({})   // clears the state. Basically a refresh in that you have to click View Similar Anime for that specific anime again
     const url = "http://localhost:8000/watchlist" // same url is fine
     const response = await fetch(url)   // default HTTP method is a get method, so it'll do that. 
     const data = await response.json()    // extract the JSON from the python information in response, store in data variable
