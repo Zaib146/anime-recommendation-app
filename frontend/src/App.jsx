@@ -269,6 +269,15 @@ User sees webpage*/
                   View Similar Anime
                 </button> 
 
+                {similarAnimeById[anime.anime_id] &&
+                (
+                  <>
+                    <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
+                    {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return */}
+                  </>
+                )
+                }
+
                 <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
                 <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
                   {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
