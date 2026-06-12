@@ -298,16 +298,12 @@ User sees webpage*/
                   src = {anime?.images}
                   alt = {anime?.title}  
                 />
-
-                {/*<p>Similar Anime: </p>  {/* <p> = Paragraph, used for normal text*/}
+                
                 {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
                 so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
                 undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}
                 {/*<ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-                  {anime?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> 
-                </ul> 
-                */}
-                
+                 
               </div>
             ))}
           </>
@@ -344,6 +340,25 @@ User sees webpage*/
                   Remove From Saved Watchlist
                   </button>
 
+                  <button
+                  type = "button"
+                  onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
+                  >
+                  View Similar Anime
+                  </button> 
+
+                  {/* now this block of code will only run if similarAnimeById[anime.anime_id] exists (does the key exist in there, checks by seeing if the value stored at that key exists). The && means if the statement on the left is correct,
+                  execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
+                  {similarAnimeById[anime.anime_id] &&
+                  (
+                    <>
+                      <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
+                      {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
+                      For example, if it's ["Bleach", "Naruto"], then display them with bullets on separate lines */}
+                    </>
+                  )
+                  }
+
                   <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
                   <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
                     {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
@@ -361,11 +376,6 @@ User sees webpage*/
                     src = {anime?.images}
                     alt = {anime?.title}  
                   />
-
-                  <p>Similar Anime: </p>
-                  <p>
-                    {anime?.similar_anime?.map((animeTitle) => (<li>{animeTitle}</li>))}   {/* .map() loops through each animeTitle */} {/* <li> = list item, each bullet inside a <ul> */}
-                  </p>
                 </div>
               ))
             }
