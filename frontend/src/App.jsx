@@ -167,8 +167,14 @@ User sees webpage*/
     const genre_String = genre_ids.join(",")   // this combines the values in the list into one string with commas - it becomes "1,2,10". This is what our similar_Anime_endpoint function expects as a parameter
     const url = "http://localhost:8000/similar-anime/" + genre_String 
     const response = await fetch(url)   // call the similar_anime_endpoint function with that url
-    const data = response.json()    // parse the JSON data into python data, store in "data" variable
-    setsimilarAnimeById(data)     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
+    const data = await response.json()    // parse the JSON data into python data, store in "data" variable
+    setsimilarAnimeById(
+      {
+        ...similarAnimeById,    // create a new object. ...similarAnimeById means create a new object for similarAnimeById and copy all the old key-values pairs into the new one. This allows us to add new key-value pairs (different similar anime for different anime ids) without
+        // completely replacing what was previously there. Want view similar anime for Naruto to show even after I click view similar anime for bleach
+        [anime.anime_id]: data   // this adds the anime id as a key value and a list of the similar anime as a value represented by the variable "data"
+      }
+    )     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
     console.log(data)   // to check in console
   }
 
@@ -319,7 +325,7 @@ User sees webpage*/
                   </button> */} 
 
                   <button   
-                  /*this should get recommendations*/
+                  /*this should remove from watchlist*/
                   type="button"
                   onClick={() => handleRemoveFromWatchlist(anime?.anime_id)}  // passing a parameter, so we need to do () => first
                   >
