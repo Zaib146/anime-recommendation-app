@@ -269,11 +269,14 @@ User sees webpage*/
                   View Similar Anime
                 </button> 
 
+                {/* now this block of code will only run if similarAnimeById[anime.anime_id] exists (does the key exist in there, checks by seeing if the value stored at that key exists). The && means if the statement on the left is correct,
+          execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
                 {similarAnimeById[anime.anime_id] &&
                 (
                   <>
                     <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
-                    {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return */}
+                    {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
+                    For example, if it's ["Bleach", "Naruto"], then display them with bullets on separate lines */}
                   </>
                 )
                 }
