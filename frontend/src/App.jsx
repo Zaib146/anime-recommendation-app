@@ -75,7 +75,7 @@ User sees webpage*/
   // if current view is "watchlist", it'll show what's clicked when you click View Saved Watchlist. It will only show EITHER recommendations or watchlist, not both. That is the point of currentView, to differentiate
   // what we say on the page
   const [watchlist, setWatchlist] = useState([])  // need a watchlist component, like we have one for recommendations
-  const [similarAnimeById, setsimilarAnimeById] = useState({})    // when this is empty, that means no anime has loaded similar anime yet. Each anime we click it add, it adds to the list (keeps what was in it before)
+  const [similarAnimeById, setSimilarAnimeById] = useState({})    // when this is empty, that means no anime has loaded similar anime yet. Each anime we click it add, it adds to the list (keeps what was in it before)
   // for example, this is what's inside similarAnimeById after we click View Similar Anime for both Bleach and Naruto
   // {
   // 20: ["Bleach", "One Piece", "Black Clover"],
@@ -85,6 +85,7 @@ User sees webpage*/
   async function handleGetRecommendations()
   //async means this function will wait for something that takes time. This is because fetch with the url takes time.
   {
+    setSimilarAnimeById({})
     const animeName = encodeURIComponent(anime) //Changes "One Piece" to "One%20Piece" in actual url, since url does not like spaces
     const url = "http://localhost:8000/recommendations/" + animeName
     const response = await fetch(url)   // await means pause this function until results come back, literally wait for results. 
@@ -94,7 +95,6 @@ User sees webpage*/
     setRecommendations(data)      // change recommendations to value in data variable
     setCurrentView("recommendations") // change currentView to "recommendations"
     // console.log(recommendations)   // this is to print in console tab in F12 to test. will comment out / remove later
-
   }
 
   // this request is a POST request. 
@@ -153,6 +153,7 @@ User sees webpage*/
   // this is for a GET request
   async function handleViewWatchlist()
   {
+    setSimilarAnimeById({})
     const url = "http://localhost:8000/watchlist" // same url is fine
     const response = await fetch(url)   // default HTTP method is a get method, so it'll do that. 
     const data = await response.json()    // extract the JSON from the python information in response, store in data variable
@@ -168,7 +169,7 @@ User sees webpage*/
     const url = "http://localhost:8000/similar-anime/" + genre_String 
     const response = await fetch(url)   // call the similar_anime_endpoint function with that url
     const data = await response.json()    // parse the JSON data into python data, store in "data" variable
-    setsimilarAnimeById(
+    setSimilarAnimeById(
       {
         ...similarAnimeById,    // create a new object. ...similarAnimeById means create a new object for similarAnimeById and copy all the old key-values pairs into the new one. This allows us to add new key-value pairs (different similar anime for different anime ids) without
         // completely replacing what was previously there. Want view similar anime for Naruto to show even after I click view similar anime for bleach
