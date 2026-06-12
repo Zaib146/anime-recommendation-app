@@ -179,6 +179,18 @@ User sees webpage*/
     console.log(data)   // to check in console
   }
 
+  async function handleRemoveSimilarAnime(anime_id)
+  {
+    // This is taking what's on the right side of the equals side, here similarAnimeById, and destructuring it. JSX is saying take the value at the index anime_id, store that value in the variable "removed". Everything else, store in the variable remainingSimilarAnime.
+    // so we're creating 2 new constant variables. State has not yet been changed. 
+    const {
+      [anime_id]: removed,
+      ...remainingSimilarAnime
+    } = similarAnimeById
+    setSimilarAnimeById(remainingSimilarAnime)  // this sets similarAnimeById by to what's left
+    console.log(data)   // to check in console
+  }
+
 //   JSX section: display data, hide data, show buttons, show images
 
   return (   // return sends the JSX back to the browser
@@ -263,12 +275,29 @@ User sees webpage*/
                   Save to Watchlist
                 </button>  
 
-                <button
-                  type = "button"
-                  onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
-                >
-                  View Similar Anime
-                </button> 
+                {similarAnimeById[anime.anime_id] 
+                 ? (
+                    <>
+                      <button
+                        type = "button"
+                        onClick = {() => handleRemoveSimilarAnime(anime.anime_id)}  
+                      >
+                        View Less
+                      </button> 
+                    </>
+                  )
+
+                 : (
+                    <>
+                      <button
+                        type = "button"
+                        onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
+                      >
+                      View Similar Anime
+                      </button> 
+                    </>
+                  )
+                }
 
                 {/* now this block of code will only run if similarAnimeById[anime.anime_id] exists (does the key exist in there, checks by seeing if the value stored at that key exists). The && means if the statement on the left is correct,
           execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
@@ -281,6 +310,8 @@ User sees webpage*/
                   </>
                 )
                 }
+
+                
 
                 <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
                 <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
