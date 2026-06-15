@@ -287,38 +287,39 @@ User sees webpage*/
                     alt = {anime?.title}  
                   />
                 </div>
+                <div>
+                  <button
+                    type = "button"
+                    onClick = {() => handleSaveToWatchlist(anime)}  
+                  >
+                    Save to Watchlist
+                  </button>  
 
-                <button
-                  type = "button"
-                  onClick = {() => handleSaveToWatchlist(anime)}  
-                >
-                  Save to Watchlist
-                </button>  
+                  {/* this code checks if similarAnimeById[anime.anime_id] exists. if it does, create the "View Less" button. Else, create the "View Similar Anime" button. ? is a ternay operator here */}
+                  {similarAnimeById[anime.anime_id] 
+                  ? (
+                      <>
+                        <button
+                          type = "button"
+                          onClick = {() => handleRemoveSimilarAnime(anime.anime_id)}  
+                        >
+                          View Less
+                        </button> 
+                      </>
+                    )
 
-                {/* this code checks if similarAnimeById[anime.anime_id] exists. if it does, create the "View Less" button. Else, create the "View Similar Anime" button. ? is a ternay operator here */}
-                {similarAnimeById[anime.anime_id] 
-                 ? (
-                    <>
-                      <button
-                        type = "button"
-                        onClick = {() => handleRemoveSimilarAnime(anime.anime_id)}  
-                      >
-                        View Less
-                      </button> 
-                    </>
-                  )
-
-                 : (
-                    <>
-                      <button
-                        type = "button"
-                        onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
-                      >
-                      View Similar Anime
-                      </button> 
-                    </>
-                  )
-                }
+                  : (
+                      <>
+                        <button
+                          type = "button"
+                          onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
+                        >
+                        View Similar Anime
+                        </button> 
+                      </>
+                    )
+                  }
+                </div>
 
                 {/* now this block of code will only run if similarAnimeById[anime.anime_id] exists (does the key exist in there, checks by seeing if the value stored at that key exists). The && means if the statement on the left is correct,
           execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
