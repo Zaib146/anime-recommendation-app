@@ -65,7 +65,6 @@ def get_recommendation(anime_name):
     return results
 
 
-# if an anime has no genres (not in the Jikan API), the page will go blank when I click "View Similar Anime" for that anime. This is because this function relies on an anime having genres
 def get_genre_recommendations(genre_ids):
     genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10" (parameter was ["1", "2", "10"]). 
     # str(id) converts each id number to a string while looping through ids in the original list. ",".join puts a comma between each id value

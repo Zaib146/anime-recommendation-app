@@ -162,6 +162,19 @@ User sees webpage*/
 
   async function handleViewSimilarAnime(anime)
   {
+    // this checks if anime has no genres in the Jikan API. If it does not have any, it displays the message and returns out of the function. I could put the logic below the if statement in an else block, but this works as is.
+    // Now my page does not crash when I click "View Similar Anime" for an anime that has no genres
+    if (anime.genres.length === 0)
+    {
+      setSimilarAnimeById(
+        {
+          ...similarAnimeById,
+          [anime.anime_id]: ["No Similar Anime (no genres listed)"]
+        }
+      )
+      return
+    }
+
     const genre_ids = anime.genres.map(genre => genre.mal_id)  // here, genres is a list with dictionaies that have mal_id and name (1, Action as values). Loop through that list. For each dictionary in the list
     //, here called "genre" get the mal_id value for that dictionary. So it would get "1" in this example and do the rest for the other dictionaries. It would make one list with the values, like [1,2,10]
     const genre_String = genre_ids.join(",")   // this combines the values in the list into one string with commas - it becomes "1,2,10". This is what our similar_Anime_endpoint function expects as a parameter
@@ -273,6 +286,7 @@ User sees webpage*/
                   Save to Watchlist
                 </button>  
 
+                {/* this code checks if similarAnimeById[anime.anime_id] exists. if it does, create the "View Less" button. Else, create the "View Similar Anime" button. ? is a ternay operator here */}
                 {similarAnimeById[anime.anime_id] 
                  ? (
                     <>
