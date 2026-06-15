@@ -271,22 +271,26 @@ User sees webpage*/
             
             {recommendations.map((anime) => (  
               <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
-                <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
+                <div>
+                  <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
 
-                {/*since we are passing an argument, we need the () =>, otherwise the function would run
-                    automatically. We only want the function to run when clicked. So () => creates a function that has the function handleSaveToWatchlist(anime)
-                    , which is only called when button is click. "Create a function, but do not run it yet".
-                    function() {
-                    handleSaveToWatchlist(anime)
-                    }*/}
+                  {/*since we are passing an argument, we need the () =>, otherwise the function would run
+                      automatically. We only want the function to run when clicked. So () => creates a function that has the function handleSaveToWatchlist(anime)
+                      , which is only called when button is click. "Create a function, but do not run it yet".
+                      function() {
+                      handleSaveToWatchlist(anime)
+                      }*/}
 
-                {/* alt is what shows if the src does not work */}
+                  {/* alt is what shows if the src does not work */}
+                </div>
+
                 <div>
                   <img
                     src = {anime?.images}
                     alt = {anime?.title}  
                   />
                 </div>
+
                 <div>
                   <button
                     type = "button"
@@ -325,25 +329,28 @@ User sees webpage*/
           execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
                 {similarAnimeById[anime.anime_id] &&
                 (
-                  <>
+                  <div>
                     <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
                     {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
                     For example, if it's ["Bleach", "Naruto"], then display them with bullets on separate lines */}
-                  </>
+                  </div>
                 )
                 }
 
                 
+                <div>
+                  <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
+                  <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                    {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
+                  </ul>
+                </div>
 
-                <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
-                <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-                  {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
-                </ul>
-
-                <p>Synopsis: </p>
-                <p>
-                  {anime?.synopsis}
-                </p>
+                <div>
+                  <p>Synopsis: </p>
+                  <p>
+                    {anime?.synopsis}
+                  </p>
+                </div>
 
                 
                 
