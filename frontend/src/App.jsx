@@ -271,7 +271,7 @@ User sees webpage*/
             
             {recommendations.map((anime) => (  
               <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
-                <div>
+                <div className = "title-section">
                   <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
 
                   {/*since we are passing an argument, we need the () =>, otherwise the function would run
@@ -284,14 +284,14 @@ User sees webpage*/
                   {/* alt is what shows if the src does not work */}
                 </div>
 
-                <div>
+                <div className = "image-section">
                   <img
                     src = {anime?.images}
                     alt = {anime?.title}  
                   />
                 </div>
 
-                <div>
+                <div className = "button-section">
                   <button
                     type = "button"
                     onClick = {() => handleSaveToWatchlist(anime)}  
@@ -329,31 +329,31 @@ User sees webpage*/
           execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
                 {similarAnimeById[anime.anime_id] &&
                 (
-                  <div>
+                  <div className = "similar-anime-section">
                     <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
-                    {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
-                    For example, if it's ["Bleach", "Naruto"], then display them with bullets on separate lines */}
+                    <div className = "similar-anime-list">
+                      {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
+                      For example, if it's ["Bleach", "Naruto"], then display them with bullets on separate lines */}
+                    </div>
                   </div>
                 )
                 }
 
                 
-                <div>
+                <div className = "genres-section">
                   <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
                   <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
                     {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
                   </ul>
                 </div>
 
-                <div>
+                <div className = "synopsis-section">
                   <p>Synopsis: </p>
                   <p>
                     {anime?.synopsis}
                   </p>
                 </div>
 
-                
-                
                 {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
                 so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
                 undefined.title, and React crashes. So in recommendations[1]?.title, first get recommendations[1]. IF IT EXISTS, get .title. Else, return undefined*/}

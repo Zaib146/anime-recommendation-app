@@ -182,3 +182,34 @@
     border-right-color: var(--border);
   }
 }
+
+.title-section {
+
+}
+
+.image-section {
+  margin-top: 20px;
+}
+
+.button-section {
+  margin-top: 20px;
+}
+
+.similar-anime-section {
+  margin-top: 20px;
+}
+
+.similar-anime-list {
+  margin-top: 20px;
+}
+
+.genres-section {
+  /* margin-top adds spacing above this section */
+  margin-top: 20px;
+
+}
+
+.synopsis-section {
+  margin-top: 20px;
+
+}
