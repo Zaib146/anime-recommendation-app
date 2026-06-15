@@ -279,6 +279,15 @@ User sees webpage*/
                     function() {
                     handleSaveToWatchlist(anime)
                     }*/}
+
+                {/* alt is what shows if the src does not work */}
+                <div>
+                  <img
+                    src = {anime?.images}
+                    alt = {anime?.title}  
+                  />
+                </div>
+
                 <button
                   type = "button"
                   onClick = {() => handleSaveToWatchlist(anime)}  
@@ -335,13 +344,7 @@ User sees webpage*/
                   {anime?.synopsis}
                 </p>
 
-                <p>Images: </p>
-
-                {/* alt is what shows if the src does not work */}
-                <img
-                  src = {anime?.images}
-                  alt = {anime?.title}  
-                />
+                
                 
                 {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
                 so initially recommendations = [], so recommendations[0] and recommendations[1] are undefined. so recommendations[1].title becomes 
