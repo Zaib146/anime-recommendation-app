@@ -107,7 +107,6 @@ User sees webpage*/
       image_url: anime.images,
       synopsis: anime.synopsis,
       genres: anime.genres,
-      similar_anime: anime.similar_anime
     }
 
     console.log("Saving anime:", animeToSave)

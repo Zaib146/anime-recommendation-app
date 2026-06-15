@@ -36,7 +36,6 @@ class Anime(BaseModel):     # class Anime inherits all the functionality from Py
     image_url: str
     synopsis: str
     genres: list        # must be a list
-    similar_anime: list
 
 # create app object
 # this creates my backend server, we're creating an application object here. This "app" becomes my server, my API, my backend. Everything attaches to this object
@@ -83,7 +82,6 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     # this endpoint receives an anime object
     
     genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
-    similar_anime_text = json.dumps(anime.similar_anime)    # same idea as genres_text
     
     conn = sqlite3.connect("anime_app.db")      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
                                                         # conn is now the open connection to my database. we use conn later to refer to that same database connection. conn is an open database file, a connection object
@@ -104,12 +102,11 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
             title,
             image_url,
             synopsis,
-            genres,
-            similar_anime
+            genres
         )
         
         -- We use "?" as placeholder values, since Naruto values will be different than Bleach, etc
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?)
         """,
         
         # these are the actual values that will fill in the placeholder ?. This is a tuple. Python provides these values, SQLite combines them with the placeholder values
@@ -119,7 +116,6 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
             anime.image_url,
             anime.synopsis,
             genres_text,
-            similar_anime_text
         )
         )
     
@@ -143,7 +139,7 @@ def watchlist2_endpoint():
     
     cursor.execute("""
     -- selecting which columns from the table to read, must type each individually
-    SELECT anime_id, title, image_url, synopsis, genres, similar_anime
+    SELECT anime_id, title, image_url, synopsis, genres
     FROM watchlist 
                    """)
     # conn.commit() not needed here - no changes to database made. still want conn.close() later
@@ -160,7 +156,7 @@ def watchlist2_endpoint():
     
     saved_anime = []
     for row in rows:
-        item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "images": row[2], "similar_anime": json.loads(row[5])}
+        item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "images": row[2]}
         # use indices since tuples require indices, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
