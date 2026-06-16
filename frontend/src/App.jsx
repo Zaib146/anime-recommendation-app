@@ -388,7 +388,15 @@ User sees webpage*/
                       Remove from Watchlist
                     </button> */} 
                   </div> 
-                  
+
+                  <div className = "image-watchlist-section">
+                    {/* alt is what shows if the src does not work */}
+                    <img
+                      src = {anime?.images}
+                      alt = {anime?.title}  
+                    />
+                  </div>
+
                   <div className = "button-watchlist-section">
                     <button   
                     /*this should remove from watchlist*/
@@ -427,31 +435,33 @@ User sees webpage*/
                   execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
                   {similarAnimeById[anime.anime_id] &&
                   (
-                    <>
+                    <div className = "similar-anime-watchlist-section">
                       <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
-                      {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
-                      For example, if it's ["Bleach", "Naruto"], then display them with bullets on separate lines */}
-                    </>
+                      <div className = "similar-anime-watchlist-list">
+                        {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
+                        For example, if it's ["Bleach", "Naruto"], then display them with bullets on separate lines */}
+                      </div>
+                    </div>
                   )
                   }
 
-                  <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
-                  <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
-                    {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
-                  </ul>
+                  <div className = "genres-watchlist-section">
+                    <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
+                    <div className = "genres-watchlist-list">
+                      <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                        {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
+                      </ul>
+                    </div>
+                  </div>
 
-                  <p>Synopsis: </p>
-                  <p>
-                    {anime?.synopsis}
-                  </p>
-
-                  <p>Images: </p>
-
-                  {/* alt is what shows if the src does not work */}
-                  <img
-                    src = {anime?.images}
-                    alt = {anime?.title}  
-                  />
+                  <div className = "synopsis-watchlist-section">
+                    <p>Synopsis: </p>
+                    <div className = "synopsis-watchlist-list">
+                      <p>
+                        {anime?.synopsis}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               ))
             }

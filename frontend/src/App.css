@@ -246,11 +246,11 @@
   gap: 10px;    /* put this much spacing between the buttons. Flexbox property */
 }
 
-.similar-watchlist-section {
+.similar-anime-watchlist-section {
   margin-top: 20px;
 }
 
-.similar-watchlist-list {
+.similar-anime-watchlist-list {
   /* alternative is to do margin-bottom on the header of similar-anime-list only - would look like "similar-anime-list p {" etc. Felt using margin-top and working with actual sections is cleaner*/
   margin-top: 20px;
 }
