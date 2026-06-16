@@ -387,41 +387,42 @@ User sees webpage*/
                     >
                       Remove from Watchlist
                     </button> */} 
-                  </div>  
-                    <div className = "button-watchlist-section">
-                      <button   
-                      /*this should remove from watchlist*/
-                      type="button"
-                      onClick={() => handleRemoveFromWatchlist(anime?.anime_id)}  // passing a parameter, so we need to do () => first
-                      >
-                      Remove From Saved Watchlist
-                      </button>
+                  </div> 
+                  
+                  <div className = "button-watchlist-section">
+                    <button   
+                    /*this should remove from watchlist*/
+                    type="button"
+                    onClick={() => handleRemoveFromWatchlist(anime?.anime_id)}  // passing a parameter, so we need to do () => first
+                    >
+                    Remove From Saved Watchlist
+                    </button>
 
-                      {similarAnimeById[anime.anime_id] 
-                        ? (
-                            <>
-                              <button
-                                type = "button"
-                                onClick = {() => handleRemoveSimilarAnime(anime.anime_id)}  
-                              >
-                                View Less
-                              </button> 
-                            </>
-                          )
+                    {similarAnimeById[anime.anime_id] 
+                      ? (
+                          <>
+                            <button
+                              type = "button"
+                              onClick = {() => handleRemoveSimilarAnime(anime.anime_id)}  
+                            >
+                              View Less
+                            </button> 
+                          </>
+                        )
 
-                        : (
-                            <>
-                              <button
-                                type = "button"
-                                onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
-                              >
-                              View Similar Anime
-                              </button> 
-                            </>
-                          )
-                      }
-                    </div>
+                      : (
+                          <>
+                            <button
+                              type = "button"
+                              onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
+                            >
+                            View Similar Anime
+                            </button> 
+                          </>
+                        )
+                    }
                   </div>
+                  
                   {/* now this block of code will only run if similarAnimeById[anime.anime_id] exists (does the key exist in there, checks by seeing if the value stored at that key exists). The && means if the statement on the left is correct,
                   execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
                   {similarAnimeById[anime.anime_id] &&
