@@ -236,22 +236,23 @@ User sees webpage*/
         {/*when the user clicks Get Recommendations, it calls this function. Since there's no argument, it can 
           safely be called only when clicked, since we're giving React the function itself. If it was instead onClick={handleGetRecommendations()},
           it would run without being click on*/}
-        <button   
-          /*this should get recommendations*/
-          type="button"
-          onClick={handleGetRecommendations}  
-        >
-          Get Recommendations
-        </button>
+        <div className = "button-recs-watchlist-section">
+          <button   
+            /*this should get recommendations*/
+            type="button"
+            onClick={handleGetRecommendations}  
+          >
+            Get Recommendations
+          </button>
 
-        <button   
-          /*this should get recommendations*/
-          type="button"
-          onClick={handleViewWatchlist}  
-        >
-          View Saved Watchlist
-        </button>
-
+          <button   
+            /*this should get recommendations*/
+            type="button"
+            onClick={handleViewWatchlist}  
+          >
+            View Saved Watchlist
+          </button>
+        </div>
           {/* now this block of code will only run if currentView === "recommendations". The 3 = signs is a conditional equals. The && means if the statement on the left is correct,
           execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
         {currentView === "recommendations" && 

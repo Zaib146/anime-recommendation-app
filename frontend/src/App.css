@@ -183,6 +183,13 @@
   }
 }
 
+/* this is for the 2 buttons at the top */
+.button-recs-watchlist-section {
+  display: flex;    /* turn .button-recommendation-section into a flex container. Turns on flexbox */
+  justify-content: center;  /* center all buttons, or flex items in the container. Flexbox property */
+  gap: 10px;    /* put this much spacing between the buttons. Flexbox property */
+}
+
 /* this is for the get recommendations page */
 .title-recommendations-section {
   
