@@ -224,6 +224,7 @@
 
 .genres-recommendations-list {
   margin-top: 20px;
+  text-align: center
 }
 
 .synopsis-recommendations-section {
@@ -233,6 +234,7 @@
 
 .synopsis-recommendations-list {
   margin-top: 20px;
+  text-align: center
 }
 
 /* this is for the watchlist page */
@@ -264,20 +266,20 @@
 
 .genres-watchlist-section {
   margin-top: 20px;
-
 }
 
 .genres-watchlist-list {
   margin-top: 20px;
+  text-align: center
 }
 
 .synopsis-watchlist-section {
   margin-top: 20px;
-
 }
 
 .synopsis-watchlist-list {
   margin-top: 20px;
+  text-align: center
 }
 
 

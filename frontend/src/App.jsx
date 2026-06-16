@@ -448,10 +448,8 @@ User sees webpage*/
 
                   <div className = "genres-watchlist-section">
                     <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
-                    <div className = "genres-watchlist-list">
-                      <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                    <div className = "genres-watchlist-list">    {/* <ul> = Unordered List, creates a bulleted list container*/}
                         {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
-                      </ul>
                     </div>
                   </div>
 
