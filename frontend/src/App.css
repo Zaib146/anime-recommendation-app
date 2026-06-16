@@ -184,7 +184,7 @@
 }
 
 .title-section {
-
+  
 }
 
 .image-section {
@@ -209,7 +209,15 @@
 
 }
 
+.genres-list {
+  margin-top: 20px;
+}
+
 .synopsis-section {
   margin-top: 20px;
 
+}
+
+.synopsis-list {
+  margin-top: 20px;
 }

@@ -342,16 +342,16 @@ User sees webpage*/
                 
                 <div className = "genres-section">
                   <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
-                  <ul>    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                  <div className = "genres-list">    {/* <ul> = Unordered List, creates a bulleted list container*/}
                     {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
-                  </ul>
+                  </div>
                 </div>
 
                 <div className = "synopsis-section">
                   <p>Synopsis: </p>
-                  <p>
+                  <div className = "synopsis-list">
                     {anime?.synopsis}
-                  </p>
+                  </div>
                 </div>
 
                 {/* ? is used for optional chaining. Only continue if the thing on the left exists. they are needed as when the page first loads, const [recommendations, setRecommendations] = useState([])
