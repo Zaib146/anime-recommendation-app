@@ -183,41 +183,95 @@
   }
 }
 
-.title-section {
+/* this is for the get recommendations page */
+.title-recommendations-section {
   
 }
 
-.image-section {
-  margin-top: 20px;
-}
-
-.button-section {
-  margin-top: 20px;
-}
-
-.similar-anime-section {
-  margin-top: 20px;
-}
-
-.similar-anime-list {
-  margin-top: 20px;
-}
-
-.genres-section {
+.image-recommendations-section {
   /* margin-top adds spacing above this section */
   margin-top: 20px;
-
 }
 
-.genres-list {
+.button-recommendations-section {
+  margin-top: 20px;
+
+  display: flex;    /* turn .button-recommendation-section into a flex container. Turns on flexbox */
+  justify-content: center;  /* center all buttons, or flex items in the container. Flexbox property */
+  gap: 10px;    /* put this much spacing between the buttons. Flexbox property */
+}
+
+.similar-anime-recommendations-section {
   margin-top: 20px;
 }
 
-.synopsis-section {
+.similar-anime-recommendations-list {
+  /* alternative is to do margin-bottom on the header of similar-anime-list only - would look like "similar-anime-list p {" etc. Felt using margin-top and working with actual sections is cleaner*/
+  margin-top: 20px;
+}
+
+.genres-recommendations-section {
   margin-top: 20px;
 
 }
 
-.synopsis-list {
+.genres-recommendations-list {
   margin-top: 20px;
 }
+
+.synopsis-recommendations-section {
+  margin-top: 20px;
+
+}
+
+.synopsis-recommendations-list {
+  margin-top: 20px;
+}
+
+/* this is for the watchlist page */
+.title-watchlist-section {
+  
+}
+
+.image-watchlist-section {
+  /* margin-top adds spacing above this section */
+  margin-top: 20px;
+}
+
+.button-watchlist-section {
+  margin-top: 20px;
+
+  display: flex;    /* turn .button-watchlist-section into a flex container. Turns on flexbox */
+  justify-content: center;  /* center all buttons, or flex items in the container. Flexbox property */
+  gap: 10px;    /* put this much spacing between the buttons. Flexbox property */
+}
+
+.similar-watchlist-section {
+  margin-top: 20px;
+}
+
+.similar-watchlist-list {
+  /* alternative is to do margin-bottom on the header of similar-anime-list only - would look like "similar-anime-list p {" etc. Felt using margin-top and working with actual sections is cleaner*/
+  margin-top: 20px;
+}
+
+.genres-watchlist-section {
+  margin-top: 20px;
+
+}
+
+.genres-watchlist-list {
+  margin-top: 20px;
+}
+
+.synopsis-watchlist-section {
+  margin-top: 20px;
+
+}
+
+.synopsis-watchlist-list {
+  margin-top: 20px;
+}
+
+
+

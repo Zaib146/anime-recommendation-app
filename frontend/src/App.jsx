@@ -270,8 +270,8 @@ User sees webpage*/
             in Python*/}
             
             {recommendations.map((anime) => (  
-              <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
-                <div className = "title-section">
+              <div className = "anime-recommendations-section"> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
+                <div className = "title-recommendations-section">
                   <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
 
                   {/*since we are passing an argument, we need the () =>, otherwise the function would run
@@ -284,14 +284,14 @@ User sees webpage*/
                   {/* alt is what shows if the src does not work */}
                 </div>
 
-                <div className = "image-section">
+                <div className = "image-recommendations-section">
                   <img
                     src = {anime?.images}
                     alt = {anime?.title}  
                   />
                 </div>
 
-                <div className = "button-section">
+                <div className = "button-recommendations-section">
                   <button
                     type = "button"
                     onClick = {() => handleSaveToWatchlist(anime)}  
@@ -329,9 +329,9 @@ User sees webpage*/
           execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
                 {similarAnimeById[anime.anime_id] &&
                 (
-                  <div className = "similar-anime-section">
+                  <div className = "similar-anime-recommendations-section">
                     <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
-                    <div className = "similar-anime-list">
+                    <div className = "similar-anime-recommendations-list">
                       {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
                       For example, if it's ["Bleach", "Naruto"], then display them with bullets on separate lines */}
                     </div>
@@ -340,16 +340,16 @@ User sees webpage*/
                 }
 
                 
-                <div className = "genres-section">
+                <div className = "genres-recommendations-section">
                   <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
-                  <div className = "genres-list">    {/* <ul> = Unordered List, creates a bulleted list container*/}
+                  <div className = "genres-recommendations-list">    {/* <ul> = Unordered List, creates a bulleted list container*/}
                     {anime?.genres?.map((genre) => (<li>{genre.name}</li>))}   {/* <li> = list item, each bullet inside a <ul> */}
                   </div>
                 </div>
 
-                <div className = "synopsis-section">
+                <div className = "synopsis-recommendations-section">
                   <p>Synopsis: </p>
-                  <div className = "synopsis-list">
+                  <div className = "synopsis-recommendations-list">
                     {anime?.synopsis}
                   </div>
                 </div>
@@ -369,56 +369,59 @@ User sees webpage*/
         (
           <>
             {watchlist.map((anime) => 
-              (  
-                <div> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
-                  <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
+              (
+                <div className = "watchlist-anime-section"> 
+                  <div className = "title-watchlist-section"> {/*this <div> is a container for the anime information. It groups the elements below it together. It itself does not contain anything.*/}
+                    <p>Title: {anime?.title}</p>   {/*anime.title represents the anime at the specific index - for example, recommendations[1], then recommendations[2], etc*/}
 
-                  {/*since we are passing an argument, we need the () =>, otherwise the function would run
-                      automatically. We only want the function to run when clicked. So () => creates a function that has the function removeFromWatchlist(anime)
-                      , which is only called when button is click. "Create a function, but do not run it yet".
-                      function() {
-                      removeFromWatchlist(anime)
-                      }*/}
-                  {/* add a "Remove from Watchlist" button later
-                    <button   
-                    type = "button"
-                    onClick = {() => removeFromWatchlist(anime)}  
-                  >
-                    Remove from Watchlist
-                  </button> */} 
+                    {/*since we are passing an argument, we need the () =>, otherwise the function would run
+                        automatically. We only want the function to run when clicked. So () => creates a function that has the function removeFromWatchlist(anime)
+                        , which is only called when button is click. "Create a function, but do not run it yet".
+                        function() {
+                        removeFromWatchlist(anime)
+                        }*/}
+                    {/* add a "Remove from Watchlist" button later
+                      <button   
+                      type = "button"
+                      onClick = {() => removeFromWatchlist(anime)}  
+                    >
+                      Remove from Watchlist
+                    </button> */} 
+                  </div>  
+                    <div className = "button-watchlist-section">
+                      <button   
+                      /*this should remove from watchlist*/
+                      type="button"
+                      onClick={() => handleRemoveFromWatchlist(anime?.anime_id)}  // passing a parameter, so we need to do () => first
+                      >
+                      Remove From Saved Watchlist
+                      </button>
 
-                  <button   
-                  /*this should remove from watchlist*/
-                  type="button"
-                  onClick={() => handleRemoveFromWatchlist(anime?.anime_id)}  // passing a parameter, so we need to do () => first
-                  >
-                  Remove From Saved Watchlist
-                  </button>
+                      {similarAnimeById[anime.anime_id] 
+                        ? (
+                            <>
+                              <button
+                                type = "button"
+                                onClick = {() => handleRemoveSimilarAnime(anime.anime_id)}  
+                              >
+                                View Less
+                              </button> 
+                            </>
+                          )
 
-                  {similarAnimeById[anime.anime_id] 
-                    ? (
-                        <>
-                          <button
-                            type = "button"
-                            onClick = {() => handleRemoveSimilarAnime(anime.anime_id)}  
-                          >
-                            View Less
-                          </button> 
-                        </>
-                      )
-
-                    : (
-                        <>
-                          <button
-                            type = "button"
-                            onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
-                          >
-                          View Similar Anime
-                          </button> 
-                        </>
-                      )
-                  }
-
+                        : (
+                            <>
+                              <button
+                                type = "button"
+                                onClick = {() => handleViewSimilarAnime(anime)}  // happens only when button is clicked - since we have a parameter, we use () => here
+                              >
+                              View Similar Anime
+                              </button> 
+                            </>
+                          )
+                      }
+                    </div>
+                  </div>
                   {/* now this block of code will only run if similarAnimeById[anime.anime_id] exists (does the key exist in there, checks by seeing if the value stored at that key exists). The && means if the statement on the left is correct,
                   execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
                   {similarAnimeById[anime.anime_id] &&
