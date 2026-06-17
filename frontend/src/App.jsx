@@ -258,6 +258,11 @@ User sees webpage*/
         {currentView === "recommendations" && 
         (
           <>
+            {recommendations.length === 0 &&
+            (
+              <p>Anime data is temporarily unavailable. Please try again later.</p>
+            )
+            }
           
             {/*this recommendations.slice(1).map((anime) => is saying at index of 1 of recommendations onwards, loop through it (using map). (anime) represents the anime at that specific index each loop iteration}
             recommendations.slice(1).map((anime) => {

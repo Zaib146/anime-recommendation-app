@@ -36,8 +36,12 @@ def get_recommendation(anime_name):
 #    }
 # ]
     
-    
+    # print("JIKAN SEARCH RESPONSE:", data) - used to debug when getting blank page on frontend
     # data is a dictionary variable. anime_list is a list that contains dictionaries
+    
+    if "data" not in data:      # if python requests to myanimelist are not working, at least we get [] instead of nothing. Then this will cause the frontend to say the anime data is temporarily unavailable.
+        return []
+    
     anime_list = data["data"]
     # how to check this is a list
     # print(type(data["data"]))
