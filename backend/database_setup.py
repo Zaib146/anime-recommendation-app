@@ -35,6 +35,34 @@ cursor.execute("""
                """
                )
 
+cursor.execute("""     
+                CREATE TABLE IF NOT EXISTS anime_cache ( 
+                    -- IF NOT EXISTS avoid create duplicate tables. Create a table named "anime_cache" if it does not yet exist
+                    -- id is column name, INTEGER is data type, PRIMARY KEY uniquely identifies each row (actual values stored in this column). SQLite uses this as the rows identity. Row ids do not repeat 
+                    id INTEGER PRIMARY KEY, 
+                    
+                    -- anime_id = Jikan mal_id, UNIQUE mean no duplicate values allowed. Prevents user from saving Naruto (example) multiple times
+                    anime_id INTEGER UNIQUE,
+                    
+                    -- column name, saved as text
+                    title TEXT,
+                    
+                    image_url TEXT,
+                    
+                    synopsis TEXT,
+                    
+                    -- actual data for genres is a Python list, but later we'll convert it to text and store it as text. Since SQLite does not understand Python lists
+                    genres TEXT,
+                    
+                    -- same idea with genres, it's actually a Python list originally
+                    similar_anime TEXT
+                    
+                    -- see when this entry was added to the cache table
+                    fetched_at TEXT
+                )
+               """
+               )
+
 # watchlist table
 
 # ┌───────────────────────────────────────┐
