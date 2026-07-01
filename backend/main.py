@@ -24,6 +24,7 @@ from pydantic import BaseModel
 #     anime_id=20,
 #     title="Naruto"
 # )
+from datetime import datetime   # needed to get the correct date and time for fetched_at for the caching functions
 import json     # gives us access to JSON functions
 import sqlite3  # Python can now talk to SQLite
 
@@ -56,10 +57,10 @@ def delete_expired_cache():
     cursor = conn.cursor()
     
     cursor.execute("""     
+                -- this deletes all the anime in anime_cache that were added more than 30 days. datetime('now', '-30 days') is the current dattime - 30 days. For example, July 1st is today, so the cutoff becomes June 1st.
+                -- if fetched_at < June 1st (for example, May 28), it's older than 30 days, since it's less than the cutoff. so it's deleted   
                 DELETE FROM anime_cache 
-                WHERE -- fetched at is more than 30 days old, need to do save_to_cache first( 
-                    
-                )
+                WHERE fetched_at < datetime('now', '-30 days')
                """
                )
     conn.commit()
@@ -67,6 +68,9 @@ def delete_expired_cache():
     
     
 def save_to_cache(results):
+    fetched_at = datetime.now().isoformat()     # datetime.now() creates a datetime object representing current day and time. isoformat() converts the object into a string. 
+    # for example, the object can become 2026-07-01T18:42:15.123456 with the format of YYYY-MM-DDTHH:MM:SS.microseconds
+    
     genres_text = json.dumps(results.genres)
     similar_anime_text = json.dumps(results.similar_anime)
     
@@ -99,7 +103,7 @@ def save_to_cache(results):
             results.synopsis,
             genres_text,
             similar_anime_text,
-            #need to actually create the fetched_at part - results.fetched_at
+            fetched_at
         )
         )
     conn.commit()
