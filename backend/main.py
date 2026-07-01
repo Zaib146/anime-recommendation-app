@@ -66,7 +66,45 @@ def delete_expired_cache():
     conn.close()
     
     
-# def save_to_cache():
+def save_to_cache(results):
+    genres_text = json.dumps(results.genres)
+    similar_anime_text = json.dumps(results.similar_anime)
+    
+    conn = sqlite3.connect("backend/anime_app.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+        -- SQL command inside a Python string here.
+        -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
+        -- will insert the values in the tuple into the table "watchlist"
+        INSERT INTO anime_cache (
+            anime_id,
+            title,
+            image_url,
+            synopsis,
+            genres,
+            similar_anime,
+            fetched_at
+        )
+        
+        -- We use "?" as placeholder values, since Naruto values will be different than Bleach, etc
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """,
+        
+        # these are the actual values that will fill in the placeholder ?. This is a tuple. Python provides these values, SQLite combines them with the placeholder values
+        (
+            results.anime_id,
+            results.title,
+            results.image_url,
+            results.synopsis,
+            genres_text,
+            similar_anime_text,
+            #need to actually create the fetched_at part - results.fetched_at
+        )
+        )
+    conn.commit()
+    conn.close()
+
     
 # def limit_cache_size():
     
@@ -117,7 +155,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     
     genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
     
-    conn = sqlite3.connect("anime_app.db")      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
+    conn = sqlite3.connect("backend/anime_app.db")      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
                                                         # conn is now the open connection to my database. we use conn later to refer to that same database connection. conn is an open database file, a connection object
                                                         
     cursor = conn.cursor()  # .cursor() is asking the conn connection to "Give me a cursor so I can send commands to the database". .cursor() is a method from sqlite3, called on conn
