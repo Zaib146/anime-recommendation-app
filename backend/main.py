@@ -51,7 +51,20 @@ app.add_middleware( # Hey FastAPI, before any requests reach my routes, run them
 )
 
 
-# def delete_expired_cache():
+def delete_expired_cache():
+    conn = sqlite3.connect("backend/anime_app.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""     
+                DELETE FROM anime_cache 
+                WHERE -- fetched at is more than 30 days old, need to do save_to_cache first( 
+                    
+                )
+               """
+               )
+    conn.commit()
+    conn.close()
+    
     
 # def save_to_cache():
     
