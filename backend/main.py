@@ -129,7 +129,21 @@ def limit_cache_size():
     conn.commit()
     conn.close()
     
-# def get_cached_results():
+def get_cached_results(anime_name):
+    conn = sqlite3.connect("backend/anime_app.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+                -- SELECT * means select all the columns. So it returns anime_id, title, image_url, etc. it only selects the entries whose title is equal to the parameter, we use ? as a placeholder here          
+                SELECT * 
+                FROM anime_cache
+                WHERE title = ? 
+                """,
+                # comma is needed after anime_name to make sure it's a tuple - when entering multiple values, don't need to explicitly do it since it can tell
+                (anime_name,)
+               )
+    conn.commit()
+    conn.close()
 
 
 # if this url is called, run the get_recommendation function
