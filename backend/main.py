@@ -50,6 +50,16 @@ app.add_middleware( # Hey FastAPI, before any requests reach my routes, run them
     allow_headers = ["*"]       # allows all headers - header is extra information attached to a request
 )
 
+
+# def delete_expired_cache():
+    
+# def save_to_cache():
+    
+# def limit_cache_size():
+    
+# def get_cached_results():
+
+
 # if this url is called, run the get_recommendation function
 # this says to associate this url with this function called recommendations_endpoint
 # we created a separate function called recommendations_endpoint so we can use the get_recommendations function for other urls in the future
@@ -61,8 +71,19 @@ app.add_middleware( # Hey FastAPI, before any requests reach my routes, run them
 # FastAPI will automatically convert the python list returned into JSON. good for frontend later
 # @app.get attaches a route to the app object
 # the full @app.get line is a decorator
+
 @app.get("/recommendations/{anime_name}")
 def recommendations_endpoint(anime_name):
+    # call delete_expired_cache function first
+    
+    # try get_recommendation(anime_name)
+    # if the fetch works then:
+    # call save_to_cache(results) function
+    # call limit_cache_size() function
+    # return get_recommendation(anime_name)
+    
+    # except is when the url does not work - site not working
+    # then instead do return get_cached_results(anime_name) (call that function)
     return get_recommendation(anime_name)
 
 @app.get("/similar-anime/{genre_ids}")      # for example, receives a string like "1,2,10"
