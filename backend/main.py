@@ -110,7 +110,24 @@ def save_to_cache(results):
     conn.close()
 
     
-# def limit_cache_size():
+def limit_cache_size():
+    conn = sqlite3.connect("backend/anime_app.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""       
+                -- deletes all anime saved in cache that are more than 500 entries (entries 501 onwards). it check if the anime_id is NOT IN the top 500 entries 
+                -- ORDER BY fetched_at DESC - anime_id sorted in descending order by their date time, recorded by their fetched_at values). LIMIT 500 then limits it to the first 500. So any anime_id not in that list of top 500 is deleted
+                DELETE FROM anime_cache 
+                WHERE anime_id NOT IN (
+                    SELECT anime_id
+                    FROM anime_cache
+                    ORDER BY fetched_at DESC
+                    LIMIT 500
+                )
+               """
+               )
+    conn.commit()
+    conn.close()
     
 # def get_cached_results():
 
