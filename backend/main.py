@@ -41,7 +41,7 @@ class Anime(BaseModel):     # class Anime inherits all the functionality from Py
 class RecommendationResponse(BaseModel):    # instead of just one result of a list of anime for recommendations, now returning an object. 
     result_source: str      # clarify if data came from Jikan or cache
     message: str        # I can give a message saying cache was used, or empty str if not
-    results: List<Anime>    # a list of Anime objects
+    results: list[Anime]    # a list of Anime objects. This is the newer python convention using the built in generic for list instead List and needing an import. other way is List<Anime> with an import.
 
 # create app object
 # this creates my backend server, we're creating an application object here. This "app" becomes my server, my API, my backend. Everything attaches to this object
@@ -142,12 +142,14 @@ def get_cached_results(anime_name):
                 -- SELECT * means select all the columns. So it returns anime_id, title, image_url, etc. it only selects the entries whose title is equal to the parameter, we use ? as a placeholder here          
                 SELECT * 
                 FROM anime_cache
-                WHERE title = ? 
+                WHERE title LIKE ? 
                 """,
                 # comma is needed after anime_name to make sure it's a tuple - when entering multiple values, don't need to explicitly do it since it can tell
-                (anime_name,)
+                # before it was (anime_name,). but if it's "naruto", results with "Naruto" will not show. This format with % means anything that contains the text "naruto" - can be "Naruto: Last generations", "naruto: shippuden", etc. 
+                # for that reason we use LIKE instead of = for the syntax above
+                f"%{anime_name}%", 
                )
-    conn.commit()
+    
     conn.close()
 
 
@@ -172,6 +174,7 @@ def recommendations_endpoint(anime_name):
         results = get_recommendation(anime_name)
         save_to_cache(results)
         limit_cache_size()
+        
         return results
     
     except:
