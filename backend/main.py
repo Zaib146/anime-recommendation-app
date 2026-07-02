@@ -37,6 +37,11 @@ class Anime(BaseModel):     # class Anime inherits all the functionality from Py
     image_url: str
     synopsis: str
     genres: list        # must be a list
+    
+class RecommendationResponse(BaseModel):    # instead of just one result of a list of anime for recommendations, now returning an object. 
+    result_source: str      # clarify if data came from Jikan or cache
+    message: str        # I can give a message saying cache was used, or empty str if not
+    results: List<Anime>    # a list of Anime objects
 
 # create app object
 # this creates my backend server, we're creating an application object here. This "app" becomes my server, my API, my backend. Everything attaches to this object
@@ -161,16 +166,17 @@ def get_cached_results(anime_name):
 @app.get("/recommendations/{anime_name}")
 def recommendations_endpoint(anime_name):
     # call delete_expired_cache function first
+    delete_expired_cache()
     
-    # try get_recommendation(anime_name)
-    # if the fetch works then:
-    # call save_to_cache(results) function
-    # call limit_cache_size() function
-    # return get_recommendation(anime_name)
+    try:
+        results = get_recommendation(anime_name)
+        save_to_cache(results)
+        limit_cache_size()
+        return results
     
-    # except is when the url does not work - site not working
-    # then instead do return get_cached_results(anime_name) (call that function)
-    return get_recommendation(anime_name)
+    except:
+        return get_cached_results(anime_name)
+    
 
 @app.get("/similar-anime/{genre_ids}")      # for example, receives a string like "1,2,10"
 def similarAnime_endpoint(genre_ids):
