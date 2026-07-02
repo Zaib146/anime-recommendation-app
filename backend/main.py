@@ -58,7 +58,7 @@ def delete_expired_cache():
     
     cursor.execute("""     
                 -- this deletes all the anime in anime_cache that were added more than 30 days. datetime('now', '-30 days') is the current dattime - 30 days. For example, July 1st is today, so the cutoff becomes June 1st.
-                -- if fetched_at < June 1st (for example, May 28), it's older than 30 days, since it's less than the cutoff. so it's deleted   
+                -- if fetched_at < June 1st (for example, May 28), it's older than 30 days, since it's less than the cutoff. so it's deleted.   
                 DELETE FROM anime_cache 
                 WHERE fetched_at < datetime('now', '-30 days')
                """
@@ -80,7 +80,7 @@ def save_to_cache(results):
     cursor.execute("""
         -- SQL command inside a Python string here.
         -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
-        -- will insert the values in the tuple into the table "watchlist"
+        -- will insert the values in the tuple into the table "anime_cache"
         INSERT INTO anime_cache (
             anime_id,
             title,
@@ -115,8 +115,8 @@ def limit_cache_size():
     cursor = conn.cursor()
     
     cursor.execute("""       
-                -- deletes all anime saved in cache that are more than 500 entries (entries 501 onwards). it check if the anime_id is NOT IN the top 500 entries 
-                -- ORDER BY fetched_at DESC - anime_id sorted in descending order by their date time, recorded by their fetched_at values). LIMIT 500 then limits it to the first 500. So any anime_id not in that list of top 500 is deleted
+                -- deletes all anime saved in cache that are more than 500 entries (entries 501 onwards). it checks if the anime_id is NOT IN the top 500 entries 
+                -- ORDER BY fetched_at DESC - anime_id sorted in descending order by their date time, recorded by their fetched_at values. LIMIT 500 then limits it to the first 500. So any anime_id not in that list of top 500 is deleted
                 DELETE FROM anime_cache 
                 WHERE anime_id NOT IN (
                     SELECT anime_id
