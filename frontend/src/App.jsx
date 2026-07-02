@@ -81,6 +81,8 @@ User sees webpage*/
   // 20: ["Bleach", "One Piece", "Black Clover"],
   // 269: ["Naruto", "Yu Yu Hakusho", "D.Gray-man"]
   // } 
+  // needed to show message saying was cache was used, if used
+  const [recommendationMessage, setRecommendationMessage] = useState("")
 
   async function handleGetRecommendations()
   //async means this function will wait for something that takes time. This is because fetch with the url takes time.
@@ -92,7 +94,14 @@ User sees webpage*/
     // here FastAPI is listening on port 8000, so it receives the request. App.jsx does not access backend files directly. 
     // App.jsx sends an HTTP request to the backend server. When React uses fetch, React is asking FastAPI for data automatically.
     const data = await response.json()    //parse json data into python data, store that in "data"
-    setRecommendations(data)      // change recommendations to value in data variable
+
+    //data is now a RecommendationsResponse object that has these attributes. so need to define them in separate variables. const declares them as local variables
+    const recommendation_results = data.results
+    const message = data.message
+    const source = data.result_source
+
+    setRecommendations(recommendation_results)      // change recommendations to value in recommendations variable
+    setRecommendationMessage(message)
     setCurrentView("recommendations") // change currentView to "recommendations"
     // console.log(recommendations)   // this is to print in console tab in F12 to test. will comment out / remove later
   }
