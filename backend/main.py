@@ -139,8 +139,9 @@ def get_cached_results(anime_name):
     cursor = conn.cursor()
     
     cursor.execute("""
-                -- SELECT * means select all the columns. So it returns anime_id, title, image_url, etc. it only selects the entries whose title is equal to the parameter, we use ? as a placeholder here          
-                SELECT * 
+                -- SELECT * means select all the columns. So it returns anime_id, title, image_url, etc. it only selects the entries whose title is equal to the parameter, we use ? as a placeholder here 
+                -- changed it from that to explicitly stating which columns I'm using. In case the table column order changes later, this ensures I'm selecting the right columns         
+                SELECT anime_id, title, image_url, synopsis, genres, similar_anime, fetched_at 
                 FROM anime_cache
                 WHERE title LIKE ? 
                 """,
@@ -149,10 +150,22 @@ def get_cached_results(anime_name):
                 # for that reason we use LIKE instead of = for the syntax above
                 f"%{anime_name}%", 
                )
+    rows = cursor.fetchall()
+    
+    anime_results = []
+    for row in rows:
+        # anime_id is at row[0] here since we did not select id as a column in cursor.execute()
+        item = {"anime_id": row[0], "title": row[1], "images": row[2], "synopsis": row[3], "genres": json.loads(row[4]), "similar_anime": json.loads(row[5]), "fetched_at": row[6]}
+        # use indices since tuples require indices, they don't use key and value
+        # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
+        
+        anime_results.append(item)    # create a new dictionary from each row, save to saved_anime list
     
     conn.close()
-
-
+    
+    return anime_results
+    
+    
 # if this url is called, run the get_recommendation function
 # this says to associate this url with this function called recommendations_endpoint
 # we created a separate function called recommendations_endpoint so we can use the get_recommendations function for other urls in the future
