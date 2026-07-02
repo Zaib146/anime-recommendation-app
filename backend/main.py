@@ -184,14 +184,27 @@ def recommendations_endpoint(anime_name):
     delete_expired_cache()
     
     try:
-        results = get_recommendation(anime_name)
-        save_to_cache(results)
+        results1 = get_recommendation(anime_name)
+        save_to_cache(results1)
         limit_cache_size()
         
-        return results
+        response = RecommendationResponse(
+            result_source= "jikan",
+            message= "",
+            results=results1
+        )
+        
+        return response
     
     except:
-        return get_cached_results(anime_name)
+        results1 = get_cached_results(anime_name)
+        
+        response = RecommendationResponse(
+            result_source= "cache",
+            message= "Cannot pull information from the Jikan API currently. Results shown are pulled from the saved cache data.",
+            results=results1
+        )
+        return response
     
 
 @app.get("/similar-anime/{genre_ids}")      # for example, receives a string like "1,2,10"
