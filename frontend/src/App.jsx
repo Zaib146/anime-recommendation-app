@@ -262,6 +262,13 @@ User sees webpage*/
             View Saved Watchlist
           </button>
         </div>
+
+        {/*if recommendationMessage has text (the condition is if it's true, since empty string is false), then display the message*/}
+        {recommendationMessage && (
+            <p>{recommendationMessage}</p>
+        )
+        }  
+
           {/* now this block of code will only run if currentView === "recommendations". The 3 = signs is a conditional equals. The && means if the statement on the left is correct,
           execute what's on the right, here the code chunk in the parentheses. Also needed to put everything inside <> and </> since React needs only 1 single parent element. without that fragment, I have multiple */}
         {currentView === "recommendations" && 
