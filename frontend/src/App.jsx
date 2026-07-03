@@ -113,7 +113,7 @@ User sees webpage*/
                             // matches what FastAPI expects. this is a Pydantic model for the specific anime passed. Each loop iteration, we'll have a new one 
       anime_id: anime.anime_id,
       title: anime.title,
-      image_url: anime.images,
+      image_url: anime.image_url,
       synopsis: anime.synopsis,
       genres: anime.genres,
     }
@@ -308,7 +308,7 @@ User sees webpage*/
 
                 <div className = "image-recommendations-section">
                   <img
-                    src = {anime?.images}
+                    src = {anime?.image_url}
                     alt = {anime?.title}  
                   />
                 </div>
@@ -414,7 +414,7 @@ User sees webpage*/
                   <div className = "image-watchlist-section">
                     {/* alt is what shows if the src does not work */}
                     <img
-                      src = {anime?.images}
+                      src = {anime?.image_url}
                       alt = {anime?.title}  
                     />
                   </div>
