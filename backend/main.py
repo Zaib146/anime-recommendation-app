@@ -89,7 +89,7 @@ def save_to_cache(results):
         -- SQL command inside a Python string here.
         -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
         -- will insert the values in the tuple into the table "anime_cache"
-        INSERT OR REPLACE INTO INTO anime_cache (
+        INSERT OR REPLACE INTO anime_cache (
             anime_id,
             title,
             image_url,
