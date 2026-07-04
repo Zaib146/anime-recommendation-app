@@ -89,7 +89,7 @@ def save_to_cache(results):
         -- SQL command inside a Python string here.
         -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
         -- will insert the values in the tuple into the table "anime_cache"
-        INSERT INTO anime_cache (
+        INSERT OR REPLACE INTO INTO anime_cache (
             anime_id,
             title,
             image_url,
@@ -159,7 +159,7 @@ def get_cached_results(anime_name):
     anime_results = []
     for row in rows:
         # anime_id is at row[0] here since we did not select id as a column in cursor.execute()
-        item = {"anime_id": row[0], "title": row[1], "image_url": row[2], "synopsis": row[3], "genres": json.loads(row[4]), "similar_anime": json.loads(row[5]), "fetched_at": row[6]}
+        item = {"anime_id": row[0], "title": row[1], "image_url": row[2], "synopsis": row[3] or "No synposis available.", "genres": json.loads(row[4]), "similar_anime": json.loads(row[5]), "fetched_at": row[6]}
         # use indices since tuples require indices, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
