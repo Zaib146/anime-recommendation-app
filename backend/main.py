@@ -83,7 +83,7 @@ def save_to_cache(results):
     # before was getting an error when I did one cursor.execute on results, and tried to insert results.anime_id. that does not exist, since a list object does not have anime_id attribute. the dictionaries inside it do. so I put the code inside this loop
     for anime in results:
         genres_text = json.dumps(anime["genres"])
-        similar_anime_text = json.dumps(anime["similar_anime"])
+        similar_anime_text = json.dumps([])
         
         cursor.execute("""
         -- SQL command inside a Python string here.
@@ -200,7 +200,9 @@ def recommendations_endpoint(anime_name):
         
         return response
     
-    except:
+    except Exception as error:      # Exception is the base class for almost all normal Python errors. It includes AttributeError, KeyError, TypeError, ValueError, sqlite3.OperationalError
+        # except Exception means catch any normal Python exception. "as error" saves the actual error object into the variable named error. Now we can see what error it is in terminal.
+        print("ERROR IN RECOMMENDATIONS ENDPOINT:", error)
         results1 = get_cached_results(anime_name)
         
         response = RecommendationResponse(
