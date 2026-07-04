@@ -1,6 +1,6 @@
 import sqlite3  # Python can now talk to SQLite
 
-conn = sqlite3.connect("backend/anime_app.db")      # conn is now the open connection to my database. we use conn later to refer to that same database connection. 
+conn = sqlite3.connect("anime_app.db")      # conn is now the open connection to my database. we use conn later to refer to that same database connection. 
                                             # conn is an open database file. sqlite3.connect("anime_app.db") checks if the file "anime_app.db" exists.
                                             # if it does not, it then creates it (so I do not need to manually create it)
 

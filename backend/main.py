@@ -58,7 +58,7 @@ app.add_middleware( # Hey FastAPI, before any requests reach my routes, run them
 
 
 def delete_expired_cache():
-    conn = sqlite3.connect("backend/anime_app.db")
+    conn = sqlite3.connect("anime_app.db")
     cursor = conn.cursor()
     
     cursor.execute("""     
@@ -76,13 +76,16 @@ def save_to_cache(results):
     fetched_at = datetime.now().isoformat()     # datetime.now() creates a datetime object representing current day and time. isoformat() converts the object into a string. 
     # for example, the object can become 2026-07-01T18:42:15.123456 with the format of YYYY-MM-DDTHH:MM:SS.microseconds
     
-    genres_text = json.dumps(results.genres)
-    similar_anime_text = json.dumps(results.similar_anime)
-    
-    conn = sqlite3.connect("backend/anime_app.db")
+    conn = sqlite3.connect("anime_app.db")
     cursor = conn.cursor()
     
-    cursor.execute("""
+    # results is a list of dictionaries, each dictionary containing information about a specific anime. So we need to loop through results and add each anime dictionary in their individually into the anime_cache table. We do a cursor.execute for every anime dictionary
+    # before was getting an error when I did one cursor.execute on results, and tried to insert results.anime_id. that does not exist, since a list object does not have anime_id attribute. the dictionaries inside it do. so I put the code inside this loop
+    for anime in results:
+        genres_text = json.dumps(anime["genres"])
+        similar_anime_text = json.dumps(anime["similar_anime"])
+        
+        cursor.execute("""
         -- SQL command inside a Python string here.
         -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
         -- will insert the values in the tuple into the table "anime_cache"
@@ -102,21 +105,22 @@ def save_to_cache(results):
         
         # these are the actual values that will fill in the placeholder ?. This is a tuple. Python provides these values, SQLite combines them with the placeholder values
         (
-            results.anime_id,
-            results.title,
-            results.image_url,
-            results.synopsis,
+            anime["anime_id"],
+            anime["title"],
+            anime["image_url"],
+            anime["synopsis"],
             genres_text,
             similar_anime_text,
             fetched_at
         )
         )
+    
     conn.commit()
     conn.close()
 
     
 def limit_cache_size():
-    conn = sqlite3.connect("backend/anime_app.db")
+    conn = sqlite3.connect("anime_app.db")
     cursor = conn.cursor()
     
     cursor.execute("""       
@@ -135,7 +139,7 @@ def limit_cache_size():
     conn.close()
     
 def get_cached_results(anime_name):
-    conn = sqlite3.connect("backend/anime_app.db")
+    conn = sqlite3.connect("anime_app.db")
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -148,7 +152,7 @@ def get_cached_results(anime_name):
                 # comma is needed after anime_name to make sure it's a tuple - when entering multiple values, don't need to explicitly do it since it can tell
                 # before it was (anime_name,). but if it's "naruto", results with "Naruto" will not show. This format with % means anything that contains the text "naruto" - can be "Naruto: Last generations", "naruto: shippuden", etc. 
                 # for that reason we use LIKE instead of = for the syntax above
-                f"%{anime_name}%", 
+                (f"%{anime_name}%",)    # extra () needed so SQL treats this as one object. Before it treated "Naruto" as 6 objects, instead of 1 tuple which it should be 
                )
     rows = cursor.fetchall()
     
@@ -225,7 +229,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     
     genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
     
-    conn = sqlite3.connect("backend/anime_app.db")      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
+    conn = sqlite3.connect("anime_app.db")      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
                                                         # conn is now the open connection to my database. we use conn later to refer to that same database connection. conn is an open database file, a connection object
                                                         
     cursor = conn.cursor()  # .cursor() is asking the conn connection to "Give me a cursor so I can send commands to the database". .cursor() is a method from sqlite3, called on conn
