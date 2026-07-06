@@ -187,7 +187,7 @@ User sees webpage*/
     const genre_ids = anime.genres.map(genre => genre.mal_id)  // here, genres is a list with dictionaies that have mal_id and name (1, Action as values). Loop through that list. For each dictionary in the list
     //, here called "genre" get the mal_id value for that dictionary. So it would get "1" in this example and do the rest for the other dictionaries. It would make one list with the values, like [1,2,10]
     const genre_String = genre_ids.join(",")   // this combines the values in the list into one string with commas - it becomes "1,2,10". This is what our similar_Anime_endpoint function expects as a parameter
-    const url = "http://localhost:8000/similar-anime/" + genre_String 
+    const url = "http://localhost:8000/similar-anime/" + anime.anime_id + "/" + genre_String 
     const response = await fetch(url)   // call the similar_anime_endpoint function with that url
     const data = await response.json()    // parse the JSON data into python data, store in "data" variable
     setSimilarAnimeById(
