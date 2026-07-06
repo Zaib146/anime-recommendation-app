@@ -179,18 +179,19 @@ def get_similar_anime_cached_results(anime_id):
                    FROM anime_cache
                    WHERE anime_id = ?
                    """,
-                   ({anime_id})
+                   (anime_id,)
     )
     
     similar_anime_list = cursor.fetchall()
-    similar_anime_results = []
     
-    for anime in similar_anime_list:
-        similar_anime_results.append(anime)
-        
+    if len(similar_anime_list) == 0:
+        conn.close()
+        return []
+    
+    similar_anime_text = similar_anime_list[0][0]
     conn.close()
     
-    return similar_anime_results
+    return json.loads(similar_anime_text)
 
 # this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
 def save_similar_anime_to_cache(anime_id, similar_anime_list):
