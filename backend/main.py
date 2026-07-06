@@ -168,6 +168,10 @@ def get_cached_results(anime_name):
     conn.close()
     
     return anime_results
+
+# this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
+def save_similar_anime_to_cache(anime_id, similar_anime_list):
+    
     
     
 # if this url is called, run the get_recommendation function
@@ -213,10 +217,11 @@ def recommendations_endpoint(anime_name):
         return response
     
 
-@app.get("/similar-anime/{genre_ids}")      # for example, receives a string like "1,2,10"
-def similarAnime_endpoint(genre_ids):
+@app.get("/similar-anime/{anime_id}/{genre_ids}")      # for example, receives a string like "1,2,10"
+def similarAnime_endpoint(anime_id, genre_ids):
     genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
-    return get_genre_recommendations(genre_ids)
+    similar_anime_list = get_genre_recommendations(genre_ids)
+    save_similar_anime_to_cache(anime_id, similar_anime_list)
 
 
 # to start / host the backend server (make it alive), type this in "Terminal" -> "New Terminal". should be in location C:\anime-recommendation-app\backend>
