@@ -260,18 +260,19 @@ def recommendations_endpoint(anime_name):
 def similarAnime_endpoint(anime_id, genre_ids):
     genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
     try:
-        similar_anime_list = get_genre_recommendations(genre_ids)
+        similar_anime_list = get_genre_recommendations(genre_ids)       # this gives a list of similar anime 
         
-        if similar_anime_list:
-            save_similar_anime_to_cache(anime_id, similar_anime_list)
-            return similar_anime_list
+        if similar_anime_list:      # if the list is not empty, do this
+            save_similar_anime_to_cache(anime_id, similar_anime_list)       # save the similar anime list to the specific anime correlating to this anime_id in the anime_cache table
+            return similar_anime_list   # return list of similar anime
         
-        else:
+        else:   # if list of similar anime is empty (jikan returns empty), we check cached results of similar anime for this specific anime to see if it was saved there at some point
             return get_similar_anime_cached_results(anime_id)
         
-    except Exception as error:
-        print("ERROR IN SIMILAR ANIME ENDPOINT:", error)
-        return get_similar_anime_cached_results(anime_id)
+    except Exception as error:      # Exception is the base class for almost all normal Python errors. It includes AttributeError, KeyError, TypeError, ValueError, sqlite3.OperationalError
+        # except Exception means catch any normal Python exception. "as error" saves the actual error object into the variable named error. Now we can see what error it is in terminal.
+        print("ERROR IN SIMILAR ANIME ENDPOINT:", error)    # if Jikan API not working, get cached results
+        return get_similar_anime_cached_results(anime_id)   # return cached results of similar anime for this specific anime
 
     
 
