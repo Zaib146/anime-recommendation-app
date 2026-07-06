@@ -86,37 +86,51 @@ def save_to_cache(results):
         similar_anime_text = json.dumps([])
         
         cursor.execute("""
-        -- SQL command inside a Python string here.
-        -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
-        -- will insert the values in the tuple into the table "anime_cache"
-        INSERT OR REPLACE INTO anime_cache (
-            anime_id,
-            title,
-            image_url,
-            synopsis,
-            genres,
-            similar_anime,
-            fetched_at
-        )
+                       SELECT anime_id
+                       FROM anime_cache
+                       WHERE anime_id = ?
+                       """,
+                       (anime["anime_id"],)
+                       )
+        existing_row = cursor.fetchone()
         
-        -- We use "?" as placeholder values, since Naruto values will be different than Bleach, etc
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-        """,
-        
-        # these are the actual values that will fill in the placeholder ?. This is a tuple. Python provides these values, SQLite combines them with the placeholder values
-        (
-            anime["anime_id"],
-            anime["title"],
-            anime["image_url"],
-            anime["synopsis"],
-            genres_text,
-            similar_anime_text,
-            fetched_at
-        )
-        )
+        if existing_row:
+            
+        else:
+            cursor.execute("""
+            -- SQL command inside a Python string here.
+            -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
+            -- will insert the values in the tuple into the table "anime_cache"
+            INSERT OR REPLACE INTO anime_cache (
+                anime_id,
+                title,
+                image_url,
+                synopsis,
+                genres,
+                similar_anime,
+                fetched_at
+            )
+            
+            -- We use "?" as placeholder values, since Naruto values will be different than Bleach, etc
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+            """,
+            
+            # these are the actual values that will fill in the placeholder ?. This is a tuple. Python provides these values, SQLite combines them with the placeholder values
+            (
+                anime["anime_id"],
+                anime["title"],
+                anime["image_url"],
+                anime["synopsis"],
+                genres_text,
+                similar_anime_text,
+                fetched_at
+            )
+            )
     
     conn.commit()
     conn.close()
+        
+        
 
     
 def limit_cache_size():
@@ -244,6 +258,7 @@ def get_similar_anime_cached_results(anime_id):
 # the tuple is created by SQLite/Python to represent a database row, while the JSON string is the actual value stored inside the similar_anime column.
 
 # this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
+# add more comments throughout this function
 def save_similar_anime_to_cache(anime_id, similar_anime_list):
     similar_anime_list_text = json.dumps(similar_anime_list)
     conn = sqlite3.connect("anime_app.db")
