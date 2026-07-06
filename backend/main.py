@@ -170,6 +170,28 @@ def get_cached_results(anime_name):
     
     return anime_results
 
+def get_similar_anime_cached_results(anime_id):
+    conn = sqlite3.connect("anime_app.db")
+    cursor = conn.cursor()
+    
+    cursor.execute("""
+                   SELECT similar_anime
+                   FROM anime_cache
+                   WHERE anime_id = ?
+                   """,
+                   ({anime_id})
+    )
+    
+    similar_anime_list = cursor.fetchall()
+    similar_anime_results = []
+    
+    for anime in similar_anime_list:
+        similar_anime_results.append(anime)
+        
+    conn.close()
+    
+    return similar_anime_results
+
 # this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
 def save_similar_anime_to_cache(anime_id, similar_anime_list):
     similar_anime_list_text = json.dumps(similar_anime_list)
@@ -236,9 +258,21 @@ def recommendations_endpoint(anime_name):
 @app.get("/similar-anime/{anime_id}/{genre_ids}")      # for example, receives a string like "1,2,10"
 def similarAnime_endpoint(anime_id, genre_ids):
     genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
-    similar_anime_list = get_genre_recommendations(genre_ids)
-    save_similar_anime_to_cache(anime_id, similar_anime_list)
-    return similar_anime_list
+    try:
+        similar_anime_list = get_genre_recommendations(genre_ids)
+        
+        if similar_anime_list:
+            save_similar_anime_to_cache(anime_id, similar_anime_list)
+            return similar_anime_list
+        
+        else:
+            return get_similar_anime_cached_results(anime_id)
+        
+    except Exception as error:
+        print("ERROR IN SIMILAR ANIME ENDPOINT:", error)
+        return get_similar_anime_cached_results(anime_id)
+
+    
 
 
 # to start / host the backend server (make it alive), type this in "Terminal" -> "New Terminal". should be in location C:\anime-recommendation-app\backend>
