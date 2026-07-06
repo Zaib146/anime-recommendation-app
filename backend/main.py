@@ -95,13 +95,25 @@ def save_to_cache(results):
         existing_row = cursor.fetchone()
         
         if existing_row:
-            
+            cursor.execute("""
+                    UPDATE anime_cache
+                   SET title = ?, image_url = ?, synopsis = ?, genres = ?, fetched_at = ?
+                   WHERE anime_id = ? 
+                           """,
+                           (
+                               anime["title"],
+                                anime["image_url"],
+                                anime["synopsis"],
+                                genres_text,
+                                fetched_at
+                           )
+                    )
         else:
             cursor.execute("""
             -- SQL command inside a Python string here.
             -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
             -- will insert the values in the tuple into the table "anime_cache"
-            INSERT OR REPLACE INTO anime_cache (
+            INSERT INTO anime_cache (
                 anime_id,
                 title,
                 image_url,
