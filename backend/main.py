@@ -164,14 +164,30 @@ def get_cached_results(anime_name):
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
         anime_results.append(item)    # create a new dictionary from each row, save to saved_anime list
-    
+        
+    # conn.commit() not needed for SELECT since only reading from the table
     conn.close()
     
     return anime_results
 
 # this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
 def save_similar_anime_to_cache(anime_id, similar_anime_list):
+    similar_anime_list_text = json.dumps(similar_anime_list)
+    conn = sqlite3.connect("anime_app.db")
+    cursor = conn.cursor()
     
+    cursor.execute("""
+                   UPDATE anime_cache
+                   SET similar_anime = ?
+                   WHERE anime_id = ?   
+                   """,
+                   (
+                       similar_anime_list_text,
+                       anime_id
+                    )
+                )
+    conn.commit()
+    conn.close()        # always do this
     
     
 # if this url is called, run the get_recommendation function
@@ -222,6 +238,7 @@ def similarAnime_endpoint(anime_id, genre_ids):
     genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
     similar_anime_list = get_genre_recommendations(genre_ids)
     save_similar_anime_to_cache(anime_id, similar_anime_list)
+    return similar_anime_list
 
 
 # to start / host the backend server (make it alive), type this in "Terminal" -> "New Terminal". should be in location C:\anime-recommendation-app\backend>
