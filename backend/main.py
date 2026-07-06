@@ -182,16 +182,66 @@ def get_similar_anime_cached_results(anime_id):
                    (anime_id,)
     )
     
+    # before fetchall, value is just 1 JSON string - it's not a tuple yet - '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]'
+    
     similar_anime_list = cursor.fetchall()
+    
+    # this is an example of what cursor.fetchall() returns, what's inside similar_anime_list. It's a list, since fetchall always returns a list of rows. Each row is represented as a tuple. Since we only selected 1 column, similar_anime,
+    # each tuple has only 1 element. Contains 1 tuple whose first element is a json string.
+    # start:
+    # [
+    # ('[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]',)
+    # ]
+    
+    # the outer list has all matching rows
+    # [
+    # (...)
+    # ]
+    
+    # when we write similar_anime_list[0], we get the first row, or 1 tuple
+    # (
+    # '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]',
+    # )
+    
+    # then similar_anime_list[0][0] gives 
+    # '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]'. first [0] - first row, second [0] - first column of that row
+    # now this is a JSON string by itself
     
     if len(similar_anime_list) == 0:
         conn.close()
         return []
     
-    similar_anime_text = similar_anime_list[0][0]
+    similar_anime_text = similar_anime_list[0][0]   # similar_anime_text is a JSON formatted string that has info of the first (and only) - (first [0]) row and first (and only) column - second [0]
+    # similar_anime_text = '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]' - not a python list  yet
     conn.close()
     
-    return json.loads(similar_anime_text)
+    return json.loads(similar_anime_text)       # converts json string to a python list now
+    # python list looks like this now
+    # end:
+    # [
+    # {"anime_id": 1, "title": "One Piece"},
+    # {"anime_id": 2, "title": "Bleach"}
+    # ]
+    
+#     Database
+#     ↓
+#      JSON string
+
+#      fetchall()
+#       ↓
+#   List
+#   └── Tuple
+#       └── JSON string
+
+#   [0][0]
+#     ↓
+#   JSON string
+
+#   json.loads()
+#     ↓
+#   Python list
+
+# the tuple is created by SQLite/Python to represent a database row, while the JSON string is the actual value stored inside the similar_anime column.
 
 # this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
 def save_similar_anime_to_cache(anime_id, similar_anime_list):
