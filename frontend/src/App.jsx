@@ -177,8 +177,8 @@ User sees webpage*/
     {
       setSimilarAnimeById(
         {
-          ...similarAnimeById,
-          [anime.anime_id]: ["No Similar Anime (no genres listed)"]
+          ...similarAnimeById,    // this copies everything that was already in the object similarAnimeById
+          [anime.anime_id]: ["No Similar Anime (no genres listed)"]   // the anime id of this specific anime is the key here. let's say naruto and it's 20. so 20: No Similar Anime (no genres listed) is stored in similarAnimeById
         }
       )
       return
@@ -274,9 +274,10 @@ User sees webpage*/
         {currentView === "recommendations" && 
         (
           <>
+            {/* this message will only show if jikan api is not working AND the anime is not already saved in cached data */}
             {recommendations.length === 0 &&
             (
-              <p>Anime data is temporarily unavailable. Please try again later.</p>
+              <p>No current saved results for this specific anime in our cached data. Please try again later.</p>
             )
             }
           
