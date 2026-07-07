@@ -324,6 +324,19 @@ def recommendations_endpoint(anime_name):
     
     try:
         results1 = get_recommendation(anime_name)
+        
+        if not results1:        # if results1 = [], that means python requests to myanimelist are not working. because in get_recommendations function inside phase1_script.py, I did if "data" not in data:
+            # return []. This way at least we get [] instead of nothing. Then this will cause the frontend to say the anime data is temporarily unavailable
+            results1 = get_cached_results(anime_name)
+            
+            response = RecommendationResponse(
+                result_source= "cache",
+                message= "Cannot pull information from the Jikan API currently. Results shown are pulled from the saved cache data.",
+                results=results1
+            )
+            
+            return response
+            
         save_to_cache(results1)
         limit_cache_size()
         

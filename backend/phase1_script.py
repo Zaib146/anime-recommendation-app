@@ -9,6 +9,9 @@ def get_recommendation(anime_name):
     response = requests.get(anime_search_url)
     data = response.json()
     
+    print("STATUS CODE: ", response.status_code)
+    print("JIKAN RESPONSE: ", data)
+    
     # anime list here represents the values held at key "data" in the dictionary variable data (the json to now python data)
     # outer structure - data["data"] = dictionary access by key "data"
     # inner structure - anime_list[0] =  list access by index
@@ -39,7 +42,8 @@ def get_recommendation(anime_name):
     # print("JIKAN SEARCH RESPONSE:", data) - used to debug when getting blank page on frontend
     # data is a dictionary variable. anime_list is a list that contains dictionaries
     
-    if "data" not in data:      # if python requests to myanimelist are not working, at least we get [] instead of nothing. Then this will cause the frontend to say the anime data is temporarily unavailable.
+    if "data" not in data:      # if python requests to myanimelist are not working, at least we get [] instead of nothing. Then this will cause us to check if anime exists in cache and pull data from there.
+        # if anime does not exist in cache, we tell that to user and show no results.
         return []
     
     anime_list = data["data"]
