@@ -97,8 +97,14 @@ def save_to_cache(results):
         # fetchone() says give me the first row returned by that SELECT. The SELECT either finds the row, or finds nothing
         existing_row = cursor.fetchone()
         
-        # if anime_id does exist in table, that means the anime is already saved in anime_cache from previous search. 
-        if existing_row:    # existing_row = (20,) is True for example
+        # if anime_id does exist in table, that means the anime is already saved in anime_cache from previous search. if we were to also update the similar_anime column with similar_anime_text, we'd overrwrite the list of previously saved
+        # similar anime with [] - since before entering this cursor.execute, it's set to []. so the flow is if the anime is not in anime_cache, it's added to the table with similar_anime column set to []. If the user clicks the View Similar Anime button,
+        # it only then saves the list of similar anime to the similar anime column for that specific anime. Now, if someone searches for the anime again, let's say Naruto, the save_to_cache function runs. It checks if the anime has already been added to anime_cache.
+        # if it has, we do not need to set the similar_anime column to [] again. This is because after Naruto was added to anime_cache, the user MAY HAVE clicked View Similar Anime, so the similar_anime list results were saved anime_cache. Again, if the anime exists in 
+        # anime_cache, that DOES NOT necessarily mean similar_anime column has data yet. We just do NOT need to set the similar_anime column to [] each time we search Naruto, since the user may have already saved its similar_anime list to anime_cache.
+        # the similar_anime list in anime_cache should only be updated in the save_similar_anime_to_cache function
+        
+        if existing_row:    # existing_row = (20,) is True for example. Anime exists, so only update all values except similar_anime column
             cursor.execute("""
                     UPDATE anime_cache
                    SET title = ?, image_url = ?, synopsis = ?, genres = ?, fetched_at = ?
@@ -113,7 +119,7 @@ def save_to_cache(results):
                                 anime["anime_id"]
                            )
                     )
-        else:           # existing_row = None is False for example
+        else:           # existing_row = None is False for example. This is the first time the anime is being added to anime_cache, so insert these values fresh
             cursor.execute("""
             -- SQL command inside a Python string here.
             -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
