@@ -85,6 +85,7 @@ def save_to_cache(results):
         genres_text = json.dumps(anime["genres"])
         similar_anime_text = json.dumps([])
         
+        # this cursor.execute() checks if this specific anime_id already exists in the anime_cache table
         cursor.execute("""
                        SELECT anime_id
                        FROM anime_cache
@@ -92,9 +93,12 @@ def save_to_cache(results):
                        """,
                        (anime["anime_id"],)
                        )
+        # if the id does exist (for example, let's say anime_id for Naruto is 20), existing_row = (20,) , a tuple containing the matching row. if the anime_id does not exist, existing_row = None
+        # fetchone() says give me the first row returned by that SELECT. The SELECT either finds the row, or finds nothing
         existing_row = cursor.fetchone()
         
-        if existing_row:
+        # if anime_id does exist in table, that means the anime is already saved in anime_cache from previous search. 
+        if existing_row:    # existing_row = (20,) is True for example
             cursor.execute("""
                     UPDATE anime_cache
                    SET title = ?, image_url = ?, synopsis = ?, genres = ?, fetched_at = ?
@@ -105,10 +109,11 @@ def save_to_cache(results):
                                 anime["image_url"],
                                 anime["synopsis"],
                                 genres_text,
-                                fetched_at
+                                fetched_at,
+                                anime["anime_id"]
                            )
                     )
-        else:
+        else:           # existing_row = None is False for example
             cursor.execute("""
             -- SQL command inside a Python string here.
             -- this INSERT INTO statement means these are the 6 columns I'll be filling with values
@@ -224,6 +229,16 @@ def get_similar_anime_cached_results(anime_id):
     # (...)
     # ]
     
+   
+    
+    # if similar anime list has no content, return []
+    if len(similar_anime_list) == 0:
+        conn.close()
+        return []
+    
+    similar_anime_text = similar_anime_list[0][0]   # similar_anime_text is a JSON formatted string that has info of the first (and only) - (first [0]) row and first (and only) column - second [0]
+    # similar_anime_text = '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]' - not a python list  yet
+    
     # when we write similar_anime_list[0], we get the first row, or 1 tuple
     # (
     # '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]',
@@ -233,12 +248,6 @@ def get_similar_anime_cached_results(anime_id):
     # '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]'. first [0] - first row, second [0] - first column of that row
     # now this is a JSON string by itself
     
-    if len(similar_anime_list) == 0:
-        conn.close()
-        return []
-    
-    similar_anime_text = similar_anime_list[0][0]   # similar_anime_text is a JSON formatted string that has info of the first (and only) - (first [0]) row and first (and only) column - second [0]
-    # similar_anime_text = '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]' - not a python list  yet
     conn.close()
     
     return json.loads(similar_anime_text)       # converts json string to a python list now
