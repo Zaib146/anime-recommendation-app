@@ -4,7 +4,7 @@ import requests # needed to fetch json data from Jikan API
 #  use the .json() method on response to parse the json data and return it as python dictionaries and lists. Store that into variable data.
 
 # this function handles the actual recommendation logic
-def get_recommendation(anime_name):
+def get_jikan_recommendation(anime_name):
     anime_search_url = f"https://api.jikan.moe/v4/anime?q={anime_name}"
     response = requests.get(anime_search_url)
     data = response.json()
@@ -42,10 +42,6 @@ def get_recommendation(anime_name):
     # print("JIKAN SEARCH RESPONSE:", data) - used to debug when getting blank page on frontend
     # data is a dictionary variable. anime_list is a list that contains dictionaries
     
-    if "data" not in data:      # if python requests to myanimelist are not working, at least we get [] instead of nothing. Then this will cause us to check if anime exists in cache and pull data from there.
-        # if anime does not exist in cache, we tell that to user and show no results.
-        return []
-    
     anime_list = data["data"]
     # how to check this is a list
     # print(type(data["data"]))
@@ -72,8 +68,21 @@ def get_recommendation(anime_name):
     # results is a list that contains dictionaries
     return results
 
+def get_anilist_recommendation(anime_name):
+    query = 
+    
+    print("STATUS CODE: ", response.status_code)
+    print("ANILIST RESPONSE: ", data)
 
-def get_genre_recommendations(genre_ids):
+def get_recommendations(anime_name):
+    results = get_jikan_genre_recommendations(anime_name)   # trying Jikan API first
+    
+    if results:     # if the Jikan API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but Jikan API has no information about the anime, so empty.
+        # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
+        return results
+
+
+def get_jikan_genre_recommendations(genre_ids):
     genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10" (parameter was ["1", "2", "10"]). 
     # str(id) converts each id number to a string while looping through ids in the original list. ",".join puts a comma between each id value
     genre_search_url = f"https://api.jikan.moe/v4/anime?genres={genre_string}"      # build url using string of genre_string
@@ -81,9 +90,6 @@ def get_genre_recommendations(genre_ids):
     data = response.json()      # parse through the json data and return it as a list of genres
     
     # print(data)       # to see what data holds
-    
-    if "data" not in data:
-        return []
     
     genre_list = data["data"]   # data is a dictionary variable. genre_list is a list that contains dictionaries
     anime_list = []             # empty list to hold titles of other anime with same genres
@@ -93,6 +99,8 @@ def get_genre_recommendations(genre_ids):
     
     # print(anime_list[:5])     # to see what's being returned
     return anime_list       # this returns a list of other animes that have the same genres as the original anime
+
+
 
 
 
