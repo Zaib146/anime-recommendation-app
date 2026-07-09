@@ -69,7 +69,37 @@ def get_jikan_recommendation(anime_name):
     return results
 
 def get_anilist_recommendation(anime_name):
-    query = 
+    # query is a python string that contains GraphQL code, like how I have SQL code inside a python string in main.py
+    query = """     
+    query ($search: String) {   # this says that my GraphQL query expects one variable named search. The $ sign tells GraphQL this is a variable, not a literal value
+        
+        # here $search is like ? in SQL. it's a placeholder that will be replaced with the anime name, like "Naruto", that's defined in the "variables" dictionary
+        # search anilist's media database with the value in search, only returning type anime (not manga)
+        
+        Media(search: $search, type: ANIME) {
+            # everything below is what we're requesting from AniList API. Unlike REST API's, GraphQL never sends extra information.
+            # with GET request with REST API, server decides what I get; with POST request with GraphQL, I decide exactly what I get - so app only downloads fields it actually uses
+            
+            id      # AniList's own ID. We are requesting for the anime ID here
+            idMal   # corresponding MyAnimeList ID. current project revolves around this
+            
+            title {     # Anime titles: AniList can also return the title in native japanese, but we only care for english and romaji. here title is an object
+                english
+                romaji
+            }
+            
+            coverImage {        # Cover Image: same idea as title. we could get extraLarge, medium, color, etc, we only want large here
+                large
+            }
+            
+            description         # Synopsis: this is the same as anime["synopsis"] in REST API
+            
+            genres              # Genres: this is the same as anime["genres"] in REST API
+                                                    
+            }    
+                                                
+    } 
+    """
     
     print("STATUS CODE: ", response.status_code)
     print("ANILIST RESPONSE: ", data)
