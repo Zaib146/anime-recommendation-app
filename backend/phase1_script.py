@@ -96,10 +96,17 @@ def get_anilist_recommendation(anime_name):
             
             genres              # Genres: this is the same as anime["genres"] in REST API
                                                     
-            }    
-                                                
+            }                                             
     } 
     """
+    # create a "variables" dictionary we'll send with query in our POST request. we call the key here "search" because it needs to match with the $search variable in GraphQL, so it can 
+    # replace $search with anime_name - remember, $search is like ? in SQL, anime_name replaces it
+    variables = {
+        "search": anime_name
+    }
+    
+    
+    
     
     print("STATUS CODE: ", response.status_code)
     print("ANILIST RESPONSE: ", data)
