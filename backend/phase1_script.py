@@ -72,31 +72,37 @@ def get_anilist_recommendation(anime_name):
     # query is a python string that contains GraphQL code, like how I have SQL code inside a python string in main.py
     query = """     
     query ($search: String) {   # this says that my GraphQL query expects one variable named search. The $ sign tells GraphQL this is a variable, not a literal value
-        
-        # here $search is like ? in SQL. it's a placeholder that will be replaced with the anime name, like "Naruto", that's defined in the "variables" dictionary
-        # search anilist's media database with the value in search, only returning type anime (not manga)
-        
-        Media(search: $search, type: ANIME) {
-            # everything below is what we're requesting from AniList API. Unlike REST API's, GraphQL never sends extra information.
-            # with GET request with REST API, server decides what I get; with POST request with GraphQL, I decide exactly what I get - so app only downloads fields it actually uses
+        # adding this Page as a wrapper now returns a list of the first 25 anime that have the search word of the anime title, like "Naruto" in it. For example, it'll return "Naruto,
+        Naruto Shippuden, Boruto: Naruto Next Generations", etc. Without the Page wrapper, it was only returning "Naruto". We chose 25 per page since that's around the number Jikan would return too.
+        If we want to return more, we would do Page(page: 2, perPage: 25) etc
+        Page(page: 1, perPage: 25) {
+    
+            # here $search is like ? in SQL. it's a placeholder that will be replaced with the anime name, like "Naruto", that's defined in the "variables" dictionary
+            # search anilist's media database with the value in search, only returning type anime (not manga)
             
-            id      # AniList's own ID. We are requesting for the anime ID here
-            idMal   # corresponding MyAnimeList ID. current project revolves around this
+            media(search: $search, type: ANIME) {
+                # everything below is what we're requesting from AniList API. Unlike REST API's, GraphQL never sends extra information.
+                # with GET request with REST API, server decides what I get; with POST request with GraphQL, I decide exactly what I get - so app only downloads fields it actually uses
+                
+                id      # AniList's own ID. We are requesting for the anime ID here
+                idMal   # corresponding MyAnimeList ID. current project revolves around this
+                
+                title {     # Anime titles: AniList can also return the title in native japanese, but we only care for english and romaji. here title is an object
+                    english
+                    romaji
+                }
+                
+                coverImage {        # Cover Image: same idea as title. we could get extraLarge, medium, color, etc, we only want large here
+                    large
+                }
+                
+                description         # Synopsis: this is the same as anime["synopsis"] in REST API
+                
+                genres              # Genres: this is the same as anime["genres"] in REST API
+                                                        
+                } 
             
-            title {     # Anime titles: AniList can also return the title in native japanese, but we only care for english and romaji. here title is an object
-                english
-                romaji
-            }
-            
-            coverImage {        # Cover Image: same idea as title. we could get extraLarge, medium, color, etc, we only want large here
-                large
-            }
-            
-            description         # Synopsis: this is the same as anime["synopsis"] in REST API
-            
-            genres              # Genres: this is the same as anime["genres"] in REST API
-                                                    
-            }                                             
+        }                                           
     } 
     """
     # create a "variables" dictionary we'll send with query in our POST request. we call the key here "search" because it needs to match with the $search variable in GraphQL, so it can 
@@ -131,15 +137,15 @@ def get_anilist_recommendation(anime_name):
     print("STATUS CODE: ", response.status_code)
     print("ANILIST RESPONSE: ", data)
 
-def get_recommendations(anime_name):
-    results = get_jikan_genre_recommendations(anime_name)   # trying Jikan API first
+def get_recommendation(anime_name):
+    results = get_anilist_recommendation(anime_name)   # second call in case 
     
     if results:     # if the Jikan API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but Jikan API has no information about the anime, so empty.
         # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
         return results
 
 
-def get_jikan_genre_recommendations(genre_ids):
+def get_genre_recommendations(genre_ids):
     genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10" (parameter was ["1", "2", "10"]). 
     # str(id) converts each id number to a string while looping through ids in the original list. ",".join puts a comma between each id value
     genre_search_url = f"https://api.jikan.moe/v4/anime?genres={genre_string}"      # build url using string of genre_string
