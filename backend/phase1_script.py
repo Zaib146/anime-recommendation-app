@@ -7,7 +7,7 @@ import requests # needed to fetch json data from Jikan API
 def get_jikan_recommendation(anime_name):
     anime_search_url = f"https://api.jikan.moe/v4/anime?q={anime_name}"
     response = requests.get(anime_search_url)
-    data = response.json()
+    data = response.json()          # convert the JSON results back into Python dictionaries and lists so we can work with the data
     
     print("STATUS CODE: ", response.status_code)
     print("JIKAN RESPONSE: ", data)
@@ -105,8 +105,28 @@ def get_anilist_recommendation(anime_name):
         "search": anime_name
     }
     
+    url = "https://graphql.anilist.co"      # unlike Jikan, the AniList URL never chagnes. The anime name does not go in the URL, it goes in the request body
     
+    # with POST, we say "Here's my URL and here's the GraphQL query I want you to execute." In Jikan with requests.get(), we say "Here's my URL."
+    response = requests.post(
+        url,
+        json = {        # json = is saying convert this dictionary into JSON and send it in the HTTP request body. This is the same thing React does in the app when it sends a POST request to FastAPI
+            "query": query,         # the left side, "query", is the name the GraphQL server expects. The right side, query, is the Python variable
+            "variables": variables
+        }
+    )
     
+    # when combined, this is the JSON, what the HTTP request body looks like
+    # {
+    # "query": "query ($search: String) { Media(search: $search, type: ANIME) { ... } }",
+
+    # "variables": {
+    #     "search": "Naruto"
+    # }
+    
+    # AniList returns the information as JSON (response is in JSON)
+    
+    data = response.json()      # convert the JSON results back into Python dictionaries and lists so we can work with the data
     
     print("STATUS CODE: ", response.status_code)
     print("ANILIST RESPONSE: ", data)
