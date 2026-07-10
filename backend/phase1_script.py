@@ -111,14 +111,14 @@ def get_anilist_recommendation(anime_name):
         "search": anime_name
     }
     
-    url = "https://graphql.anilist.co"      # unlike Jikan, the AniList URL never chagnes. The anime name does not go in the URL, it goes in the request body
+    url = "https://graphql.anilist.co"      # unlike Jikan, the AniList URL never changes. The anime name does not go in the URL, it goes in the request body
     
     # with POST, we say "Here's my URL and here's the GraphQL query I want you to execute." In Jikan with requests.get(), we say "Here's my URL."
     response = requests.post(
         url,
         json = {        # json = is saying convert this dictionary into JSON and send it in the HTTP request body. This is the same thing React does in the app when it sends a POST request to FastAPI
             "query": query,         # the left side, "query", is the name the GraphQL server expects. The right side, query, is the Python variable
-            "variables": variables
+            "variables": variables  # same here like with query above
         }
     )
     
@@ -134,6 +134,7 @@ def get_anilist_recommendation(anime_name):
     
     data = response.json()      # convert the JSON results back into Python dictionaries and lists so we can work with the data
     
+    # can see if request worked in backend terminal, and the results there too
     print("STATUS CODE: ", response.status_code)
     print("ANILIST RESPONSE: ", data)
 
