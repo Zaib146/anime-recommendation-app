@@ -137,6 +137,18 @@ def get_anilist_recommendation(anime_name):
     # can see if request worked in backend terminal, and the results there too
     print("STATUS CODE: ", response.status_code)
     print("ANILIST RESPONSE: ", data)
+    
+    anime_list = data["data"]["Page"]["media"]
+    
+    results = []
+    
+    for anime in anime_list:
+        # some anime do not have an english title, so include the romaji title
+        item = {"anime_id": anime["idMal"], "title": anime['title']['english'] or anime['title']['romaji'],
+                "genres": anime['genres'], "synopsis": anime['description'] or "No synposis available.",
+                "image_url": anime['coverImage']['large']}
+        results.append(item)
+    return results
 
 def get_recommendation(anime_name):
     results = get_anilist_recommendation(anime_name)   # second call in case 
