@@ -73,8 +73,8 @@ def get_anilist_recommendation(anime_name):
     query = """     
     query ($search: String) {   # this says that my GraphQL query expects one variable named search. The $ sign tells GraphQL this is a variable, not a literal value
         # adding this Page as a wrapper now returns a list of the first 25 anime that have the search word of the anime title, like "Naruto" in it. For example, it'll return "Naruto,
-        Naruto Shippuden, Boruto: Naruto Next Generations", etc. Without the Page wrapper, it was only returning "Naruto". We chose 25 per page since that's around the number Jikan would return too.
-        If we want to return more, we would do Page(page: 2, perPage: 25) etc
+        # Naruto Shippuden, Boruto: Naruto Next Generations", etc. Without the Page wrapper, it was only returning "Naruto". We chose 25 per page since that's around the number Jikan would return too.
+        # If we want to return more, we would do Page(page: 2, perPage: 25) etc
         Page(page: 1, perPage: 25) {
     
             # here $search is like ? in SQL. it's a placeholder that will be replaced with the anime name, like "Naruto", that's defined in the "variables" dictionary
