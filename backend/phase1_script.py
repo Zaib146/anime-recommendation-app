@@ -244,6 +244,7 @@ def get_recommendation(anime_name):
         return results
 
 # frontend now sends my standardized genres, no longer a list of genre_ids
+# jikan extracts genre_ids
 def get_jikan_genre_recommendations(genres):
     
     # first thing is the function extracts the genre_ids from genres (we create a list called genres_ids and append to it)
@@ -273,7 +274,13 @@ def get_jikan_genre_recommendations(genres):
     return anime_list       # this returns a list of other animes that have the same genres as the original anime
 
 
-def get_anilist_genre_recommendations(genre_names):
+# anilist extracts name. also receives same standardized genres parameter. nice thing about this design
+def get_anilist_genre_recommendations(genres):
+    genre_names = []
+    
+    for genre in genre_names:
+        genre_names.append(genre['name'])
+        
     
 
 
