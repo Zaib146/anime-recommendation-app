@@ -5,16 +5,58 @@ import requests # needed to fetch json data from Jikan API
 
 # this helper function normalizes the anime genre results into one body. So the React does not care which API the genres came from, because all will be in the same structure anyway
 # this is conversion logic for Jikan function
+
+# Original jikan_genre structure:
+#
+# [
+#     {
+#         "mal_id": 1,
+#         "type": "anime",
+#         "name": "Action",
+#         "url": "https://myanimelist.net/anime/genre/1/Action"
+#     },
+#     {
+#         "mal_id": 2,
+#         "type": "anime",
+#         "name": "Adventure",
+#         "url": "https://myanimelist.net/anime/genre/2/Adventure"
+#     }
+# ]
+#
+# Converted into:
+#
+# [
+#     {
+#         "name": "Action",
+#         "jikan_id": 1
+#     },
+#     {
+#         "name": "Adventure",
+#         "jikan_id": 2
+#     }
+# ]
+
 def normalize_jikan_genres(jikan_genres):
     normalized_genres = []
     
     for genre in jikan_genres:
         normalized_genres.append({
             "name": genre["name"],
-            "jikan_id": genrej["mal_id"]
+            "jikan_id": genre["mal_id"]
         })
     return normalized_genres
 
+# same idea as normalize_jikan_genres function
+def normalize_anilist_genres(anilist_genres):
+    normalized_genres = []
+    
+    # anilist_genres = ["Action", "Adventure"], so genre_name = "Action" the first iteration
+    for genre_name in anilist_genres:
+        normalized_genres.append({
+            "name": genre_name,
+            "jikan_id": None
+        })
+    return normalized_genres
 
 # this function handles the actual recommendation logic, the fetch logic
 def get_jikan_recommendation(anime_name):
