@@ -16,7 +16,6 @@ def normalize_jikan_genres(jikan_genres):
     return normalized_genres
 
 
-
 # this function handles the actual recommendation logic, the fetch logic
 def get_jikan_recommendation(anime_name):
     anime_search_url = f"https://api.jikan.moe/v4/anime?q={anime_name}"
@@ -72,7 +71,8 @@ def get_jikan_recommendation(anime_name):
     
     for anime in anime_list:
 
-        item = {"anime_id": anime["mal_id"], "title": anime['title'], "genres": anime['genres'], "synopsis": anime['synopsis'] or "No synposis available.", "image_url": anime['images']['jpg']['image_url']}
+        normalized_genres = normalize_jikan_genres(anime['genres'])
+        item = {"anime_id": anime["mal_id"], "title": anime['title'], "genres": normalized_genres, "synopsis": anime['synopsis'] or "No synposis available.", "image_url": anime['images']['jpg']['image_url']}
         
         results.append(item)
           
