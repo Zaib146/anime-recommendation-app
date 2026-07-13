@@ -290,11 +290,13 @@ def get_anilist_similar_anime(anime_id, genres):
         
             # asks AniList for up to ten highly rated recommendations connected to that anime.
             recommendations(page: 1, perPage: 10, sort: RATING_DESC) {
+                
                 # each node has rating, user, date, and recommended anime info. we only care about recommended anime,
                 which is called mediaRecommendation inside of nodes
                 nodes {
                     
-                    from the recommended anime info, we only want the anime id and its name
+                    # from the recommended anime info, we only want the anime id (MAL Ids, since current
+                    # project revolves around this) and its name
                     mediaRecommendation {
                         idMal
                         title {
@@ -312,17 +314,27 @@ def get_anilist_similar_anime(anime_id, genres):
         "idMal": anime_id
     }
     
+    # fixed url
     url = "https://graphql.anilist.co"
+    
+    # AniList,Here's the query I want you to execute. Here are the variables to plug into it.
+    # with POST, we say "Here's my URL and here's the GraphQL query I want you to execute." In Jikan with requests.get(), we say "Here's my URL."
+    
+    # the left side, "query", is the name the GraphQL server expects. The right side, query, is the Python variable
+    # for variables, same here like with query above
     
     response = requests.post(
         url, 
-        json = {
+        json = {     #json = is saying convert this dictionary into JSON and send it in the HTTP request body. 
+                        # This is the same thing React does in the app when it sends a POST request to FastAPI
             "query": query,
             "variables": variables
         }
     )
         
-    data = response.json()
+    data = response.json()   # convert the JSON results back into Python dictionaries and lists so we can work with the data
+    
+    # can see if request worked in backend terminal, and the results there too
     
     print("ANILIST SIMILAR STATUS: ", response.status_code)
     print("ANILIST SIMILAR RESPONSE: ", data)
