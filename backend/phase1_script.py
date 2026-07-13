@@ -47,10 +47,35 @@ def normalize_jikan_genres(jikan_genres):
     return normalized_genres
 
 # same idea as normalize_jikan_genres function
+
+# Original AniList genre structure:
+#
+# [
+#     "Action",
+#     "Adventure",
+#     "Comedy"
+# ]
+#
+# Converted into:
+#
+# [
+#     {
+#         "name": "Action",
+#         "jikan_id": None
+#     },
+#     {
+#         "name": "Adventure",
+#         "jikan_id": None
+#     },
+#     {
+#         "name": "Comedy",
+#         "jikan_id": None
+#     }
+# ]
+
 def normalize_anilist_genres(anilist_genres):
     normalized_genres = []
     
-    # anilist_genres = ["Action", "Adventure"], so genre_name = "Action" the first iteration
     for genre_name in anilist_genres:
         normalized_genres.append({
             "name": genre_name,
@@ -199,9 +224,12 @@ def get_anilist_recommendation(anime_name):
     results = []
     
     for anime in anime_list:
+        
+        normalized_genres = normalize_anilist_genres(anime['genres'])
+        
         # some anime do not have an english title, so include the romaji title
         item = {"anime_id": anime["idMal"], "title": anime['title']['english'] or anime['title']['romaji'],
-                "genres": anime['genres'], "synopsis": anime['description'] or "No synposis available.",
+                "genres": normalized_genres, "synopsis": anime['description'] or "No synposis available.",
                 "image_url": anime['coverImage']['large']}
         results.append(item)
     return results
@@ -233,6 +261,7 @@ def get_jikan_genre_recommendations(genre_ids):
     return anime_list       # this returns a list of other animes that have the same genres as the original anime
 
 
-
+def get_anilist_genre_recommendations(genre_names):
+    
 
 
