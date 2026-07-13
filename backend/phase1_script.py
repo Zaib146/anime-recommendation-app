@@ -339,7 +339,54 @@ def get_anilist_similar_anime(anime_id, genres):
     print("ANILIST SIMILAR STATUS: ", response.status_code)
     print("ANILIST SIMILAR RESPONSE: ", data)
     
+    # conceptually, this is what the JSON response, in python form, looks like
+    # {
+    # "data":
+    # {
+    #     "media":
+    #     {
+    #         "recommendations":
+    #         {
+    #             "nodes":
+    #             [
+    #                 recommendation 1,
+    #                 recommendation 2,
+    #                 recommendation 3
+    #             ]
+    #         }
+    #     }
+    # }
+    # }
+    
+    recommendation_nodes = data['data']['media']['recommendations']['nodes']
+    
+    # so recommendation_nodes is just this python list below, like how anime_list was a python list in
+    # get_anilist_recommendation() function
+    #             [
+    #                 recommendation 1,
+    #                 recommendation 2,
+    #                 recommendation 3
+    #             ]
+    
+    # this will be the list of titles of similar anime
+    similar_anime_list = []
     
     
+    # for first iteration, recommendation is recommendation 1 in the above python list. 
+    # recommendation 1 has a mediaRecommendation, as described earlier.
+    for recommendation in recommendation_nodes:
+        # recommended_anime has the information inside of the dictionary mediaRecommendation
+        recommended_anime = recommendation['mediaRecommendation']
 
+        # if there is content inside the dictionary mediaRecommendation, do this 
+        # (anilist could have it blank here, would cause an error without this statement)
+        if recommended_anime is not None:
+            # within mediaRecommendation, we extract the title
+            title = (
+                recommended_anime['title']['english'] or recommended_anime['title']['romaji']
+            )
 
+        similar_anime_list.append(title)
+        
+    # now has list of 10 similar anime by title    
+    return similar_anime_list
