@@ -3,7 +3,21 @@ import requests # needed to fetch json data from Jikan API
 #  enter anime name. from requests library, use get method to get json data from Jikan API. Returns raw JSON data into variable "response"
 #  use the .json() method on response to parse the json data and return it as python dictionaries and lists. Store that into variable data.
 
-# this function handles the actual recommendation logic
+# this helper function normalizes the anime genre results into one body. So the React does not care which API the genres came from, because all will be in the same structure anyway
+# this is conversion logic for Jikan function
+def normalize_jikan_genres(jikan_genres):
+    normalized_genres = []
+    
+    for genre in jikan_genres:
+        normalized_genres.append({
+            "name": genre["name"],
+            "jikan_id": genrej["mal_id"]
+        })
+    return normalized_genres
+
+
+
+# this function handles the actual recommendation logic, the fetch logic
 def get_jikan_recommendation(anime_name):
     anime_search_url = f"https://api.jikan.moe/v4/anime?q={anime_name}"
     response = requests.get(anime_search_url)
@@ -158,7 +172,7 @@ def get_recommendation(anime_name):
         return results
 
 
-def get_genre_recommendations(genre_ids):
+def get_jikan_genre_recommendations(genre_ids):
     genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10" (parameter was ["1", "2", "10"]). 
     # str(id) converts each id number to a string while looping through ids in the original list. ",".join puts a comma between each id value
     genre_search_url = f"https://api.jikan.moe/v4/anime?genres={genre_string}"      # build url using string of genre_string
