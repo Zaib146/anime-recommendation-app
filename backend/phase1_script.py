@@ -243,8 +243,18 @@ def get_recommendation(anime_name):
         # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
         return results
 
-
-def get_jikan_genre_recommendations(genre_ids):
+# frontend now sends my standardized genres, no longer a list of genre_ids
+def get_jikan_genre_recommendations(genres):
+    
+    # first thing is the function extracts the genre_ids from genres (we create a list called genres_ids and append to it)
+    
+    genre_ids = []
+    
+    for genre in genres:
+        if genre["jikan_id"] is not None:
+            genre_ids.append(genre["jikan_id"])
+            
+    # now function continues as before
     genre_string = ",".join(str(id) for id in genre_ids)    # from previous example, genre_string = "1,2,10" (parameter was ["1", "2", "10"]). 
     # str(id) converts each id number to a string while looping through ids in the original list. ",".join puts a comma between each id value
     genre_search_url = f"https://api.jikan.moe/v4/anime?genres={genre_string}"      # build url using string of genre_string
