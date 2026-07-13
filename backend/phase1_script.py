@@ -274,12 +274,12 @@ def get_jikan_genre_recommendations(genres):
     return anime_list       # this returns a list of other animes that have the same genres as the original anime
 
 
-# anilist extracts name. also receives same standardized genres parameter. nice thing about this design
-def get_anilist_genre_recommendations(genres):
-    genre_names = []
+# anilist has its own recommendations for each anime based on what other users recommended. so i'm going to get those (exists within media), and give the top 10 recommendations that way.
+# I will NOT give similar anime based on same genres like I did with Jikan, because of this difference
+# will not use genres parameter for now, still have it here to be consistent with get_jikan_genre_recommendations. for future apis, can include extra info in parameters like that for consistency,
+# do not have to actually use. as of right now, this function will only actually be called with the parameter anime_id, not genres
+def get_anilist_similar_anime(anime_id, genres):
     
-    for genre in genre_names:
-        genre_names.append(genre['name'])
         
     
 
