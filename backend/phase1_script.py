@@ -279,11 +279,22 @@ def get_jikan_genre_recommendations(genres):
 # will not use genres parameter for now, still have it here to be consistent with get_jikan_genre_recommendations. for future apis, can include extra info in parameters like that for consistency,
 # do not have to actually use. as of right now, this function will only actually be called with the parameter anime_id, not genres
 def get_anilist_similar_anime(anime_id, genres):
+    # similar struction as in get_anilist_recommendation function with the post request
     query = """
-    query ($idMal: Int) {
-        media(idMal: $idMal, type: ANIME) {
+    query ($idMal: Int) {       # this declares a GraphQL variable named idMal
+    $idMal is the variable whose value will be replaced later, like $search earlier
+
+        # Find the AniList anime whose MyAnimeList ID matches the ID passed from your app
+        media(idMal: $idMal, type: ANIME) {     # here recommendations also exists inside media (think of media as a huge object
+        GraphQL only sends info from media we request)
+        
+            # asks AniList for up to ten highly rated recommendations connected to that anime.
             recommendations(page: 1, perPage: 10, sort: RATING_DESC) {
+                # each node has rating, user, date, and recommended anime info. we only care about recommended anime,
+                which is called mediaRecommendation inside of nodes
                 nodes {
+                    
+                    from the recommended anime info, we only want the anime id and its name
                     mediaRecommendation {
                         idMal
                         title {
@@ -311,6 +322,11 @@ def get_anilist_similar_anime(anime_id, genres):
         }
     )
         
+    data = response.json()
+    
+    print("ANILIST SIMILAR STATUS: ", response.status_code)
+    print("ANILIST SIMILAR RESPONSE: ", data)
+    
     
     
 
