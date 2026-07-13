@@ -279,8 +279,39 @@ def get_jikan_genre_recommendations(genres):
 # will not use genres parameter for now, still have it here to be consistent with get_jikan_genre_recommendations. for future apis, can include extra info in parameters like that for consistency,
 # do not have to actually use. as of right now, this function will only actually be called with the parameter anime_id, not genres
 def get_anilist_similar_anime(anime_id, genres):
+    query = """
+    query ($idMal: Int) {
+        media(idMal: $idMal, type: ANIME) {
+            recommendations(page: 1, perPage: 10, sort: RATING_DESC) {
+                nodes {
+                    mediaRecommendation {
+                        idMal
+                        title {
+                            english
+                            romaji
+                        }
+                    }
+                }
+            }
+        }
+    }
+    """
     
+    variables = {
+        "idMal": anime_id
+    }
+    
+    url = "https://graphql.anilist.co"
+    
+    response = requests.post(
+        url, 
+        json = {
+            "query": query,
+            "variables": variables
+        }
+    )
         
+    
     
 
 
