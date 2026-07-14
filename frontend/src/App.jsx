@@ -169,7 +169,7 @@ User sees webpage*/
     setCurrentView("watchlist")
   }
 
-  async function handleViewSimilarAnime(anime)
+    async function handleViewSimilarAnime(anime)
   {
     // this checks if anime has no genres in the Jikan API. If it does not have any, it displays the message and returns out of the function. I could put the logic below the if statement in an else block, but this works as is.
     // Now my page does not crash when I click "View Similar Anime" for an anime that has no genres
@@ -184,12 +184,37 @@ User sees webpage*/
       return
     }
 
-    const genre_ids = anime.genres.map(genre => genre.mal_id)  // here, genres is a list with dictionaies that have mal_id and name (1, Action as values). Loop through that list. For each dictionary in the list
-    //, here called "genre" get the mal_id value for that dictionary. So it would get "1" in this example and do the rest for the other dictionaries. It would make one list with the values, like [1,2,10]
-    const genre_String = genre_ids.join(",")   // this combines the values in the list into one string with commas - it becomes "1,2,10". This is what our similar_Anime_endpoint function expects as a parameter
-    const url = "http://localhost:8000/similar-anime/" + anime.anime_id + "/" + genre_String 
-    const response = await fetch(url)   // call the similar_anime_endpoint function with that url
-    const data = await response.json()    // parse the JSON data into python data, store in "data" variable
+    //package only the information the backend needs
+    const similarAnimeRequest = {   // we need to have an object that's shaped like our Pydantic model to send to backend. So we create it. Now shape of the button 
+                            // matches what FastAPI expects. this is a Pydantic model for the specific similar anime request
+      anime_id: anime.anime_id,
+      genres: anime.genres,
+    }
+
+    const url = "http://localhost:8000/similar-anime"   // we do not add parameter anime to url since this is a POST request. The request data travels in the request body. because of the method: POST, it knows to do
+    // the POST HTTP method, not the GET one
+    // Without this line of (url, method: "POST"), fetch() defaults to method: "GET", which would not match my FastAPI endpoint of @app.post("/similar-anime") 
+    const response = await fetch(url, 
+      {
+        method: "POST",     
+        headers:
+        {
+          "Content-Type": "application/json"  // this means that the data I'm sending is JSON. This helps FastAPI know how to interpret the request body
+        },
+        body: JSON.stringify(similarAnimeRequest)       //take the JavaScript object called animeToSave and convert it into JSON text so it can travel across the network. the body is the Naruto object
+        //  for example, if
+        //    animeToSave = {
+        //       anime_id: 20,
+        //       title: "Naruto"}
+            
+        //     then it becomes
+        //     {
+        //       "anime_id": 20,
+        //       "title": "Naruto"} 
+      })
+    const data = await response.json()  // extract the JSON from the python information in response, store in data variable which is in python
+    console.log(data)   // to check in console
+
     setSimilarAnimeById(
       {
         ...similarAnimeById,    // create a new object. ...similarAnimeById means create a new object for similarAnimeById and copy all the old key-values pairs into the new one. This allows us to add new key-value pairs (different similar anime for different anime ids) without
@@ -199,6 +224,38 @@ User sees webpage*/
     )     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
     console.log(data)   // to check in console
   }
+
+
+  // async function handleViewSimilarAnime(anime)
+  // {
+  //   // this checks if anime has no genres in the Jikan API. If it does not have any, it displays the message and returns out of the function. I could put the logic below the if statement in an else block, but this works as is.
+  //   // Now my page does not crash when I click "View Similar Anime" for an anime that has no genres
+  //   if (anime.genres.length === 0)
+  //   {
+  //     setSimilarAnimeById(
+  //       {
+  //         ...similarAnimeById,    // this copies everything that was already in the object similarAnimeById
+  //         [anime.anime_id]: ["No Similar Anime (no genres listed)"]   // the anime id of this specific anime is the key here. let's say naruto and it's 20. so 20: No Similar Anime (no genres listed) is stored in similarAnimeById
+  //       }
+  //     )
+  //     return
+  //   }
+
+  //   const genre_ids = anime.genres.map(genre => genre.mal_id)  // here, genres is a list with dictionaies that have mal_id and name (1, Action as values). Loop through that list. For each dictionary in the list
+  //   //, here called "genre" get the mal_id value for that dictionary. So it would get "1" in this example and do the rest for the other dictionaries. It would make one list with the values, like [1,2,10]
+  //   const genre_String = genre_ids.join(",")   // this combines the values in the list into one string with commas - it becomes "1,2,10". This is what our similar_Anime_endpoint function expects as a parameter
+  //   const url = "http://localhost:8000/similar-anime/" + anime.anime_id + "/" + genre_String 
+  //   const response = await fetch(url)   // call the similar_anime_endpoint function with that url
+  //   const data = await response.json()    // parse the JSON data into python data, store in "data" variable
+  //   setSimilarAnimeById(
+  //     {
+  //       ...similarAnimeById,    // create a new object. ...similarAnimeById means create a new object for similarAnimeById and copy all the old key-values pairs into the new one. This allows us to add new key-value pairs (different similar anime for different anime ids) without
+  //       // completely replacing what was previously there. Want view similar anime for Naruto to show even after I click view similar anime for bleach
+  //       [anime.anime_id]: data   // this adds the anime id as a key value and a list of the similar anime as a value represented by the variable "data"
+  //     }
+  //   )     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
+  //   console.log(data)   // to check in console
+  // }
 
   async function handleRemoveSimilarAnime(anime_id)
   {
