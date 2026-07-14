@@ -367,7 +367,7 @@ User sees webpage*/
                   <p>Genres: </p> {/* <p> = Paragraph, used for normal text*/}
                   <div className = "genres-recommendations-list">    {/* <ul> = Unordered List, creates a bulleted list container*/}
                     {anime?.genres?.map((genre) => (
-                      <li>{typeof genre === "string" ? genre: genre.name}</li>))}   
+                      <li>{genre.name}</li>))}   
                       {/* if genre is type string, show just genre. if it's type object (a dictionary), do genre.name. This is needed since in Anilist API genres = ["Action", "Adventure"]
                       while in Jikan API genres = [{ mal_id: 1, name: "Action" }, { mal_id: 2, name: "Adventure" }]. So for each iteration, genre = "Action" with Anilist API, genre = { mal_id: 1, name: "Action" }
                       with Jikan API. Now this displays genres for both API results
