@@ -400,6 +400,37 @@ def recommendations_endpoint(anime_name):
         return response
     
 
+# switched to a POST endpoint (originally was a GET endpoint that took in anime_id and genre_ids in the url).
+# switched because now frontend sends nested JSON objects instead (genres is a list of dictionaries / objects, whereas genre_ids was 1 string).
+# a URL is not designed for sending nested JSON objects like this. That's exactly what an HTTP request body is for.
+
+# So React now sends:
+
+# POST /similar-anime
+
+# with the JSON body:
+
+# {
+#   "anime_id": 20,
+#   "genres": [
+#     {
+#       "name": "Action",
+#       "jikan_id": 1
+#     },
+#     {
+#       "name": "Adventure",
+#       "jikan_id": 2
+#     }
+#   ]
+# }
+
+# FastAPI then automatically creates
+
+# request = SimilarAnimeRequest(...)
+
+# which is much cleaner.
+
+
 @app.post("/similar-anime")     # this creates the endpoint
 # When React sends a POST request to /similar-anime, FastAPI calls similar_anime_endpoint()
 def similar_anime_endpoint(request: SimilarAnimeRequest):   # we never manually create this parameter, FastAPI does
