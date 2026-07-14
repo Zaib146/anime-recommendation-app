@@ -169,7 +169,7 @@ User sees webpage*/
     setCurrentView("watchlist")
   }
 
-    async function handleViewSimilarAnime(anime)
+  async function handleViewSimilarAnime(anime)
   {
     // this checks if anime has no genres in the Jikan API. If it does not have any, it displays the message and returns out of the function. I could put the logic below the if statement in an else block, but this works as is.
     // Now my page does not crash when I click "View Similar Anime" for an anime that has no genres
@@ -201,16 +201,9 @@ User sees webpage*/
         {
           "Content-Type": "application/json"  // this means that the data I'm sending is JSON. This helps FastAPI know how to interpret the request body
         },
-        body: JSON.stringify(similarAnimeRequest)       //take the JavaScript object called animeToSave and convert it into JSON text so it can travel across the network. the body is the Naruto object
-        //  for example, if
-        //    animeToSave = {
-        //       anime_id: 20,
-        //       title: "Naruto"}
-            
-        //     then it becomes
-        //     {
-        //       "anime_id": 20,
-        //       "title": "Naruto"} 
+        body: JSON.stringify(similarAnimeRequest)       //take the JavaScript object called animeToSave and convert it into JSON text so it can travel across the network. 
+        // JSON.stringify() converts the JavaScript object into a JSON string so it can be sent in the body of the POST request.
+        // see comment below this function about json.stringify
       })
     const data = await response.json()  // extract the JSON from the python information in response, store in data variable which is in python
     console.log(data)   // to check in console
@@ -224,6 +217,37 @@ User sees webpage*/
     )     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
     console.log(data)   // to check in console
   }
+
+  // for example, if similarAnimeRequest =
+// {
+//     anime_id: 20,
+//     genres: [
+//         {
+//             "name": "Action",
+//             "jikan_id": 1
+//         },
+//         {
+//             "name": "Adventure",
+//             "jikan_id": 2
+//         }
+//     ]
+// }
+//
+// then JSON.stringify(similarAnimeRequest) sends:
+//
+// {
+//     "anime_id": 20,
+//     "genres": [
+//         {
+//             "name": "Action",
+//             "jikan_id": 1
+//         },
+//         {
+//             "name": "Adventure",
+//             "jikan_id": 2
+//         }
+//     ]
+// }
 
 
   // async function handleViewSimilarAnime(anime)
