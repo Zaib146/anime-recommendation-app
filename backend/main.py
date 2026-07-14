@@ -423,27 +423,6 @@ def similar_anime_endpoint(request: SimilarAnimeRequest):   # we never manually 
         return get_similar_anime_cached_results(request.anime_id)   # return cached results of similar anime for this specific anime
 
     
-        
-
-# @app.get("/similar-anime/{anime_id}/{genre_ids}")      # for example, receives a string like "1,2,10"
-# def similarAnime_endpoint(anime_id, genre_ids):
-#     genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
-#     try:
-#         similar_anime_list = get_similar_anime(anime_id, genres)       # this gives a list of similar anime 
-        
-#         if similar_anime_list:      # if the list is not empty, do this
-#             save_similar_anime_to_cache(anime_id, similar_anime_list)       # save the similar anime list to the specific anime correlating to this anime_id in the anime_cache table
-#             return similar_anime_list   # return list of similar anime
-        
-#         else:   # if list of similar anime is empty (jikan returns empty), we check cached results of similar anime for this specific anime to see if it was saved there at some point
-#             return get_similar_anime_cached_results(anime_id)
-        
-#     except Exception as error:      # Exception is the base class for almost all normal Python errors. It includes AttributeError, KeyError, TypeError, ValueError, sqlite3.OperationalError
-#         # except Exception means catch any normal Python exception. "as error" saves the actual error object into the variable named error. Now we can see what error it is in terminal.
-#         print("ERROR IN SIMILAR ANIME ENDPOINT:", error)    # if Jikan API not working, get cached results
-#         return get_similar_anime_cached_results(anime_id)   # return cached results of similar anime for this specific anime
-
-    
 
 
 # to start / host the backend server (make it alive), type this in "Terminal" -> "New Terminal". should be in location C:\anime-recommendation-app\backend>
@@ -531,7 +510,7 @@ def watchlist2_endpoint():
     
     saved_anime = []
     for row in rows:
-        item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "images": row[2]}
+        item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "image_url": row[2]}
         # use indices since tuples require indices, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         

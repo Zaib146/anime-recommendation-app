@@ -354,7 +354,7 @@ def get_anilist_similar_anime(anime_id):
     # {
     # "data":
     # {
-    #     "media":
+    #     "Media":
     #     {
     #         "recommendations":
     #         {
@@ -369,7 +369,7 @@ def get_anilist_similar_anime(anime_id):
     # }
     # }
     
-    recommendation_nodes = data['data']['media']['recommendations']['nodes']
+    recommendation_nodes = data['data']['Media']['recommendations']['nodes']
     
     # so recommendation_nodes is just this python list below, like how anime_list was a python list in
     # get_anilist_recommendation() function
