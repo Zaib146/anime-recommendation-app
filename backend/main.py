@@ -1,7 +1,7 @@
 # this file handles the backend setup
 
 from fastapi import FastAPI     # needed for backend setup
-from phase1_script import get_recommendation, get_genre_recommendations
+from phase1_script import get_recommendation, get_similar_anime
 from fastapi.middleware.cors import CORSMiddleware  # Go into FastAPI's CORS module and import the tool that handles cross-origin requests. importing a security guard
 # the middleware decides allow or block
 from pydantic import BaseModel
@@ -365,7 +365,7 @@ def recommendations_endpoint(anime_name):
 def similarAnime_endpoint(anime_id, genre_ids):
     genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
     try:
-        similar_anime_list = get_genre_recommendations(genre_ids)       # this gives a list of similar anime 
+        similar_anime_list = get_similar_anime(anime_id, genres)       # this gives a list of similar anime 
         
         if similar_anime_list:      # if the list is not empty, do this
             save_similar_anime_to_cache(anime_id, similar_anime_list)       # save the similar anime list to the specific anime correlating to this anime_id in the anime_cache table

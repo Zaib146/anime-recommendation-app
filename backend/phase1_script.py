@@ -49,7 +49,7 @@ def normalize_jikan_genres(jikan_genres):
 
 # same idea as normalize_jikan_genres function
 
-# Original AniList genre structure:
+# Original anilist_genres structure:
 #
 # [
 #     "Action",
@@ -184,7 +184,6 @@ def get_anilist_recommendation(anime_name):
                 genres              # Genres: this is the same as anime["genres"] in REST API
                                                         
                 } 
-            
         }                                           
     } 
     """
@@ -237,7 +236,14 @@ def get_anilist_recommendation(anime_name):
     return results
 
 def get_recommendation(anime_name):
-    results = get_anilist_recommendation(anime_name)   # second call in case 
+    
+    # results = get_anilist_recommendation(anime_name)   # 1st call? haven't decided order yet 
+    
+    # if results:     # if the Jikan API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but Jikan API has no information about the anime, so empty.
+    #     # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
+    #     return results
+    
+    results = get_jikan_recommendation(anime_name)   # second call in case 
     
     if results:     # if the Jikan API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but Jikan API has no information about the anime, so empty.
         # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
@@ -279,13 +285,13 @@ def get_jikan_genre_recommendations(genres):
 # will not use genres parameter for now, still have it here to be consistent with get_jikan_genre_recommendations. for future apis, can include extra info in parameters like that for consistency,
 # do not have to actually use. as of right now, this function will only actually be called with the parameter anime_id, not genres
 def get_anilist_similar_anime(anime_id, genres):
-    # similar struction as in get_anilist_recommendation function with the post request
+    # similar structure as in get_anilist_recommendation function with the post request
     query = """
     query ($idMal: Int) {       # this declares a GraphQL variable named idMal
     $idMal is the variable whose value will be replaced later, like $search earlier
 
         # Find the AniList anime whose MyAnimeList ID matches the ID passed from your app
-        media(idMal: $idMal, type: ANIME) {     # here recommendations also exists inside media (think of media as a huge object
+        media(idMal: $idMal, type: ANIME) {     # here recommendations also exists inside media (think of media as a huge object.                                                       
         GraphQL only sends info from media we request)
         
             # asks AniList for up to ten highly rated recommendations connected to that anime.
@@ -325,7 +331,7 @@ def get_anilist_similar_anime(anime_id, genres):
     
     response = requests.post(
         url, 
-        json = {     #json = is saying convert this dictionary into JSON and send it in the HTTP request body. 
+        json = {     # json = is saying convert this dictionary into JSON and send it in the HTTP request body. 
                         # This is the same thing React does in the app when it sends a POST request to FastAPI
             "query": query,
             "variables": variables
@@ -390,3 +396,18 @@ def get_anilist_similar_anime(anime_id, genres):
         
     # now has list of 10 similar anime by title    
     return similar_anime_list
+
+def get_similar_anime(anime_id, genres):
+    
+    results = get_anilist_similar_anime(anime_id)
+    
+    if results:
+        return results
+        
+    
+    # results = get_jikan_genre_recommendations(genres)
+    
+    # if results:
+    #     return results
+    
+    
