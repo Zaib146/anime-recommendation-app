@@ -400,23 +400,33 @@ def recommendations_endpoint(anime_name):
         return response
     
 
-@app.get("/similar-anime/{anime_id}/{genre_ids}")      # for example, receives a string like "1,2,10"
-def similarAnime_endpoint(anime_id, genre_ids):
-    genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
-    try:
-        similar_anime_list = get_similar_anime(anime_id, genres)       # this gives a list of similar anime 
+@app.post("/similar-anime")     # this creates the endpoint
+# When React sends a POST request to /similar-anime, FastAPI calls similar_anime_endpoint()
+def similar_anime_endpoint(request: SimilarAnimeRequest):   # we never manually create this parameter, FastAPI does
+    # like how in def watchlist_endpoint(anime: Anime): FastAPI automatically creates anime from the JSON, now it creates request instead
+    
+    similar_anime_list = get_similar_anime(
+        request.anime_id,
+        request.genres
+    )
+
+# @app.get("/similar-anime/{anime_id}/{genre_ids}")      # for example, receives a string like "1,2,10"
+# def similarAnime_endpoint(anime_id, genre_ids):
+#     genre_ids = genre_ids.split(",")        # changes genre_ids to now a list of ["1", "2", "10"]   this is needed since get_genre_recommendations needs a list as a parameter
+#     try:
+#         similar_anime_list = get_similar_anime(anime_id, genres)       # this gives a list of similar anime 
         
-        if similar_anime_list:      # if the list is not empty, do this
-            save_similar_anime_to_cache(anime_id, similar_anime_list)       # save the similar anime list to the specific anime correlating to this anime_id in the anime_cache table
-            return similar_anime_list   # return list of similar anime
+#         if similar_anime_list:      # if the list is not empty, do this
+#             save_similar_anime_to_cache(anime_id, similar_anime_list)       # save the similar anime list to the specific anime correlating to this anime_id in the anime_cache table
+#             return similar_anime_list   # return list of similar anime
         
-        else:   # if list of similar anime is empty (jikan returns empty), we check cached results of similar anime for this specific anime to see if it was saved there at some point
-            return get_similar_anime_cached_results(anime_id)
+#         else:   # if list of similar anime is empty (jikan returns empty), we check cached results of similar anime for this specific anime to see if it was saved there at some point
+#             return get_similar_anime_cached_results(anime_id)
         
-    except Exception as error:      # Exception is the base class for almost all normal Python errors. It includes AttributeError, KeyError, TypeError, ValueError, sqlite3.OperationalError
-        # except Exception means catch any normal Python exception. "as error" saves the actual error object into the variable named error. Now we can see what error it is in terminal.
-        print("ERROR IN SIMILAR ANIME ENDPOINT:", error)    # if Jikan API not working, get cached results
-        return get_similar_anime_cached_results(anime_id)   # return cached results of similar anime for this specific anime
+#     except Exception as error:      # Exception is the base class for almost all normal Python errors. It includes AttributeError, KeyError, TypeError, ValueError, sqlite3.OperationalError
+#         # except Exception means catch any normal Python exception. "as error" saves the actual error object into the variable named error. Now we can see what error it is in terminal.
+#         print("ERROR IN SIMILAR ANIME ENDPOINT:", error)    # if Jikan API not working, get cached results
+#         return get_similar_anime_cached_results(anime_id)   # return cached results of similar anime for this specific anime
 
     
 
