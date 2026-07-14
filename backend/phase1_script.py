@@ -163,6 +163,8 @@ def get_anilist_recommendation(anime_name):
             # here $search is like ? in SQL. it's a placeholder that will be replaced with the anime name, like "Naruto", that's defined in the "variables" dictionary
             # search anilist's media database with the value in search, only returning type anime (not manga)
             
+            # here we use lowercase m in media. here "media" is the name of the list field inside Page. we use lowercase m in media after using Page
+            # when searching for many anime. Media is a single anime object, media is a field that returns a list of anime. Find me anime matching this search.
             media(search: $search, type: ANIME) {
                 # everything below is what we're requesting from AniList API. Unlike REST API's, GraphQL never sends extra information.
                 # with GET request with REST API, server decides what I get; with POST request with GraphQL, I decide exactly what I get - so app only downloads fields it actually uses
@@ -284,21 +286,24 @@ def get_jikan_genre_recommendations(genres):
 # I will NOT give similar anime based on same genres like I did with Jikan, because of this difference
 # will not use genres parameter for now, still have it here to be consistent with get_jikan_genre_recommendations. for future apis, can include extra info in parameters like that for consistency,
 # do not have to actually use. as of right now, this function will only actually be called with the parameter anime_id, not genres
-def get_anilist_similar_anime(anime_id, genres):
+def get_anilist_similar_anime(anime_id):
     # similar structure as in get_anilist_recommendation function with the post request
     query = """
     query ($idMal: Int) {       # this declares a GraphQL variable named idMal
-    $idMal is the variable whose value will be replaced later, like $search earlier
+    # $idMal is the variable whose value will be replaced later, like $search earlier
 
-        # Find the AniList anime whose MyAnimeList ID matches the ID passed from your app
-        media(idMal: $idMal, type: ANIME) {     # here recommendations also exists inside media (think of media as a huge object.                                                       
-        GraphQL only sends info from media we request)
+        # Find the AniList anime whose MyAnimeList ID matches the ID passed from your app. Here, I already know exactly which anime I want.
+        # We use a capital m in Media since we are only fetching one anime (yes, we are getting a list of similar anime, but that's only in relation to the one anime we're fetching)
+        # now we already know the MAL ID, so we are no longer searching for many anime, like with Page and media in get_anilist_recommendation
+        # Media is a single anime object, media is a field that returns a list of anime
+        Media(idMal: $idMal, type: ANIME) {     # here recommendations also exists inside Media (think of Media as a huge object.                                                       
+        # GraphQL only sends info from media we request)
         
             # asks AniList for up to ten highly rated recommendations connected to that anime.
             recommendations(page: 1, perPage: 10, sort: RATING_DESC) {
                 
                 # each node has rating, user, date, and recommended anime info. we only care about recommended anime,
-                which is called mediaRecommendation inside of nodes
+                # which is called mediaRecommendation inside of nodes
                 nodes {
                     
                     # from the recommended anime info, we only want the anime id (MAL Ids, since current
@@ -392,7 +397,8 @@ def get_anilist_similar_anime(anime_id, genres):
                 recommended_anime['title']['english'] or recommended_anime['title']['romaji']
             )
 
-        similar_anime_list.append(title)
+            similar_anime_list.append(title)
+        
         
     # now has list of 10 similar anime by title    
     return similar_anime_list
@@ -410,4 +416,4 @@ def get_similar_anime(anime_id, genres):
     # if results:
     #     return results
     
-    
+    return []   
