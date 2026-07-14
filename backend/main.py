@@ -11,6 +11,14 @@ from pydantic import BaseModel
 # - generate API documentation
 # - enforce data types
 
+
+from datetime import datetime   # needed to get the correct date and time for fetched_at for the caching functions
+import json     # gives us access to JSON functions
+import sqlite3  # Python can now talk to SQLite
+
+# BaseModel = Pydantic's class, Anime = my custom Pydantic model
+
+# For class Anime
 # Suppose React sends:
 
 # {
@@ -24,11 +32,7 @@ from pydantic import BaseModel
 #     anime_id=20,
 #     title="Naruto"
 # )
-from datetime import datetime   # needed to get the correct date and time for fetched_at for the caching functions
-import json     # gives us access to JSON functions
-import sqlite3  # Python can now talk to SQLite
 
-# BaseModel = Pydantic's class, Anime = my custom Pydantic model
 class Anime(BaseModel):     # class Anime inherits all the functionality from Pydantic's Base Model. Like how class Cat extends Animal in Java
     # this does not save anything yet. this tells FastAPI that when someone send anime data to my backend, this is the shape I expect, the object.
     # this gives me a clean anime object that i can then INSERT INTO watchlist table (inside my post function)
@@ -38,6 +42,41 @@ class Anime(BaseModel):     # class Anime inherits all the functionality from Py
     synopsis: str
     genres: list        # must be a list
     
+    
+# For class SimilarAnimeRequst
+# Suppose React sends:
+
+# {
+#     "anime_id":20,
+
+#     "genres":[
+#         {
+#             "name":"Action",
+#             "jikan_id":1
+#         }
+#     ]
+# }
+
+# FastAPI can automatically create:
+# request = SimilarAnimeRequest(
+#     anime_id=20,
+
+#     genres=[
+#         {
+#             "name":"Action",
+#             "jikan_id":1
+#         }
+#     ]
+# )
+
+# class SimilarAnimeRequest inherits all the functionality from Pydantic's Base Model. Like how class Cat extends Animal in Java
+# this does not save anything yet. this is the shape I expect, the object.
+class SimilarAnimeRequest(BaseModel):
+    anime_id: int
+    genres: list
+    
+# class RecommendationResponse inherits all the functionality from Pydantic's Base Model. Like how class Cat extends Animal in Java
+# this does not save anything yet this is the shape I expect, the object.
 class RecommendationResponse(BaseModel):    # instead of just one result of a list of anime for recommendations, now returning an object. 
     result_source: str      # clarify if data came from Jikan or cache
     message: str        # I can give a message saying cache was used, or empty str if not
