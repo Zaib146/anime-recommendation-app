@@ -258,7 +258,9 @@ def get_similar_anime_cached_results(anime_id):
     cursor = conn.cursor()
     
     cursor.execute("""
-                   SELECT similar_anime
+                   SELECT 
+                        similar_anime,
+                        similar_anime_source
                    FROM anime_cache
                    WHERE anime_id = ?
                    """,
@@ -286,7 +288,7 @@ def get_similar_anime_cached_results(anime_id):
     # if similar anime list has no content, return []
     if len(similar_anime_list) == 0:
         conn.close()
-        return []
+        return ([], None)
     
     similar_anime_text = similar_anime_list[0][0]   # similar_anime_text is a JSON formatted string that has info of the first (and only) - (first [0]) row and first (and only) column - second [0]
     # similar_anime_text = '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]' - not a python list  yet
@@ -300,9 +302,14 @@ def get_similar_anime_cached_results(anime_id):
     # '[{"anime_id":1,"title":"One Piece"}, {"anime_id":2,"title":"Bleach"}]'. first [0] - first row, second [0] - first column of that row
     # now this is a JSON string by itself
     
+    similar_anime_source = similar_anime_list[0][1]
+    
     conn.close()
     
-    return json.loads(similar_anime_text)       # converts json string to a python list now
+    cached_results = json.loads(similar_anime_text)       # converts json string to a python list now
+    
+    return cached_results, similar_anime_source
+    
     # python list looks like this now
     # end:
     # [
