@@ -464,7 +464,7 @@ def similar_anime_endpoint(request: SimilarAnimeRequest):   # we never manually 
             save_similar_anime_to_cache(request.anime_id, similar_anime_list, source)       # save the similar anime list to the specific anime correlating to this anime_id in the anime_cache table
             return SimilarAnimeResponse(
                 result_source = source,
-                similar_anime_source = source
+                similar_anime_source = source,
                 message = "",
                 results = similar_anime_list
             )
@@ -474,7 +474,7 @@ def similar_anime_endpoint(request: SimilarAnimeRequest):   # we never manually 
             return SimilarAnimeResponse(
                 result_source = "cache",
                 similar_anime_source= cached_source,
-                message = "Live similar-anime services are currently unavailable. Saved results are shown."
+                message = "Live similar-anime services are currently unavailable. Saved results are shown.",
                 results = cached_results
             )
         
@@ -486,7 +486,7 @@ def similar_anime_endpoint(request: SimilarAnimeRequest):   # we never manually 
         return SimilarAnimeResponse(
             result_source = "cache",
             similar_anime_source= cached_source,
-            message = "Live similar-anime services are currently unavailable. Saved results are shown."
+            message = "Live similar-anime services are currently unavailable. Saved results are shown.",
             results = cached_results
             )
 
