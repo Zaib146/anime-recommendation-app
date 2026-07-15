@@ -41,6 +41,7 @@ class Anime(BaseModel):     # class Anime inherits all the functionality from Py
     image_url: str
     synopsis: str
     genres: list        # must be a list
+    recommendation_source: str | None = None    # The first None belongs to the type (str | None). The second None is the default value (= None). just syntax, the = None is an optional string field
     
     
 # For class SimilarAnimeRequst

@@ -250,37 +250,6 @@ User sees webpage*/
 // }
 
 
-  // async function handleViewSimilarAnime(anime)
-  // {
-  //   // this checks if anime has no genres in the Jikan API. If it does not have any, it displays the message and returns out of the function. I could put the logic below the if statement in an else block, but this works as is.
-  //   // Now my page does not crash when I click "View Similar Anime" for an anime that has no genres
-  //   if (anime.genres.length === 0)
-  //   {
-  //     setSimilarAnimeById(
-  //       {
-  //         ...similarAnimeById,    // this copies everything that was already in the object similarAnimeById
-  //         [anime.anime_id]: ["No Similar Anime (no genres listed)"]   // the anime id of this specific anime is the key here. let's say naruto and it's 20. so 20: No Similar Anime (no genres listed) is stored in similarAnimeById
-  //       }
-  //     )
-  //     return
-  //   }
-
-  //   const genre_ids = anime.genres.map(genre => genre.mal_id)  // here, genres is a list with dictionaies that have mal_id and name (1, Action as values). Loop through that list. For each dictionary in the list
-  //   //, here called "genre" get the mal_id value for that dictionary. So it would get "1" in this example and do the rest for the other dictionaries. It would make one list with the values, like [1,2,10]
-  //   const genre_String = genre_ids.join(",")   // this combines the values in the list into one string with commas - it becomes "1,2,10". This is what our similar_Anime_endpoint function expects as a parameter
-  //   const url = "http://localhost:8000/similar-anime/" + anime.anime_id + "/" + genre_String 
-  //   const response = await fetch(url)   // call the similar_anime_endpoint function with that url
-  //   const data = await response.json()    // parse the JSON data into python data, store in "data" variable
-  //   setSimilarAnimeById(
-  //     {
-  //       ...similarAnimeById,    // create a new object. ...similarAnimeById means create a new object for similarAnimeById and copy all the old key-values pairs into the new one. This allows us to add new key-value pairs (different similar anime for different anime ids) without
-  //       // completely replacing what was previously there. Want view similar anime for Naruto to show even after I click view similar anime for bleach
-  //       [anime.anime_id]: data   // this adds the anime id as a key value and a list of the similar anime as a value represented by the variable "data"
-  //     }
-  //   )     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
-  //   console.log(data)   // to check in console
-  // }
-
   async function handleRemoveSimilarAnime(anime_id)
   {
     // This is taking what's on the right side of the equals side, here similarAnimeById, and destructuring it. JSX is saying take the value at the index anime_id, store that value in the variable "removed". Everything else, store in the variable remainingSimilarAnime.
