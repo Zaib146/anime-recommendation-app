@@ -102,7 +102,7 @@ def delete_expired_cache():
     
     cursor.execute("""     
                 -- this deletes all the anime in anime_cache that were added more than 30 days. datetime('now', '-30 days') is the current dattime - 30 days. For example, July 1st is today, so the cutoff becomes June 1st.
-                -- if fetched_at < June 1st (for example, May 28), it's older than 30 days, since it's less than the cutoff. so it's deleted.   
+                -- if fetched_at < June 1st (for example, May 28), it's older than 30 days. Since it's less than the cutoff, it's deleted.   
                 DELETE FROM anime_cache 
                 WHERE fetched_at < datetime('now', '-30 days')
                """
@@ -132,7 +132,7 @@ def save_to_cache(results):
                        """,
                        (anime["anime_id"],)
                        )
-        # if the id does exist (for example, let's say anime_id for Naruto is 20), existing_row = (20,) , a tuple containing the matching row. if the anime_id does not exist, existing_row = None
+        # if the id does exist (for example, let's say anime_id for Naruto is 20), existing_row = (20,) , existing_row = a tuple containing the matching row. if the anime_id does not exist, existing_row = None
         # fetchone() says give me the first row returned by that SELECT. The SELECT either finds the row, or finds nothing
         existing_row = cursor.fetchone()
         
@@ -508,7 +508,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
         
         return {"message": "Anime saved to watchlist"}
     
-    except sqlite3.IntegrityError:      # Prevents saving duplicate anime. prevents multiple anime with the same title (therefore have the same anime_id) to be entered in the table. 
+    except sqlite3.IntegrityError:      # Prevents saving duplicate anime. prevents multiple anime with the MAL ID (therefore have the same anime_id) to be entered in the table. 
         # sqlite3.IntegrityError - "The database refused the operation because it would violate one of the table's rules (constraints)." Here SQLite raises this error because of the UNIQUE constraint in anime_id INTEGER UNIQUE 
         # would be violated
         return {"message": "Anime already in watchlist"}
