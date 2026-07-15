@@ -228,6 +228,9 @@ def get_anilist_recommendation(anime_name):
     
     for anime in anime_list:
         
+        if anime['idMal'] is None:
+            continue
+        
         normalized_genres = normalize_anilist_genres(anime['genres'])
         
         # some anime do not have an english title, so include the romaji title
