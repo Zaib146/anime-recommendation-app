@@ -75,6 +75,13 @@ class Anime(BaseModel):     # class Anime inherits all the functionality from Py
 class SimilarAnimeRequest(BaseModel):
     anime_id: int
     genres: list
+
+# get a structured returned object from similar anime endpoint, like we did with RecommendationResponse in get recommendations endpoint    
+class SimilarAnimeResponse(BaseModel):
+    result_source: str
+    similar_anime_source: str | None = None
+    message: str
+    results: list[str]
     
 # class RecommendationResponse inherits all the functionality from Pydantic's Base Model. Like how class Cat extends Animal in Java
 # this does not save anything yet this is the shape I expect, the object.
@@ -437,22 +444,40 @@ def recommendations_endpoint(anime_name):
 def similar_anime_endpoint(request: SimilarAnimeRequest):   # we never manually create this parameter, FastAPI does
     # like how in def watchlist_endpoint(anime: Anime): FastAPI automatically creates anime from the JSON, now it creates request instead
     try:
-        similar_anime_list = get_similar_anime(
+        similar_anime_list, source = get_similar_anime(
             request.anime_id,
             request.genres
         )
     
         if similar_anime_list:
-            save_similar_anime_to_cache(request.anime_id, similar_anime_list)       # save the similar anime list to the specific anime correlating to this anime_id in the anime_cache table
-            return similar_anime_list   # return list of similar anime
+            save_similar_anime_to_cache(request.anime_id, similar_anime_list, source)       # save the similar anime list to the specific anime correlating to this anime_id in the anime_cache table
+            return SimilarAnimeResponse(
+                result_source = source,
+                similar_anime_source = source
+                message = "",
+                results = similar_anime_list
+            )
         
         else:   # if list of similar anime is empty (jikan returns empty), we check cached results of similar anime for this specific anime to see if it was saved there at some point
-            return get_similar_anime_cached_results(request.anime_id)
+            cached_results, cached_source = get_similar_anime_cached_results(request.anime_id)
+            return SimilarAnimeResponse(
+                result_source = "cache",
+                similar_anime_source= cached_source,
+                message = "Live similar-anime services are currently unavailable. Saved results are shown."
+                results = cached_results
+            )
         
     except Exception as error:      # Exception is the base class for almost all normal Python errors. It includes AttributeError, KeyError, TypeError, ValueError, sqlite3.OperationalError
 #         # except Exception means catch any normal Python exception. "as error" saves the actual error object into the variable named error. Now we can see what error it is in terminal.
         print("ERROR IN SIMILAR ANIME ENDPOINT:", error)    # if Jikan API not working, get cached results
-        return get_similar_anime_cached_results(request.anime_id)   # return cached results of similar anime for this specific anime
+        
+        cached_results, cached_source = get_similar_anime_cached_results(request.anime_id)
+        return SimilarAnimeResponse(
+            result_source = "cache",
+            similar_anime_source= cached_source,
+            message = "Live similar-anime services are currently unavailable. Saved results are shown."
+            results = cached_results
+            )
 
     
 
