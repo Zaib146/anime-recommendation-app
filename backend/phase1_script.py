@@ -246,13 +246,15 @@ def get_recommendation(anime_name):
     
     # if results:     # if the Jikan API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but Jikan API has no information about the anime, so empty.
     #     # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
-    #     return results
+    #     return results, "jikan"
     
     results = get_anilist_recommendation(anime_name)   # second call in case 
     
     if results:     # if the Jikan API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but Jikan API has no information about the anime, so empty.
         # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
-        return results
+        return results, "anilist"
+    
+    return [], None
 
 # frontend now sends my standardized genres, no longer a list of genre_ids
 # jikan extracts genre_ids
