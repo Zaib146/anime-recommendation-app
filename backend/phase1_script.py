@@ -254,6 +254,7 @@ def get_recommendation(anime_name):
         # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
         return results, "anilist"
     
+    # fallback in case neither works, do not get error then
     return [], None
 
 # frontend now sends my standardized genres, no longer a list of genre_ids

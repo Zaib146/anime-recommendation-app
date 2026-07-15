@@ -219,7 +219,6 @@ def get_cached_results(anime_name):
     cursor = conn.cursor()
     
     cursor.execute("""
-                -- SELECT * means select all the columns. So it returns anime_id, title, image_url, etc. it only selects the entries whose title is equal to the parameter, we use ? as a placeholder here 
                 -- changed it from that to explicitly stating which columns I'm using. In case the table column order changes later, this ensures I'm selecting the right columns         
                 SELECT anime_id, title, image_url, synopsis, genres, similar_anime, fetched_at 
                 FROM anime_cache
@@ -239,7 +238,7 @@ def get_cached_results(anime_name):
         # use indices since tuples require indices, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
-        anime_results.append(item)    # create a new dictionary from each row, save to saved_anime list
+        anime_results.append(item)    # create a new dictionary from each row, save to anime_results list
         
     # conn.commit() not needed for SELECT since only reading from the table
     conn.close()
@@ -324,9 +323,8 @@ def get_similar_anime_cached_results(anime_id):
 # the tuple is created by SQLite/Python to represent a database row, while the JSON string is the actual value stored inside the similar_anime column.
 
 # this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
-# add more comments throughout this function
 def save_similar_anime_to_cache(anime_id, similar_anime_list):
-    similar_anime_list_text = json.dumps(similar_anime_list)
+    similar_anime_list_text = json.dumps(similar_anime_list)    # converts python list to a json string - cannot saves lists to a database, so we convert it to TEXT
     conn = sqlite3.connect("anime_app.db")
     cursor = conn.cursor()
     
@@ -362,6 +360,7 @@ def recommendations_endpoint(anime_name):
     delete_expired_cache()
     
     try:
+        # now also include the api source here
         results1, source1 = get_recommendation(anime_name)
         
         if not results1:        # if results1 = [], that means python requests to myanimelist are not working. because in get_recommendations function inside phase1_script.py, I did if "data" not in data:
@@ -375,12 +374,13 @@ def recommendations_endpoint(anime_name):
             )
             
             return response
-            
+        
+        # does not matter which API the results are from, will still save to cache    
         save_to_cache(results1)
         limit_cache_size()
         
         response = RecommendationResponse(
-            result_source= source1,
+            result_source= source1,     # the api source goes here
             message= "",
             results=results1
         )
