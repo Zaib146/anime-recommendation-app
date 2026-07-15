@@ -30,7 +30,10 @@ cursor.execute("""
                     genres TEXT,
                     
                     -- same idea with genres, it's actually a Python list originally
-                    similar_anime TEXT
+                    similar_anime TEXT,
+                    
+                    -- records which live API the recommendation results came from
+                    recommendation_source TEXT
                 )
                """
                )
@@ -55,10 +58,16 @@ cursor.execute("""
                     genres TEXT,
                     
                     -- same idea with genres, it's actually a Python list originally
-                    similar_anime TEXT
+                    similar_anime TEXT,
                     
                     -- see when this entry was added to the cache table
-                    fetched_at TEXT
+                    fetched_at TEXT,
+                    
+                    -- records which live API the recommendation results came from
+                    recommendation_source TEXT,
+                    
+                    -- records which live API the similar anime results came from
+                    similar_anime_source TEXT
                 )
                """
                )
