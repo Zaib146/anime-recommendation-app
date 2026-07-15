@@ -141,7 +141,8 @@ def get_jikan_recommendation(anime_name):
     for anime in anime_list:
 
         normalized_genres = normalize_jikan_genres(anime['genres'])
-        item = {"anime_id": anime["mal_id"], "title": anime['title'], "genres": normalized_genres, "synopsis": anime['synopsis'] or "No synposis available.", "image_url": anime['images']['jpg']['image_url']}
+        item = {"anime_id": anime["mal_id"], "title": anime['title'], "genres": normalized_genres, "synopsis": anime['synopsis'] or "No synposis available.",
+                "image_url": anime['images']['jpg']['image_url'], "recommendation_source": "jikan"}
         
         results.append(item)
           
@@ -236,7 +237,7 @@ def get_anilist_recommendation(anime_name):
         # some anime do not have an english title, so include the romaji title
         item = {"anime_id": anime["idMal"], "title": anime['title']['english'] or anime['title']['romaji'],
                 "genres": normalized_genres, "synopsis": anime['description'] or "No synposis available.",
-                "image_url": anime['coverImage']['large']}
+                "image_url": anime['coverImage']['large'], "recommendation_source": "anilist"}
         results.append(item)
     return results
 
@@ -414,12 +415,12 @@ def get_similar_anime(anime_id, genres):
     results = get_anilist_similar_anime(anime_id)
     
     if results:
-        return results
+        return results, "anilist"
         
     
     # results = get_jikan_genre_recommendations(genres)
     
     # if results:
-    #     return results
+    #     return results, "jikan"
     
-    return []   
+    return [], None   
