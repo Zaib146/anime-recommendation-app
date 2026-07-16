@@ -116,6 +116,7 @@ User sees webpage*/
       image_url: anime.image_url,
       synopsis: anime.synopsis,
       genres: anime.genres,
+      recommendation_source: anime.recommendation_source
     }
 
     console.log("Saving anime:", animeToSave)
