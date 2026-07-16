@@ -571,7 +571,7 @@ def watchlist2_endpoint():
     
     cursor.execute("""
     -- selecting which columns from the table to read, must type each individually
-    SELECT anime_id, title, image_url, synopsis, genres
+    SELECT anime_id, title, image_url, synopsis, genres, recommendation_source
     FROM watchlist 
                    """)
     # conn.commit() not needed here - no changes to database made. still want conn.close() later
@@ -588,7 +588,7 @@ def watchlist2_endpoint():
     
     saved_anime = []
     for row in rows:
-        item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "image_url": row[2]}
+        item = {"anime_id": row[0], "title": row[1], "genres": json.loads(row[4]), "synopsis": row[3], "image_url": row[2], "recommendation_source": row[5]}
         # use indices since tuples require indices, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
