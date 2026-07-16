@@ -129,6 +129,7 @@ def save_to_cache(results):
     # results is a list of dictionaries, each dictionary containing information about a specific anime. So we need to loop through results and add each anime dictionary in their individually into the anime_cache table. We do a cursor.execute for every anime dictionary
     # before was getting an error when I did one cursor.execute on results, and tried to insert results.anime_id. that does not exist, since a list object does not have anime_id attribute. the dictionaries inside it do. so I put the code inside this loop
     for anime in results:
+        recommendation_source = anime["recommendation_source"]
         genres_text = json.dumps(anime["genres"])
         similar_anime_text = json.dumps([])
         
@@ -154,7 +155,7 @@ def save_to_cache(results):
         if existing_row:    # existing_row = (20,) is True for example. Anime exists, so only update all values except similar_anime column
             cursor.execute("""
                     UPDATE anime_cache
-                   SET title = ?, image_url = ?, synopsis = ?, genres = ?, fetched_at = ?
+                   SET title = ?, image_url = ?, synopsis = ?, genres = ?, fetched_at = ?, recommendation_source = ?
                    WHERE anime_id = ? 
                            """,
                            (
@@ -163,6 +164,7 @@ def save_to_cache(results):
                                 anime["synopsis"],
                                 genres_text,
                                 fetched_at,
+                                recommendation_source
                                 anime["anime_id"]
                            )
                     )
@@ -178,11 +180,13 @@ def save_to_cache(results):
                 synopsis,
                 genres,
                 similar_anime,
-                fetched_at
+                fetched_at,
+                recommendation_source,
+                similar_anime_source
             )
             
             -- We use "?" as placeholder values, since Naruto values will be different than Bleach, etc
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
             """,
             
             # these are the actual values that will fill in the placeholder ?. This is a tuple. Python provides these values, SQLite combines them with the placeholder values
@@ -193,7 +197,9 @@ def save_to_cache(results):
                 anime["synopsis"],
                 genres_text,
                 similar_anime_text,
-                fetched_at
+                fetched_at,
+                recommendation_source,
+                None
             )
             )
     
