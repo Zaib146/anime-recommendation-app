@@ -243,17 +243,16 @@ def get_anilist_recommendation(anime_name):
 
 def get_recommendation(anime_name):
     
-    # results = get_anilist_recommendation(anime_name)   # 1st call? haven't decided order yet 
+    results = get_anilist_recommendation(anime_name)   # 1st call, up more often
     
-    # if results:     # if the Jikan API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but Jikan API has no information about the anime, so empty.
-    #     # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
-    #     return results, "jikan"
-    
-    results = get_anilist_recommendation(anime_name)   # second call in case 
-    
-    if results:     # if the Jikan API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but Jikan API has no information about the anime, so empty.
+    if results:     # if the AniList API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but AniList API has no information about the anime, so empty.
         # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
         return results, "anilist"
+    
+    results = get_jikan_recommendation(anime_name)   # 2nd call
+    
+    if results:     # same idea as with anilist. this runs only if the first api doesn't work
+        return results, "jikan"
     
     # fallback in case neither works, do not get error then
     return [], None
@@ -411,16 +410,16 @@ def get_anilist_similar_anime(anime_id):
     return similar_anime_list
 
 def get_similar_anime(anime_id, genres):
+    # same idea as get_recommendation function. see comments there if needed
     
     results = get_anilist_similar_anime(anime_id)
     
     if results:
         return results, "anilist"
         
+    results = get_jikan_genre_recommendations(genres)
     
-    # results = get_jikan_genre_recommendations(genres)
-    
-    # if results:
-    #     return results, "jikan"
+    if results:
+        return results, "jikan"
     
     return [], None   
