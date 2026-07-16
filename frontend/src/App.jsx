@@ -562,6 +562,15 @@ User sees webpage*/
                   {similarAnimeById[anime.anime_id] &&
                   (
                     <div className = "similar-anime-watchlist-section">
+
+                      {similarAnimeSourceById[anime.anime_id] &&
+                      (
+                        <p>
+                          Similar Anime results are pulled from {similarAnimeSourceById[anime.anime_id]} API
+                        </p>
+                      )
+                      }
+
                       <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
                       <div className = "similar-anime-watchlist-list">
                         {similarAnimeById[anime.anime_id].map(similarAnime => (<li>{similarAnime}</li>))}   {/* this line is JavaScript, so it must be wrapped inside {} in this return. Loop through all values in the list and display them in a list format
