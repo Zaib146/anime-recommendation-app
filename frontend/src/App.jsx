@@ -213,10 +213,13 @@ User sees webpage*/
       {
         ...similarAnimeById,    // create a new object. ...similarAnimeById means create a new object for similarAnimeById and copy all the old key-values pairs into the new one. This allows us to add new key-value pairs (different similar anime for different anime ids) without
         // completely replacing what was previously there. Want view similar anime for Naruto to show even after I click view similar anime for bleach
-        [anime.anime_id]: data   // this adds the anime id as a key value and a list of the similar anime as a value represented by the variable "data"
+        [anime.anime_id]: data.results   // this adds the anime id as a key value and a list of the similar anime as a value represented by the variable "data"
       }
     )     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
-    console.log(data)   // to check in console
+    
+    console.log("Current source:", data.result_source)
+    console.log("Original similar-anime source:", data.similar_anime_source)
+    console.log("Message:", data.message)
   }
 
   // for example, if similarAnimeRequest =
