@@ -142,7 +142,7 @@ def get_jikan_recommendation(anime_name):
 
         normalized_genres = normalize_jikan_genres(anime['genres'])
         item = {"anime_id": anime["mal_id"], "title": anime['title'], "genres": normalized_genres, "synopsis": anime['synopsis'] or "No synposis available.",
-                "image_url": anime['images']['jpg']['image_url'], "recommendation_source": "jikan"}
+                "image_url": anime['images']['jpg']['image_url'], "recommendation_source": "Jikan"}
         
         results.append(item)
           
@@ -237,7 +237,7 @@ def get_anilist_recommendation(anime_name):
         # some anime do not have an english title, so include the romaji title
         item = {"anime_id": anime["idMal"], "title": anime['title']['english'] or anime['title']['romaji'],
                 "genres": normalized_genres, "synopsis": anime['description'] or "No synposis available.",
-                "image_url": anime['coverImage']['large'], "recommendation_source": "anilist"}
+                "image_url": anime['coverImage']['large'], "recommendation_source": "AniList"}
         results.append(item)
     return results
 
@@ -247,12 +247,12 @@ def get_recommendation(anime_name):
     
     if results:     # if the AniList API returns actual anime results, we're done. 2 scenarios where it doesn't: the API request succeeded, but AniList API has no information about the anime, so empty.
         # scenario 2 is where the API request fails, so results is empty. results is true when both the API request is a success, and we actually get back anime information from the API
-        return results, "anilist"
+        return results, "AniList"
     
     results = get_jikan_recommendation(anime_name)   # 2nd call
     
     if results:     # same idea as with anilist. this runs only if the first api doesn't work
-        return results, "jikan"
+        return results, "Jikan"
     
     # fallback in case neither works, do not get error then
     return [], None
@@ -415,11 +415,11 @@ def get_similar_anime(anime_id, genres):
     results = get_anilist_similar_anime(anime_id)
     
     if results:
-        return results, "anilist"
+        return results, "AniList"
         
     results = get_jikan_genre_recommendations(genres)
     
     if results:
-        return results, "jikan"
+        return results, "Jikan"
     
     return [], None   
