@@ -216,13 +216,25 @@ User sees webpage*/
     const data = await response.json()  // extract the JSON from the python information in response, store in data variable which is in python
     console.log(data)   // to check in console
 
-    setSimilarAnimeById(
+    setSimilarAnimeById(previousSimilarAnime => (
+      // previousSimilarAnime => passes the current state into previousSimilarAnime, the most recent value of similarAnimeById.
+      // This matters when multiple state updates happen close together, because React may schedule or batch updates.
+        // previousSimilarAnime is just a variable name, could be named something else. The ( after means the arrow function directly returns the new object.
+        // {} is the object being returned 
       {
-        ...similarAnimeById,    // create a new object. ...similarAnimeById means create a new object for similarAnimeById and copy all the old key-values pairs into the new one. This allows us to add new key-value pairs (different similar anime for different anime ids) without
-        // completely replacing what was previously there. Want view similar anime for Naruto to show even after I click view similar anime for bleach
-        [anime.anime_id]: data.results   // this adds the anime id as a key value and a list of the similar anime as a value represented by the variable "data"
+        ...previousSimilarAnime,    
+        // This copies all existing key-value pairs into the new object, so opening similar anime for Naruto does not remove the similar-anime results previously opened for Bleach
+        [anime.anime_id]: data.results   // this adds the anime id as a key value and a list of the similar anime as a value represented by the variable "data". or replaces the anime id if already there
       }
-    )     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
+    ))     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
+
+    setSimilarAnimeSourceById(previousSources => (
+      // same idea as setSimilarAnimeById function above. see comments there if need explanation
+      {
+        ...previousSources,    
+        [anime.anime_id]: data.similar_anime_source   
+      }
+    ))     // data now has a python list of all the similar anime. We put that list as the new value of similarAnimeById
     
     console.log("Current source:", data.result_source)
     console.log("Original similar-anime source:", data.similar_anime_source)
@@ -336,7 +348,8 @@ User sees webpage*/
         (
           <>
           {/* use backticks here for the second part, not "" so I can insert the value of recommendationSource in there. 
-          if used "", would literally print ${recommendationSource} */}
+          if used "", would literally print ${recommendationSource} 
+          this displays the recommendation source */}
             {recommendationSource &&
             (
               <p>
