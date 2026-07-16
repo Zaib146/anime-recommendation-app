@@ -84,6 +84,12 @@ User sees webpage*/
   // needed to show message saying was cache was used, if used
   const [recommendationMessage, setRecommendationMessage] = useState("")
 
+  // these states account for api source for recommendation and similar anime list results
+  const [recommendationSource, setRecommendationSource] = useState("")
+
+  // similarAnimeSourceById stores a separate API source for each anime: {20: "AniList", 269: "Jikan"}
+  const [similarAnimeSourceById, setSimilarAnimeSourceById] = useState({})    
+
   async function handleGetRecommendations()
   //async means this function will wait for something that takes time. This is because fetch with the url takes time.
   {
@@ -102,6 +108,7 @@ User sees webpage*/
 
     setRecommendations(recommendation_results)      // change recommendations to value in recommendations variable
     setRecommendationMessage(message)
+    setRecommendationSource(source)
     setCurrentView("recommendations") // change currentView to "recommendations"
     // console.log(recommendations)   // this is to print in console tab in F12 to test. will comment out / remove later
   }
@@ -328,7 +335,19 @@ User sees webpage*/
         {currentView === "recommendations" && 
         (
           <>
-            {/* this message will only show if jikan api is not working AND the anime is not already saved in cached data */}
+            {recommendationSource &&
+            (
+              <p>
+                {recommendationSource === "cache"
+                  ? "Recommendation results are pulled from saved cache data"
+                  : 'Recommendation results are pulled from ${recommendationSource} API'  
+                  {/* use backticks here, not "" so I can insert the value of recommendationSource in there. if used "", would literally print ${recommendationSource} */}
+                }
+              </p>
+            )
+            }
+
+            {/* this message will only show if both APIs are not working AND the anime is not already saved in cached data */}
             {recommendations.length === 0 &&
             (
               <p>No current saved results for this specific anime in our cached data. Please try again later.</p>
