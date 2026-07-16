@@ -335,14 +335,15 @@ User sees webpage*/
         {currentView === "recommendations" && 
         (
           <>
+          {/* use backticks here for the second part, not "" so I can insert the value of recommendationSource in there. 
+          if used "", would literally print ${recommendationSource} */}
             {recommendationSource &&
             (
               <p>
                 {recommendationSource === "cache"
                   ? "Recommendation results are pulled from saved cache data"
                   : 'Recommendation results are pulled from ${recommendationSource} API'  
-                  {/* use backticks here, not "" so I can insert the value of recommendationSource in there. if used "", would literally print ${recommendationSource} */}
-                }
+                }  
               </p>
             )
             }
