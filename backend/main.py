@@ -346,7 +346,7 @@ def get_similar_anime_cached_results(anime_id):
 # the tuple is created by SQLite/Python to represent a database row, while the JSON string is the actual value stored inside the similar_anime column.
 
 # this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
-def save_similar_anime_to_cache(anime_id, similar_anime_list, source):
+def save_similar_anime_to_cache(anime_id, similar_anime_list, similar_anime_source):
     similar_anime_list_text = json.dumps(similar_anime_list)    # converts python list to a json string - cannot saves lists to a database, so we convert it to TEXT
     conn = sqlite3.connect("anime_app.db")
     cursor = conn.cursor()
@@ -361,7 +361,7 @@ def save_similar_anime_to_cache(anime_id, similar_anime_list, source):
                    """,
                    (
                        similar_anime_list_text,
-                       source,
+                       similar_anime_source,
                        anime_id
                     )
                 )
