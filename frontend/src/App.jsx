@@ -281,8 +281,20 @@ User sees webpage*/
       [anime_id]: removed,
       ...remainingSimilarAnime
     } = similarAnimeById
-    setSimilarAnimeById(remainingSimilarAnime)  // this sets similarAnimeById by to what's left
+
+    setSimilarAnimeById(remainingSimilarAnime)  // this sets similarAnimeById to what's left
+
     console.log(data)   // to check in console
+
+    const {
+      [anime_id]: removedSource,
+      ...remainingSources
+    } = similarAnimeSourceById
+
+    setSimilarAnimeSourceById(remainingSources)  // this sets similarAnimeById to what's left
+    
+    console.log(data)   // to check in console
+
   }
 
 //   JSX section: display data, hide data, show buttons, show images
