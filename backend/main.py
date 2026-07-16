@@ -234,7 +234,7 @@ def get_cached_results(anime_name):
     
     cursor.execute("""
                 -- changed it from that to explicitly stating which columns I'm using. In case the table column order changes later, this ensures I'm selecting the right columns         
-                SELECT anime_id, title, image_url, synopsis, genres, similar_anime, fetched_at 
+                SELECT anime_id, title, image_url, synopsis, genres, similar_anime, fetched_at, recommendation_source 
                 FROM anime_cache
                 WHERE title LIKE ? 
                 """,
@@ -248,7 +248,9 @@ def get_cached_results(anime_name):
     anime_results = []
     for row in rows:
         # anime_id is at row[0] here since we did not select id as a column in cursor.execute()
-        item = {"anime_id": row[0], "title": row[1], "image_url": row[2], "synopsis": row[3] or "No synposis available.", "genres": json.loads(row[4]), "similar_anime": json.loads(row[5]), "fetched_at": row[6]}
+        item = {"anime_id": row[0], "title": row[1], "image_url": row[2], "synopsis": row[3] or "No synposis available.", "genres": json.loads(row[4]), 
+                "recommendation_source": row[7]}
+        # do not currently use similar_anime and fetched_at data from the results of this function, so not in the item dictionary
         # use indices since tuples require indices, they don't use key and value
         # genres and similar_anime are still JSON strings from database, so we'll need to do json.loads() on them before returning them
         
