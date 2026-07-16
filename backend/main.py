@@ -532,11 +532,12 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
             title,
             image_url,
             synopsis,
-            genres
+            genres,
+            recommendation_source
         )
         
         -- We use "?" as placeholder values, since Naruto values will be different than Bleach, etc
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?, ?)
         """,
         
         # these are the actual values that will fill in the placeholder ?. This is a tuple. Python provides these values, SQLite combines them with the placeholder values
@@ -546,6 +547,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
             anime.image_url,
             anime.synopsis,
             genres_text,
+            anime.recommendation_source
         )
         )
     
