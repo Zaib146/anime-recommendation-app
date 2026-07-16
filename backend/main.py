@@ -164,7 +164,7 @@ def save_to_cache(results):
                                 anime["synopsis"],
                                 genres_text,
                                 fetched_at,
-                                recommendation_source
+                                recommendation_source,
                                 anime["anime_id"]
                            )
                     )
