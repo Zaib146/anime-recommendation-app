@@ -369,7 +369,7 @@ User sees webpage*/
               <p>
                 {recommendationSource === "cache"
                   ? "Recommendation results are pulled from saved cache data"
-                  : 'Recommendation results are pulled from ${recommendationSource} API'  
+                  : `Recommendation results are pulled from ${recommendationSource} API`  
                 }  
               </p>
             )
