@@ -106,6 +106,7 @@ User sees webpage*/
     const recommendation_results = data.results
     const message = data.message
     const source = data.result_source
+    
 
     setRecommendations(recommendation_results)      // change recommendations to value in recommendations variable
     setRecommendationMessage(message)
