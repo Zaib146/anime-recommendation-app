@@ -86,7 +86,7 @@ class SimilarAnimeResponse(BaseModel):
 # class RecommendationResponse inherits all the functionality from Pydantic's Base Model. Like how class Cat extends Animal in Java
 # this does not save anything yet this is the shape I expect, the object.
 class RecommendationResponse(BaseModel):    # instead of just one result of a list of anime for recommendations, now returning an object. 
-    result_source: str      # clarify if data came from Jikan or cache
+    result_source: str      # clarify if data came from Jikan, Anilist, or cache
     message: str        # I can give a message saying cache was used, or empty str if not
     results: list[Anime]    # a list of Anime objects. This is the newer python convention using the built in generic for list instead List and needing an import. other way is List<Anime> with an import.
 
@@ -421,7 +421,7 @@ def recommendations_endpoint(anime_name):
         
         response = RecommendationResponse(
             result_source= "cache",
-            message= "Cannot pull information from the Jikan API currently. Results shown are pulled from the saved cache data.",
+            message= "Live anime services are currently unavailable. Results shown are from saved cache data.",
             results=results1
         )
         return response
