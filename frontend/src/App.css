@@ -212,6 +212,10 @@
   margin-top: 20px;
 }
 
+.similar-anime-results-source-section {
+  margin-bottom: 20px;
+}
+
 .similar-anime-recommendations-list {
   /* alternative is to do margin-bottom on the header of similar-anime-list only - would look like "similar-anime-list p {" etc. Felt using margin-top and working with actual sections is cleaner*/
   margin-top: 20px;

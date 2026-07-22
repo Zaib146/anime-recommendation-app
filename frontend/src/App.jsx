@@ -454,14 +454,15 @@ User sees webpage*/
                 {similarAnimeById[anime.anime_id] &&
                 (
                   <div className = "similar-anime-recommendations-section">
-
-                    {similarAnimeSourceById[anime.anime_id] &&
-                    (
-                      <p>
-                        Similar Anime results are pulled from {similarAnimeSourceById[anime.anime_id]} API
-                      </p>
-                    )
-                    }
+                    <div className = "similar-anime-results-source-section">
+                      {similarAnimeSourceById[anime.anime_id] &&
+                      (
+                        <p>
+                          Similar Anime results are pulled from {similarAnimeSourceById[anime.anime_id]} API
+                        </p>
+                      )
+                      }
+                    </div>  
 
                     <p>Similar Anime: </p>    {/* this is JSX, so it goes directly in the return */}
 
