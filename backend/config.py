@@ -1,3 +1,19 @@
+# Python does not have Vite’s built-in import.meta.env system. We introduced Pydantic Settings to:
+
+# Read backend/.env
+# Provide typed defaults
+# Convert ALLOWED_ORIGINS into a real list[str]
+# Validate configuration
+# Centralize multiple backend settings
+# Make settings reusable across database and CORS code
+
+# backend/.env
+#       ↓ Pydantic Settings
+# backend/config.py
+#       ↓
+# settings.DATABASE_URL
+# settings.ALLOWED_ORIGINS
+
 # pathlib is part of Python’s standard library. Path provides a reliable way to construct file paths on Windows, macOS, and Linux. We will use it to identify the exact location of the backend folder so that Pydantic can reliably find: backend/.env
 # Project runs on PC, Mac and Linux (when deployed to AWS). Path handles the operating-system differences for us.
 from pathlib import Path

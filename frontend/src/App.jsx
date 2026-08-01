@@ -7,6 +7,14 @@ import heroImg from './assets/hero.png'
 import './App.css'
 
 // Gets the backend's base URL from the current Vite environment configuration
+// since we only have one variable, API_URL, used only in App.jsx, we do not need to create a config.py like we did in backend. 
+// Vite already provides import.meta.env, automatically reads the frontend .env files, and exposes variables beginning with VITE_. So a separate frontend/config.js would currently add an unnecessary layer:
+// frontend/.env
+//       ↓ Vite
+// import.meta.env.VITE_API_URL
+//       ↓
+// API_URL in App.jsx
+// so we do NOT HAVE A frontend/.env right now
 const API_URL = import.meta.env.VITE_API_URL
 
 //to start frontend in terminal, get to frontend folder if needed (cd frontend). Then type "npm run dev"
