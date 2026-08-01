@@ -10,6 +10,18 @@ from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 # Given C:\anime-recommendation-app\backend\config.py, this sets BACKEND_DIR to C:\anime-recommendation-app\backend. BACKEND_DIR gives the program a dependable reference point for locating files that belong inside the backend folder.
+
 # __file__ is a special Python variable containing the path of the current file: C:\anime-recommendation-app\backend\config.py
+# Path(__file__) converts the path string into a Path object, which provides convenient, cross-platform path operations
+# .resolve() produces the complete absolute path and resolves relative components such as ..
+# .parent selects the directory containing that file: C:\anime-recommendation-app\backend
 
 BACKEND_DIR =  Path(__file__).resolve().parent
+
+# This creates our own class called Settings, based on Pydantic’s BaseSettings. The Settings class serves as the definition—or schema—for the backend’s configuration. It states: Which settings exist, What type each setting must have,
+# What defaults should be used, Where local settings can be loaded from
+class Settings(BaseSettings):
+    
+    # DATABASE_URL inside Settings is your Python settings field (not a default setting, it's a field / variable we create). We treat it as 1 "setting" inside this class. DATABASE_URL outside Python is the corresponding environment-variable name.
+    # if the corresponding environment-variable name exists, Pydantic Settings connects the two. "anime_app.db" in the class is the fallback if neither external source provides a value. str says DATABASE_URL must be of type string.
+    DATABASE_URL: str = "anime_app.db"
