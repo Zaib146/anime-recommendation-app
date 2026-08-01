@@ -24,4 +24,19 @@ class Settings(BaseSettings):
     
     # DATABASE_URL inside Settings is your Python settings field (not a default setting, it's a field / variable we create). We treat it as 1 "setting" inside this class. DATABASE_URL outside Python is the corresponding environment-variable name.
     # if the corresponding environment-variable name exists, Pydantic Settings connects the two. "anime_app.db" in the class is the fallback if neither external source provides a value. str says DATABASE_URL must be of type string.
+    
+    # Environment variables are useful because configuration can change between your PC, Mac, and AWS, while your application code remains the same. Sensitive values such as future database credentials also stay out of committed source code.
     DATABASE_URL: str = "anime_app.db"
+    
+    # ALLOWED_ORIGINS is another "setting" we create (it's technically a variable / field of Settings). It will be a list of strings. It's a list since we may eventually have multiple origins (urls). An origin is the combination of protocol + domain/hostname + port
+    # http — protocol, localhost — hostname, 5173 — Vite development-server port. The backend will eventually pass this setting to FastAPI’s CORS middleware.
+    # Field is a Pydantic function that lets us configure how this settings field behaves. Here, we use Field to tell Pydantic how to produce the default list.
+    # A default factory is a function that Pydantic calls whenever it needs the default value. Instead of storing one shared list directly, Pydantic creates a fresh list for each Settings object. This is safer because lists are mutable—they can be changed.
+    # A lambda is a short, unnamed function. lambda: ["http://localhost:5173"] means “When called, create and return a new list containing http://localhost:5173.”
+    # if no external value is supplied, this settings.ALLOWED_ORIGINS will contain ["http://localhost:5173"]. Later, the backend/.env file could override the default - ALLOWED_ORIGINS=["http://localhost:5173","https://yourdomain.com"]
+    # Pydantic reads that JSON-formatted list and converts it into a real Python list[str]
+    
+    # “Create an ALLOWED_ORIGINS setting that must be a list of strings. If no environment-specific value is provided, use a newly created list that permits the local Vite frontend.”
+    ALLOWED_ORIGINS: list[str] = Field(
+        default_factory=lambda: ["http://localhost:5173"]
+    )
