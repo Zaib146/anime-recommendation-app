@@ -40,3 +40,40 @@ class Settings(BaseSettings):
     ALLOWED_ORIGINS: list[str] = Field(
         default_factory=lambda: ["http://localhost:5173"]
     )
+    
+    # DATABASE_URL and ALLOWED_ORIGINS describe what settings your application has
+    # model_config describes how Pydantic should load and handle those settings.
+    # SettingsConfigDict helps construct those Pydantic-specific instructions correctly.
+    
+    # model_config is the standard name Pydantic looks for when configuring a model. Here the "model" is the Settings class. When Settings() creates the settings object, Pydantic uses model_config to know things like where to find .env; how to decode it; how to handle extra entries.
+    # model_config means “configuration for the Pydantic model class.”
+    # SettingsConfigDict is a class imported from pydantic_settings that creates the configuration dictionary in the format Pydantic expects
+    
+    # SettingsConfigDict(...) produces configuration instructions roughly resembling:
+    # {
+    # "env_file": BACKEND_DIR / ".env",
+    # "env_file_encoding": "utf-8",
+    # "extra": "ignore",
+    # }    
+    # Those instructions are assigned to the special model_config variable. When Pydantic processes your Settings class, it recognizes that name and uses those instructions.
+    
+    # In plain english, the below model_config block is: “When creating a Settings object, look for configuration in backend/.env, read it as UTF-8, and ignore any entries that this settings class does not define.”
+    
+    model_config = SettingsConfigDict(
+        
+        # This is the line that tells Pydantic where to find the .env file. It does not perform the override by itself. It configures Pydantic to read backend/.env when this later runs: settings = Settings()
+        # At that moment, Pydantic chooses each value according to this priority:
+            # 1. Real operating-system/AWS environment variable
+            # 2. Value in backend/.env
+            # 3. Default written in the Settings class
+
+        env_file=BACKEND_DIR / ".env",
+        
+        # Read the .env file using standard UTF-8 text encoding.
+        env_file_encoding="utf-8",
+        
+        # If .env contains a variable that has no corresponding field in Settings, ignore it instead of raising an error.
+        extra="ignore",
+    )
+    
+    settings = Settings()
