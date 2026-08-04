@@ -57,6 +57,8 @@ class Settings(BaseSettings):
         default_factory=lambda: ["http://localhost:5173"]
     )
     
+    # The defaults are not what determine the type. They are fallback values. If .env supplies a setting, Pydantic uses the .env value—but still applies the type annotation and validation from the class.
+    
     # DATABASE_URL and ALLOWED_ORIGINS describe what settings your application has
     # model_config describes how Pydantic should load and handle those settings.
     # SettingsConfigDict helps construct those Pydantic-specific instructions correctly.
@@ -97,3 +99,19 @@ class Settings(BaseSettings):
             # 3. Default written in the Settings class
 
 settings = Settings()
+
+# The flow is:
+
+# env_file points to backend/.env
+#             ↓
+# settings = Settings() triggers loading
+#             ↓
+# Pydantic reads DATABASE_URL and ALLOWED_ORIGINS
+#             ↓
+# The values are stored on the settings object
+
+# One nuance: if a value isn’t found in an environment source, Settings() assigns the corresponding default declared in the Settings class.
+
+# Settings class → defines required types and fallback values
+# backend/.env   → supplies the actual values
+# Settings()     → reads, parses, validates, and assigns them
