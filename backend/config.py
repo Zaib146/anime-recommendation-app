@@ -78,11 +78,6 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         
         # This is the line that tells Pydantic where to find the .env file. It does not perform the override by itself. It configures Pydantic to read backend/.env when this later runs: settings = Settings()
-        # At that moment, Pydantic chooses each value according to this priority:
-            # 1. Real operating-system/AWS environment variable
-            # 2. Value in backend/.env
-            # 3. Default written in the Settings class
-
         env_file=BACKEND_DIR / ".env",
         
         # Read the .env file using standard UTF-8 text encoding.
@@ -92,4 +87,13 @@ class Settings(BaseSettings):
         extra="ignore",
     )
     
+# this is the line that creates the object. During that creation, Pydantic loads, validates, and assigns values to:
+# settings.DATABASE_URL
+# settings.ALLOWED_ORIGINS    
+
+        # At that moment, Pydantic chooses each value according to this priority:
+            # 1. Real operating-system/AWS environment variable
+            # 2. Value in backend/.env
+            # 3. Default written in the Settings class
+
 settings = Settings()
