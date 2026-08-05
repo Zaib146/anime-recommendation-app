@@ -105,6 +105,11 @@ app.add_middleware( # Hey FastAPI, before any requests reach my routes, run them
     allow_headers = ["*"]       # allows all headers - header is extra information attached to a request
 )
 
+# Provides a simple endpoint for AWS and monitoring tools to verify that the backend is running and responding.
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
+
 
 def delete_expired_cache():
     conn = sqlite3.connect(settings.DATABASE_URL)
@@ -507,6 +512,7 @@ def similar_anime_endpoint(request: SimilarAnimeRequest):   # we never manually 
 # uvicorn main:app --reload.    This follows structure of "uvicorn filename:app_object --reload".  here, --reload automatically restarts the server when I make code changes
 # to visit, type this url "localhost:8000/recommendations/{anime_name}", but actually insert a real anime name into the variable.
 # or this: "http://127.0.0.1:8000/recommendations/naruto". Can copy the link showed at beginning of terminal, then add the search endpoint and query myself. endpoint is recommendation, query is naruto
+# http://127.0.0.1:8000 - the base of the backend url
 
 # this function saves anime to a watchlist
 @app.post("/watchlist")
