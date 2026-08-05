@@ -2,6 +2,7 @@
 
 from fastapi import FastAPI     # needed for backend setup
 from phase1_script import get_recommendation, get_similar_anime
+from config import settings
 from fastapi.middleware.cors import CORSMiddleware  # Go into FastAPI's CORS module and import the tool that handles cross-origin requests. importing a security guard
 # the middleware decides allow or block
 from pydantic import BaseModel
@@ -95,17 +96,18 @@ class RecommendationResponse(BaseModel):    # instead of just one result of a li
 app = FastAPI()
 
 app.add_middleware( # Hey FastAPI, before any requests reach my routes, run them through the CORS security guard.
+                #    app.add_middleware() attaches CORS rules to the entire FastAPI application so your React frontend can communicate with the backend from an approved address.
 
     CORSMiddleware,
-    allow_origins = ["http://localhost:5173"],  # only allow requests from here
-    allow_credentials = True,   # allows credentials (login information) if I ever need it
-    allow_methods = ["*"],      # allows all request types - get, post, put, delete - this is needed since I use @app.get
+    allow_origins = settings.ALLOWED_ORIGINS,  # only frontend origins listed in your configuration are trusted.
+    allow_credentials = True,   # allows credential-related cross-origin requests, such as cookies or authorization data, if added later
+    allow_methods = ["*"],      # allows all HTTP methods - get, post, put, delete 
     allow_headers = ["*"]       # allows all headers - header is extra information attached to a request
 )
 
 
 def delete_expired_cache():
-    conn = sqlite3.connect("anime_app.db")
+    conn = sqlite3.connect(settings.DATABASE_URL)
     cursor = conn.cursor()
     
     cursor.execute("""     
@@ -123,7 +125,7 @@ def save_to_cache(results):
     fetched_at = datetime.now().isoformat()     # datetime.now() creates a datetime object representing current day and time. isoformat() converts the object into a string. 
     # for example, the object can become 2026-07-01T18:42:15.123456 with the format of YYYY-MM-DDTHH:MM:SS.microseconds
     
-    conn = sqlite3.connect("anime_app.db")
+    conn = sqlite3.connect(settings.DATABASE_URL)
     cursor = conn.cursor()
     
     # results is a list of dictionaries, each dictionary containing information about a specific anime. So we need to loop through results and add each anime dictionary in their individually into the anime_cache table. We do a cursor.execute for every anime dictionary
@@ -210,7 +212,7 @@ def save_to_cache(results):
 
     
 def limit_cache_size():
-    conn = sqlite3.connect("anime_app.db")
+    conn = sqlite3.connect(settings.DATABASE_URL)
     cursor = conn.cursor()
     
     cursor.execute("""       
@@ -229,7 +231,7 @@ def limit_cache_size():
     conn.close()
     
 def get_cached_results(anime_name):
-    conn = sqlite3.connect("anime_app.db")
+    conn = sqlite3.connect(settings.DATABASE_URL)
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -262,7 +264,7 @@ def get_cached_results(anime_name):
     return anime_results
 
 def get_similar_anime_cached_results(anime_id):
-    conn = sqlite3.connect("anime_app.db")
+    conn = sqlite3.connect(settings.DATABASE_URL)
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -348,7 +350,7 @@ def get_similar_anime_cached_results(anime_id):
 # this is a helper function that saves a list of similar anime for a specific anime to the cache list, only for that anime, when the button is clicked. all other similar anime columns for different animes in cache are unaffected.
 def save_similar_anime_to_cache(anime_id, similar_anime_list, similar_anime_source):
     similar_anime_list_text = json.dumps(similar_anime_list)    # converts python list to a json string - cannot saves lists to a database, so we convert it to TEXT
-    conn = sqlite3.connect("anime_app.db")
+    conn = sqlite3.connect(settings.DATABASE_URL)
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -513,7 +515,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
     
     genres_text = json.dumps(anime.genres)      # turns Python list of genres into JSON string - needed since SQLite cannot store a list, it can only store a string value
     
-    conn = sqlite3.connect("anime_app.db")      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
+    conn = sqlite3.connect(settings.DATABASE_URL)      # here anime_app.db already exists, so it'll just reopen the existing database created when database_setup.py first ran
                                                         # conn is now the open connection to my database. we use conn later to refer to that same database connection. conn is an open database file, a connection object
                                                         
     cursor = conn.cursor()  # .cursor() is asking the conn connection to "Give me a cursor so I can send commands to the database". .cursor() is a method from sqlite3, called on conn
@@ -566,7 +568,7 @@ def watchlist_endpoint(anime: Anime):   # anime: Anime - this says that the para
 # this function is to read from the watchlist      
 @app.get("/watchlist")
 def watchlist2_endpoint():
-    conn = sqlite3.connect("anime_app.db")
+    conn = sqlite3.connect(settings.DATABASE_URL)
     cursor = conn.cursor()
     
     cursor.execute("""
@@ -600,7 +602,7 @@ def watchlist2_endpoint():
 
 @app.delete("/watchlist/{anime_id}")
 def watchlist3_endpoint(anime_id):
-    conn = sqlite3.connect("anime_app.db")
+    conn = sqlite3.connect(settings.DATABASE_URL)
     cursor = conn.cursor()
     
     cursor.execute (""" 
