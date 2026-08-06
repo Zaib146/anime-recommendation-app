@@ -6,6 +6,17 @@ import heroImg from './assets/hero.png'
 //this imports the CSS styling for this component
 import './App.css'
 
+// Gets the backend's base URL from the current Vite environment configuration
+// since we only have one variable, API_URL, used only in App.jsx, we do not need to create a config.py like we did in backend. 
+// Vite already provides import.meta.env, automatically reads the frontend .env files, and exposes variables beginning with VITE_. So a separate frontend/config.js would currently add an unnecessary layer:
+// frontend/.env
+//       ↓ Vite
+// import.meta.env.VITE_API_URL
+//       ↓
+// API_URL in App.jsx
+// so we do NOT HAVE A frontend/.env right now
+const API_URL = import.meta.env.VITE_API_URL
+
 //to start frontend in terminal, get to frontend folder if needed (cd frontend). Then type "npm run dev"
 
 //this file is the main React component. this file controls what you actually see on the page, the actual app UI
@@ -90,13 +101,14 @@ User sees webpage*/
   // similarAnimeSourceById stores a separate API source for each anime: {20: "AniList", 269: "Jikan"}
   const [similarAnimeSourceById, setSimilarAnimeSourceById] = useState({})    
 
+  // GET method
   async function handleGetRecommendations()
   //async means this function will wait for something that takes time. This is because fetch with the url takes time.
   {
     setSimilarAnimeById({})     // clears the state. Basically a refresh in that you have to click View Similar Anime for that specific anime again
     setSimilarAnimeSourceById({})   // same here, clears state
     const animeName = encodeURIComponent(anime) //Changes "One Piece" to "One%20Piece" in actual url, since url does not like spaces
-    const url = "http://localhost:8000/recommendations/" + animeName
+    const url = API_URL + "/recommendations/" + animeName
     const response = await fetch(url)   // await means pause this function until results come back, literally wait for results. 
     // here FastAPI is listening on port 8000, so it receives the request. App.jsx does not access backend files directly. 
     // App.jsx sends an HTTP request to the backend server. When React uses fetch, React is asking FastAPI for data automatically.
@@ -129,7 +141,7 @@ User sees webpage*/
     }
 
     console.log("Saving anime:", animeToSave)
-    const url = "http://localhost:8000/watchlist"   // we do not add parameter anime to url since this is a POST request. The anime data travels in the request body. because of the method: POST, it knows to do
+    const url = API_URL + "/watchlist"   // we do not add parameter anime to url since this is a POST request. The anime data travels in the request body. because of the method: POST, it knows to do
     // the POST HTTP method, not the GET one
     // Without this line of (url, method: "POST"), fetch() defaults to method: "GET", which would not match my FastAPI endpoint of @app.post("/watchlist") 
     const response = await fetch(url, 
@@ -157,7 +169,7 @@ User sees webpage*/
   // this is a DELETE request
   async function handleRemoveFromWatchlist(anime_id)
   {
-    const url = "http://localhost:8000/watchlist/" + anime_id
+    const url = API_URL + "/watchlist/" + anime_id
     const response = await fetch(url,
       {
         method: "DELETE"  // here we only need anime_id, so no headers or body like in handleSaveToWatchlist function
@@ -173,13 +185,14 @@ User sees webpage*/
   {
     setSimilarAnimeById({})   // clears the state. Basically a refresh in that you have to click View Similar Anime for that specific anime again
     setSimilarAnimeSourceById({})   // same here, clears state
-    const url = "http://localhost:8000/watchlist" // same url is fine
+    const url = API_URL + "/watchlist" // same url is fine
     const response = await fetch(url)   // default HTTP method is a get method, so it'll do that. 
     const data = await response.json()    // extract the JSON from the python information in response, store in data variable
     setWatchlist(data)  // store watchlist (which is in the data variable) as the new "watchlist" state value
     setCurrentView("watchlist")
   }
 
+  // this is for a POST request
   async function handleViewSimilarAnime(anime)
   {
     // this checks if anime has no genres in the Jikan API. If it does not have any, it displays the message and returns out of the function. I could put the logic below the if statement in an else block, but this works as is.
@@ -202,7 +215,7 @@ User sees webpage*/
       genres: anime.genres,
     }
 
-    const url = "http://localhost:8000/similar-anime"   // we do not add parameter anime to url since this is a POST request. The request data travels in the request body. because of the method: POST, it knows to do
+    const url = API_URL + "/similar-anime"   // we do not add parameter anime to url since this is a POST request. The request data travels in the request body. because of the method: POST, it knows to do
     // the POST HTTP method, not the GET one
     // Without this line of (url, method: "POST"), fetch() defaults to method: "GET", which would not match my FastAPI endpoint of @app.post("/similar-anime") 
     const response = await fetch(url, 
@@ -276,28 +289,21 @@ User sees webpage*/
 // }
 
 
-  async function handleRemoveSimilarAnime(anime_id)
+  function handleRemoveSimilarAnime(anime_id)
   {
-    // This is taking what's on the right side of the equals side, here similarAnimeById, and destructuring it. JSX is saying take the value at the index anime_id, store that value in the variable "removed". Everything else, store in the variable remainingSimilarAnime.
-    // so we're creating 2 new constant variables. State has not yet been changed. 
-    const {
-      [anime_id]: removed,
-      ...remainingSimilarAnime
-    } = similarAnimeById
+    // creates a new object containing all the properties currently in similarAnimeById
+    const remainingSimilarAnime = { ...similarAnimeById }
 
-    setSimilarAnimeById(remainingSimilarAnime)  // this sets similarAnimeById to what's left
+    // deletes the property (value) whose key is the anime_id
+    delete remainingSimilarAnime[anime_id]
 
-    console.log(data)   // to check in console
+    // replaces state with the cleaned copy
+    setSimilarAnimeById(remainingSimilarAnime)
 
-    const {
-      [anime_id]: removedSource,
-      ...remainingSources
-    } = similarAnimeSourceById
-
-    setSimilarAnimeSourceById(remainingSources)  // this sets similarAnimeById to what's left
-    
-    console.log(data)   // to check in console
-
+    // same idea as above
+    const remainingSources = { ...similarAnimeSourceById }
+    delete remainingSources[anime_id]
+    setSimilarAnimeSourceById(remainingSources)
   }
 
 //   JSX section: display data, hide data, show buttons, show images
