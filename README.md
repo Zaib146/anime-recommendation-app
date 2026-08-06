@@ -21,7 +21,7 @@ A full-stack web application for discovering anime recommendations, exploring si
 | Backend | Python, FastAPI, Pydantic |
 | Database | SQLite |
 | External APIs | AniList GraphQL API, Jikan REST API |
-| Tooling | Git, GitHub, npm, Uvicorn |
+| Tooling | Git, GitHub, Node.js, npm, Uvicorn |
 
 ## Architecture
 
